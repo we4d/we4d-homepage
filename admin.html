@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WE4D 홈페이지 관리</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--ink:#0A0A0A;--paper:#fff;--bg:#F6F3FB;--line:rgba(10,10,10,.12);--mute:#6B6577;--violet:#7C3AED;--lilac:#D8B4FE;--lilac-2:#E9D5FF;--red:#DC2626;--green:#15803D}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;word-break:keep-all}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,textarea,select{font:inherit}
+.top{position:sticky;top:0;z-index:10;background:var(--ink);color:#fff;display:flex;align-items:center;gap:14px;padding:12px 24px;flex-wrap:wrap}
+.top img{height:26px;filter:brightness(0) invert(1)}
+.top h1{font-size:15px;font-weight:700;margin:0;flex:1}
+.top h1 small{font-weight:400;opacity:.6;margin-left:8px;font-size:12px}
+.conn{display:flex;align-items:center;gap:8px;font-size:12px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.1)}
+.conn i{width:8px;height:8px;border-radius:50%;background:#9A93A8;display:inline-block}
+.conn.on i{background:#4ADE80}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-weight:700;font-size:13px;transition:transform .2s,background .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-lilac{background:var(--lilac);color:var(--ink)}
+.btn-ghost{border:1.5px solid rgba(255,255,255,.4);color:#fff}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-line{border:1.5px solid var(--line);color:var(--ink);background:#fff}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-danger{color:var(--red);border-color:rgba(220,38,38,.3)}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 54px)}
+@media (max-width:860px){.layout{grid-template-columns:1fr}.side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}}
+.side{position:sticky;top:54px;height:calc(100vh - 54px);overflow:auto;background:#fff;border-right:1px solid var(--line);padding:16px 12px}
+.side a{display:block;padding:10px 12px;border-radius:10px;font-weight:600;color:var(--mute)}
+.side a:hover{background:var(--bg);color:var(--ink)}
+.side a.on{background:var(--lilac-2);color:#4C1D95}
+.side .hint{font-size:12px;color:var(--mute);padding:14px 12px;border-top:1px solid var(--line);margin-top:12px;line-height:1.7}
+main{padding:28px 32px 120px;max-width:1100px}
+.sec{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 26px;margin-bottom:22px;scroll-margin-top:70px}
+.sec>h2{margin:0 0 4px;font-size:18px;font-weight:900}
+.sec>.desc{font-size:13px;color:var(--mute);margin:0 0 18px}
+.field{display:grid;grid-template-columns:190px 1fr;gap:8px 16px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.field:first-of-type{border-top:0}
+@media (max-width:620px){.field{grid-template-columns:1fr}}
+.field>label{font-weight:700;font-size:13px;padding-top:9px}
+.field-sl{border-top:0;padding-top:0;margin-top:-4px}.field-sl>label{color:var(--mute);font-weight:500}   /* 문구 칸 바로 아래 글씨 크기 */
+.field>label small{display:block;font-weight:400;color:var(--mute);font-size:11.5px;line-height:1.5;margin-top:2px}
+.field input[type=text],.field input[type=number],.field input[type=date],.field textarea,.field select{width:100%;padding:9px 12px;border-radius:10px;border:1.5px solid var(--line);background:#fff;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field textarea:focus,.field select:focus{outline:0;border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.field textarea{min-height:76px;resize:vertical;line-height:1.6}
+.group{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:6px 0;background:#FBFAFD}
+.group .field{grid-template-columns:150px 1fr;padding:7px 0}
+.items{display:grid;gap:10px}
+.item{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;position:relative}
+.item .ih{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+.item .ih b{font-size:13px;color:var(--violet);font-family:"JetBrains Mono",monospace}
+.item .field{grid-template-columns:150px 1fr;padding:6px 0}
+.rows{display:grid;gap:6px}
+.row{display:grid;gap:6px;align-items:center}
+.row input,.row textarea{width:100%;padding:8px 10px;border-radius:8px;border:1.5px solid var(--line)}
+.row .x{width:30px;height:30px;border-radius:50%;background:#fee2e2;color:var(--red);font-weight:700;display:grid;place-items:center}
+.add{margin-top:8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+/* 파일 필드 */
+.filef{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.filef .prev{grid-column:1/-1;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--mute)}
+.filef .prev img,.filef .prev video{height:64px;width:auto;max-width:180px;border-radius:8px;border:1px solid var(--line);object-fit:cover;background:#eee}
+.filef .prev .ph{height:64px;width:100px;border-radius:8px;background:repeating-linear-gradient(45deg,#f3f0f8,#f3f0f8 8px,#e9e4f2 8px,#e9e4f2 16px);display:grid;place-items:center;font-size:11px;color:var(--mute)}
+/* 슬라이더 */
+.sl{display:grid;grid-template-columns:1fr 64px;gap:12px;align-items:center}
+.sl input[type=range]{width:100%;accent-color:var(--violet)}
+.sl output{font-family:"JetBrains Mono",monospace;font-size:13px;text-align:right}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:20;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.toast.err{background:var(--red)}
+.savebar{position:fixed;right:24px;bottom:24px;display:flex;gap:8px;z-index:15}
+.savebar .btn{box-shadow:0 20px 40px -16px rgba(0,0,0,.5);padding:14px 22px;font-size:14px}
+.help{background:#EEE9F6;border-radius:14px;padding:16px 20px;margin-bottom:22px;font-size:13px;line-height:1.8}
+.help b{color:#4C1D95}
+.help ol{margin:6px 0 0;padding-left:18px}
+.mono{font-family:"JetBrains Mono",monospace;font-size:12px}
+/* 인터넷 관리 페이지 잠금 화면 */
+.gate[hidden]{display:none}
+.gate{position:fixed;inset:0;z-index:50;background:var(--ink);display:grid;place-items:center;padding:24px}
+.gate-box{width:min(440px,100%);background:#fff;border-radius:20px;padding:32px 30px;display:grid;gap:12px}
+.gate-box img{height:28px;width:auto;justify-self:start}
+.gate-box h2{margin:0;font-size:20px;font-weight:900}
+.gate-box p,.gate-box small{margin:0;font-size:13px;color:var(--mute);line-height:1.6}
+.gate-box input{padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);font-size:15px}
+.gate-box a{font-size:12.5px;color:var(--mute);text-decoration:underline;justify-self:center}
+.gate-err{color:var(--red);font-size:13px;min-height:1em}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;background:var(--lilac-2);color:#4C1D95;font-size:11px;font-weight:700;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="top">
+  <img src="assets/logo.png" alt="WE4D">
+  <h1>홈페이지 관리 <small>내용을 고친 뒤 오른쪽 아래 [저장]을 누르세요</small></h1>
+  <button class="conn" id="connBtn" title="홈페이지 폴더를 연결하면 저장 버튼이 파일을 직접 고칩니다"><i></i><span id="connTxt">폴더 연결 안 됨 · 클릭해서 연결</span></button>
+  <a class="btn btn-ghost btn-sm" href="index.html" target="_blank">홈페이지 열기 ↗</a>
+</div>
+
+<div class="layout">
+  <nav class="side" id="sideNav"></nav>
+  <main>
+    <div class="help" id="helpBox"></div>
+    <div id="editor"></div>
+  </main>
+</div>
+
+<div class="savebar">
+  <button class="btn btn-line" id="btnReset">원래대로</button>
+  <button class="btn btn-line" id="btnI18n" title="새로 쓴 한국어 문장을 영어·중국어·일본어로 자동 번역해 js/i18n-data.js 에 저장합니다 (크롬 138 이상)">외국어 번역 갱신</button>
+  <button class="btn btn-line" id="btnPreview">미리보기</button>
+  <button class="btn btn-lilac" id="btnSave">저장</button>
+</div>
+<div class="toast" id="toast"></div>
+<div class="gate" id="gate" hidden></div>
+<input type="file" id="filePick" hidden>
+
+<script src="js/content.js"></script>
+<script src="js/i18n-data.js"></script>
+<script>
+/* ============================================================
+   관리 페이지 — content.js 를 폼으로 편집 · 파일 업로드 · 글씨 크기 · 폴더에 직접 저장
+   ============================================================ */
+const SECTIONS = [
+  { key: 'POPUPS',      title: '팝업창 (이벤트 · 공지)', desc: '홈페이지를 열 때 뜨는 팝업. [팝업 켜기]를 체크하면 표시됩니다. 사진 · 글 위치 · 색 · 표시 기간을 정할 수 있고, 여러 개를 동시에 띄울 수도 있습니다.' },
+  { key: 'SITE', keys: ['name', 'logoSize', 'tagline'], id: 'top', title: '상단 메뉴 · 로고', desc: '맨 위 메뉴의 로고 크기와 로고 옆 글씨' },
+  { key: 'SITE', sub: 'hero',    id: 'hero',    title: '첫 화면',            desc: '배경 영상 · 색 · 밝기, 첫 화면 문구와 글씨 크기, 하단 숫자' },
+  { key: 'SITE', sub: 'parents', id: 'parents', title: '학부모님께',          desc: '홈 화면 "학부모님께 드리는 세 가지 약속"' },
+  { key: 'SITE', sub: 'fourd',   id: 'fourd',   title: '4D 의미',            desc: '위포드 페이지 — iDol · Debut · Dream · EDucation' },
+  { key: 'SITE', rest: true,      id: 'info',    title: '연락처 · 주소 · 운영시간', desc: '학원 이름, 전화, 이메일, 톡톡 · 인스타 링크, 주소, 운영시간, 플로팅 배너, 사업자 정보' },
+  { key: 'SITE', design: true,    id: 'design',  title: '그 밖의 글씨 크기 · 색', desc: '입력칸이 따로 없는 글씨(영문 섹션 제목, 오디션·입시·취미, 본문 전체)의 크기와 색. 크기 100%가 기본, 색은 [기본으로]를 누르면 화면마다 자동' },
+  { key: 'DIRECTOR',    title: '대표원장 인사말',      desc: '위포드 페이지 — 이름, 사진, 인사말, 약력' },
+  { key: 'STEPS',       title: 'SYSTEM 6단계',        desc: '위포드 페이지 — 교육 과정 6단계' },
+  { key: 'SYSTEM_BANNER', title: 'SYSTEM 배너 사진', desc: '6단계 위 배너 배경 사진 (없으면 그라데이션)' },
+  { key: 'INST_CATS',   title: '강사 분야',            desc: '강사진 페이지의 분야 이름 (보컬 / 댄스 / 미디·작곡)' },
+  { key: 'INSTRUCTORS', title: '강사진',               desc: '강사 추가·삭제, 사진, 소개, 경력' },
+  { key: 'LESSONS',     title: '레슨 안내',            desc: '오디션 · 입시 · 취미 포지션별 단계, 주차, 혜택' },
+  { key: 'NOTICES',     title: '공지사항',             desc: '행사 안내 페이지 상단 NOTICE' },
+  { key: 'EVENTS',      title: '오디션 일정',          desc: '달력 일정. type: agency(기획사 방문) / we4d(내부 행사) / online(온라인·마감) / show(공연)' },
+  { key: 'HOLIDAYS',    title: '공휴일',               desc: '달력에 빨간색으로 표시. 형식: 연도-월-일 (예: 2026-10-3)' },
+  { key: 'FAQ',         title: '자주 묻는 질문',        desc: '상담 페이지 오른쪽 FAQ' },
+  { key: 'AGENCIES',    title: '협력 기획사 로고',      desc: '첫 화면 로고 띠. 로고 파일을 올리고 h(높이)로 크기 조절' }
+];
+const LABELS = {
+  name:'학원 이름', tagline:'로고 옆 작은 글씨', logoSize:'로고 크기', taglineSize:'↳ 로고 옆 글씨 크기', hero:'첫 화면', video:'배경 영상', poster:'영상 로딩 전 이미지', tint:'영상 색 틴트', brightness:'영상 밝기 (100 = 원본)', shade:'화면 어둡게 정도 (위·아래 그라데이션)', eyebrow:'제목 위 작은 글씨', bigText:'큰 제목', cta:'버튼 문구', ctaColor:'버튼 색', ctaText:'버튼 글자 색', stats:'하단 숫자', n:'숫자/이름', unit:'단위', label:'설명',
+  tel:'전화번호 (표시용)', telLink:'전화번호 (숫자만)', telHref:'전화 링크 (tel:번호)', notifyPhone:'상담 문자 받을 번호 (숫자만)', email:'상담 받을 이메일 주소', formEndpoint:'자동 전송 서비스 주소 (Formspree 등 · 없으면 비워두기)', naverTalk:'네이버 톡톡 링크', naverTalkName:'톡톡 버튼 문구', instagram:'인스타그램 링크', instagramName:'인스타그램 표시 이름', youtube:'유튜브 링크',
+  address:'주소', addressSub:'주소 보조 설명', mapQuery:'지도 검색어', mapLink:'네이버지도 링크', mapLinkKakao:'카카오맵 링크', hours:'운영시간', transit:'대중교통', bizNo:'사업자 정보', fourd:'4D 의미', title:'제목', lead:'소개 문장', items:'항목', floatBubble:'플로팅 배너 문구', floatBubbleSub:'플로팅 배너 작은 글씨', demoToday:'달력 기준일 (비우면 오늘)',
+  design:'글씨 크기', heroTitle:'첫 화면 큰 제목', heroEyebrow:'첫 화면 작은 글씨', sectionTitle:'섹션 큰 제목', sectionLabel:'섹션 작은 라벨', pillarTitle:'오디션·입시·취미 글씨', cardTitle:'카드 제목', body:'본문 전체',
+  photo:'사진', scenePhoto:'(사용 안 함) 현장 사진', nameKr:'이름 (한글)', nameEn:'이름 (영문)', role:'직책', sceneTag:'(사용 안 함)', stamp:'동그란 도장 글씨', headline:'인사말 제목', paragraphs:'인사말 본문 (문단별)', career:'약력',
+  t:'제목', d:'설명', tag:'오른쪽 작은 표시', k:'구분 코드', en:'영문', kr:'한글', tab:'탭 이름', cat:'분야 코드 (vocal/dance/midi)', q:'한 줄 소개', focus:'전문 분야', portfolio:'포트폴리오 링크', c1:'(사진 없을 때 색1)', c2:'(사진 없을 때 색2)',
+  audition:'오디션', entrance:'입시', hobby:'취미', facts:'숫자 3개', steps:'레슨 단계', weeks:'주차별 과정', perks:'수강 혜택', sub:'과목별',
+  y:'연도', m:'월', type:'종류', time:'시간', note:'상세 설명', img:'로고 파일', h:'높이(px)', s:'글자 로고 스타일',
+  on:'팝업 켜기', text:'본문', image:'사진', layout:'배치', textPos:'글 세로 위치', textAlign:'글 가로 정렬', textColor:'글자 색', bg:'배경 색', link:'버튼 링크 (예: #events, #consult, https://…)', linkText:'버튼 문구', from:'표시 시작일 (비우면 바로)', until:'표시 종료일 (비우면 계속)', width:'팝업 너비(px)'
+};
+const SELECT_KEYS = {
+  layout: [['card','사진 위 + 글 아래'], ['overlay','사진 위에 글 겹치기']],
+  textPos: [['top','위'], ['middle','가운데'], ['bottom','아래']],
+  textAlign: [['left','왼쪽'], ['center','가운데'], ['right','오른쪽']],
+  type: [['agency','기획사 방문 오디션'], ['we4d','WE4D 내부 행사'], ['online','온라인 · 마감'], ['show','공연 · 쇼케이스']]
+};
+const DATE_KEYS = new Set(['from','until','demoToday']);
+const COLOR_KEYS = new Set(['textColor','bg','ctaColor','ctaText']);
+const TUPLE_HEADS = { hours:['요일','시간'], transit:['배지 색','배지 글자','설명'], items:['영문 (강조 글자는 <b></b>)','한글','설명'], career:['기간','내용'], facts:['숫자','설명'], steps:['단계명','설명'], weeks:['기간','내용','진행률 %'], NOTICES:['배지 색 (red/lilac/blue)','배지 글자','내용','날짜'], FAQ:['질문','답변'] };
+const HIDDEN = new Set(['c1','c2','scenePhoto','sceneTag','s','mapQuery','portfolio']);
+const FILE_KEYS = new Set(['video','poster','photo','img','image','SYSTEM_BANNER']);
+const SLIDER_KEYS = new Set(['heroTitle','heroEyebrow','sectionTitle','sectionLabel','pillarTitle','cardTitle','lead','body']);
+// 첫 화면 영상 슬라이더: 키 → [최소, 최대, 간격, 기본값]
+const HERO_SLIDERS = { brightness:[60,200,5,105], shade:[0,100,5,100], logoSize:[20,64,1,30], taglineSize:[8,18,1,10] };
+const SLIDER_UNIT = { logoSize: 'px', taglineSize: 'px' };
+// 문구 입력칸 바로 아래에 붙는 글씨 크기 슬라이더: "경로" → SITE.design 의 키
+const SLIDER_AFTER = { 'SITE.tagline': 'taglineSize', 'SITE.hero.bigText': 'heroTitle', 'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
+const SLIDER_AFTER_LABEL = { taglineSize: '↳ 로고 옆 글씨 크기', heroTitle: '↳ 위 제목 글씨 크기', heroEyebrow: '↳ 위 글씨 크기', lead: '↳ 소개 문장 글씨 크기 (모든 화면 공통)', cardTitle: '↳ 위 카드 제목 글씨 크기 (모든 화면 공통)' };
+// 문구 입력칸 아래에 붙는 글씨 색: "경로" → SITE.colors 의 키 (크기 슬라이더 다음에 표시)
+const COLOR_AFTER = { 'SITE.hero.bigText': 'hero', 'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.tagline': 'tagline', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
+const COLOR_LABEL = { hero: '↳ 위 제목 글씨 색', heroEyebrow: '↳ 위 글씨 색', tagline: '↳ 로고 옆 글씨 색', lead: '↳ 소개 문장 글씨 색 (모든 화면 공통)', cardTitle: '↳ 카드 제목 글씨 색 (모든 화면 공통)', sectionTitle: '섹션 큰 제목 색', sectionLabel: '섹션 작은 라벨 색', pillarTitle: '오디션·입시·취미 글씨 색', body: '본문 글씨 색' };
+function renderColorPick(v, path) { return `<div class="sl" style="grid-template-columns:52px 1fr auto"><input type="color" ${pathAttr(path)} value="${/^#[0-9a-f]{6}$/i.test(v || '') ? v : '#ffffff'}" style="width:48px;height:36px;padding:2px;border:1px solid var(--line);border-radius:8px;background:#fff"><span class="mono">${v ? esc(v) : '기본색 (화면마다 자동)'}</span><button type="button" class="btn btn-line btn-sm" data-clear="${esc(JSON.stringify(path))}">기본으로</button></div>`; }
+const UPLOAD_DIR = { video:'assets', poster:'assets', photo:'assets/inst', img:'assets/logos', image:'assets/popup', SYSTEM_BANNER:'assets' };
+
+/* ---- 데이터 복사본 ---- */
+const SOURCE = { SITE, DIRECTOR, STEPS, SYSTEM_BANNER, INST_CATS, INSTRUCTORS, LESSONS, NOTICES, EVENTS, HOLIDAYS, FAQ, AGENCIES, POPUPS: (typeof POPUPS !== 'undefined' ? POPUPS : []) };
+const ORIGINAL = {}; const data = {};
+SECTIONS.forEach(s => { ORIGINAL[s.key] = JSON.parse(JSON.stringify(SOURCE[s.key])); data[s.key] = JSON.parse(JSON.stringify(SOURCE[s.key])); });
+if (!data.SITE.design) data.SITE.design = { heroTitle:100, heroEyebrow:100, sectionTitle:100, sectionLabel:100, pillarTitle:100, cardTitle:100, lead:100, body:100 };
+// 나중에 추가된 설정 항목이 content.js 에 없으면 기본값을 채워 넣음 (칸이 안 보이는 일 방지)
+const DEFAULTS = { logoSize: 30, taglineSize: 10 }; Object.keys(DEFAULTS).forEach(k => { if (data.SITE[k] == null) data.SITE[k] = DEFAULTS[k]; });
+if (!data.SITE.colors) data.SITE.colors = {}; ['hero','heroEyebrow','tagline','sectionTitle','sectionLabel','pillarTitle','cardTitle','lead','body'].forEach(k => { if (data.SITE.colors[k] == null) data.SITE.colors[k] = ''; });
+const HERO_DEFAULTS = { brightness: 105, shade: 100, ctaColor: "#D8B4FE", ctaText: "#0A0A0A" }; Object.keys(HERO_DEFAULTS).forEach(k => { if (data.SITE.hero[k] == null) data.SITE.hero[k] = HERO_DEFAULTS[k]; });
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = v => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const lab = k => LABELS[k] || k;
+function getAt(path) { return path.reduce((o, k) => o[k], data); }
+function setAt(path, v) { const p = path.slice(); const last = p.pop(); getAt(p)[last] = v; }
+const pathAttr = p => `data-path="${esc(JSON.stringify(p))}"`;
+
+/* ---- 렌더 ---- */
+function isTupleArray(a) { return Array.isArray(a) && a.length && a.every(x => Array.isArray(x)); }
+function isPrimArray(a) { return Array.isArray(a) && a.every(x => typeof x !== 'object'); }
+function isObjArray(a) { return Array.isArray(a) && a.length && a.every(x => x && typeof x === 'object' && !Array.isArray(x)); }
+const isFileKey = (key, v) => FILE_KEYS.has(key) || (typeof v === 'string' && /^assets\//.test(v));
+
+function renderValue(v, path, key) {
+  if (SLIDER_KEYS.has(key) && path.includes('design')) return `<div class="sl"><input type="range" min="60" max="180" step="5" ${pathAttr(path)} value="${Number(v) || 100}"><output>${Number(v) || 100}%</output></div>`;
+  if (HERO_SLIDERS[key] && (path.includes('hero') || key === 'logoSize' || key === 'taglineSize')) { const [mn, mx, st, df] = HERO_SLIDERS[key]; const n = v == null ? df : Number(v); const u = SLIDER_UNIT[key] || '%'; return `<div class="sl"><input type="range" min="${mn}" max="${mx}" step="${st}" data-unit="${u}" ${pathAttr(path)} value="${n}"><output>${n}${u}</output></div>`; }
+  if (SELECT_KEYS[key] && (v == null || typeof v === 'string')) return `<select ${pathAttr(path)}>${SELECT_KEYS[key].map(o => `<option value="${o[0]}" ${o[0] === v ? 'selected' : ''}>${esc(o[1])}</option>`).join('')}</select>`;
+  if (DATE_KEYS.has(key) && (v == null || typeof v === 'string')) return `<input type="date" ${pathAttr(path)} value="${esc(v)}">`;
+  if (COLOR_KEYS.has(key) && (v == null || typeof v === 'string')) return `<div class="sl" style="grid-template-columns:52px 1fr"><input type="color" ${pathAttr(path)} value="${/^#[0-9a-f]{6}$/i.test(v || '') ? v : '#ffffff'}" style="width:48px;height:36px;padding:2px;border:1px solid var(--line);border-radius:8px;background:#fff"><span class="mono">${esc(v)}</span></div>`;
+  if ((v == null || typeof v === 'string') && isFileKey(key, v)) return renderFile(v || '', path, key);
+  if (v == null || typeof v === 'string') {
+    const long = (v || '').length > 70 || /<br>/.test(v || '');
+    return long ? `<textarea ${pathAttr(path)}>${esc(v)}</textarea>` : `<input type="text" ${pathAttr(path)} value="${esc(v)}">`;
+  }
+  if (typeof v === 'number') return `<input type="number" ${pathAttr(path)} value="${v}">`;
+  if (typeof v === 'boolean') return `<input type="checkbox" ${pathAttr(path)} ${v ? 'checked' : ''}>`;
+  if (Array.isArray(v)) {
+    if (v.length === 0 || isPrimArray(v)) return renderPrimList(v, path);
+    if (isTupleArray(v)) return renderTupleList(v, path, key);
+    if (isObjArray(v)) return renderObjList(v, path, key);
+  }
+  if (typeof v === 'object') return renderObject(v, path);
+  return '';
+}
+function renderFile(v, path, key) {
+  const isVideo = /\.(mp4|webm|mov)$/i.test(v) || key === 'video';
+  const prev = v ? (isVideo ? `<video src="${esc(v)}" muted></video>` : `<img src="${esc(v)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'파일 없음'}))">`) : `<div class="ph">파일 없음</div>`;
+  return `<div class="filef"><input type="text" ${pathAttr(path)} value="${esc(v)}" placeholder="assets/... (파일 선택 버튼으로 올리면 자동 입력)"><button class="btn btn-ink btn-sm" data-pick="${esc(JSON.stringify(path))}" data-key="${esc(key)}">${isVideo ? '영상 선택' : '사진 선택'}</button><div class="prev">${prev}<span>${v ? esc(v) : '아직 파일이 없습니다'}</span></div></div>`;
+}
+function renderObject(obj, path) {
+  return `<div class="group">${Object.keys(obj).filter(k => !HIDDEN.has(k)).map(k => renderField(k, obj[k], path.concat(k))).join('')}</div>`;
+}
+function renderField(k, v, path) {
+  let html = `<div class="field"><label>${esc(lab(k))}</label><div>${renderValue(v, path, k)}</div></div>`;
+  const sk = SLIDER_AFTER[path.join('.')];
+  if (sk) { const d = data.SITE.design; html += `<div class="field field-sl"><label>${esc(SLIDER_AFTER_LABEL[sk] || '↳ 글씨 크기')}</label><div>${renderValue(d[sk], ['SITE', 'design', sk], sk)}</div></div>`; }
+  const ck = COLOR_AFTER[path.join('.')];
+  if (ck) html += `<div class="field field-sl"><label>${esc(COLOR_LABEL[ck] || '↳ 글씨 색')}</label><div>${renderColorPick(data.SITE.colors[ck], ['SITE', 'colors', ck])}</div></div>`;
+  return html;
+}
+function renderPrimList(arr, path) {
+  return `<div class="rows" ${pathAttr(path)}>${arr.map((x, i) => `<div class="row" style="grid-template-columns:1fr 30px">${String(x).length > 70 ? `<textarea ${pathAttr(path.concat(i))} style="min-height:60px">${esc(x)}</textarea>` : `<input type="text" ${pathAttr(path.concat(i))} value="${esc(x)}">`}<button class="x" data-del="${esc(JSON.stringify(path.concat(i)))}" title="삭제">×</button></div>`).join('')}</div><button class="btn btn-line btn-sm add" data-add="${esc(JSON.stringify(path))}" data-kind="prim">+ 줄 추가</button>`;
+}
+function renderTupleList(arr, path, key) {
+  const heads = TUPLE_HEADS[key] || TUPLE_HEADS[path[0]] || [];
+  const cols = arr[0].length;
+  const head = heads.length ? `<div class="row" style="grid-template-columns:repeat(${cols},1fr) 30px;font-size:11.5px;color:var(--mute)">${heads.map(h => `<span>${esc(h)}</span>`).join('')}<span></span></div>` : '';
+  return `<div class="rows" ${pathAttr(path)}>${head}${arr.map((row, i) => `<div class="row" style="grid-template-columns:repeat(${cols},1fr) 30px">${row.map((c, j) => typeof c === 'number' ? `<input type="number" ${pathAttr(path.concat(i, j))} value="${c}">` : (String(c).length > 60 ? `<textarea ${pathAttr(path.concat(i, j))} style="min-height:44px">${esc(c)}</textarea>` : `<input type="text" ${pathAttr(path.concat(i, j))} value="${esc(c)}">`)).join('')}<button class="x" data-del="${esc(JSON.stringify(path.concat(i)))}" title="삭제">×</button></div>`).join('')}</div><button class="btn btn-line btn-sm add" data-add="${esc(JSON.stringify(path))}" data-kind="tuple">+ 줄 추가</button>`;
+}
+function renderObjList(arr, path, key) {
+  const nameOf = o => o.kr || o.t || o.n || o.title || (o.y ? `${o.y}-${o.m}-${o.d} ${o.t || ''}` : '') || '';
+  return `<div class="items" ${pathAttr(path)}>${arr.map((o, i) => `<div class="item"><div class="ih"><b>${i + 1}. ${esc(nameOf(o))}</b><div class="actions"><button class="btn btn-line btn-sm" data-move="${esc(JSON.stringify(path.concat(i)))}" data-dir="-1">▲</button><button class="btn btn-line btn-sm" data-move="${esc(JSON.stringify(path.concat(i)))}" data-dir="1">▼</button><button class="btn btn-line btn-sm btn-danger" data-del="${esc(JSON.stringify(path.concat(i)))}">삭제</button></div></div>${Object.keys(o).filter(k => !HIDDEN.has(k)).map(k => renderField(k, o[k], path.concat(i, k))).join('')}</div>`).join('')}</div><button class="btn btn-ink btn-sm add" data-add="${esc(JSON.stringify(path))}" data-kind="obj">+ 항목 추가</button>`;
+}
+function renderAll() {
+  $('#editor').innerHTML = SECTIONS.map(s => {
+    const v = data[s.key];
+    const fields = (obj, base) => Object.keys(obj).filter(k => !HIDDEN.has(k)).map(k => renderField(k, obj[k], base.concat(k))).join('');
+    let body;
+    if (s.sub) body = fields(v[s.sub], [s.key, s.sub]);
+    else if (s.keys) body = s.keys.filter(k => k in v).map(k => renderField(k, v[k], [s.key, k])).join('');
+    else if (s.rest) { const used = new Set(SECTIONS.filter(x => x.key === s.key).flatMap(x => x.sub ? [x.sub] : (x.keys || [])).concat('design')); body = Object.keys(v).filter(k => !used.has(k) && !HIDDEN.has(k)).map(k => renderField(k, v[k], [s.key, k])).join(''); }
+    else if (s.design) { const placed = new Set(Object.values(SLIDER_AFTER)); const pc = new Set(Object.values(COLOR_AFTER)); body = Object.keys(v.design).filter(k => !placed.has(k)).map(k => renderField(k, v.design[k], [s.key, 'design', k]) + (k in v.colors && !pc.has(k) ? `<div class="field field-sl"><label>${esc(COLOR_LABEL[k] || '↳ 색')}</label><div>${renderColorPick(v.colors[k], [s.key, 'colors', k])}</div></div>` : '')).join(''); }
+    else body = (typeof v === 'object') ? (Array.isArray(v) ? renderValue(v, [s.key], s.key) : fields(v, [s.key])) : renderField(s.key, v, [s.key]);
+    return `<section class="sec" id="sec-${s.id || s.key}"><h2>${esc(s.title)}</h2><p class="desc">${esc(s.desc)}</p>${body}</section>`;
+  }).join('');
+  $('#sideNav').innerHTML = SECTIONS.map(s => `<a href="#sec-${s.id || s.key}">${esc(s.title)}</a>`).join('') + `<div class="hint">고친 내용은 브라우저에 임시 저장됩니다.<br>[저장]을 눌러야 홈페이지에 반영됩니다.</div>`;
+  const links = [...document.querySelectorAll('#sideNav a')];
+  document.querySelectorAll('.sec').forEach(sec => new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#' + en.target.id)); }), { rootMargin: '-20% 0px -70% 0px' }).observe(sec));
+}
+function renderHelp() {
+  $('#helpBox').innerHTML = ONLINE
+    ? `<b>인터넷 관리 페이지입니다.</b> 아래에서 고치고 <b>[저장]</b>을 누르면 약 1분 안에 홈페이지에 바로 반영됩니다. 사진·영상은 [사진 선택]/[영상 선택]으로 올린 뒤 [저장]하면 함께 올라갑니다. <b>[미리보기]</b>는 저장 전 확인용입니다.`
+    : dirHandle
+    ? `<b>폴더가 연결되어 있습니다.</b> 아래에서 고치고 <b>[저장]</b>을 누르면 홈페이지 파일이 바로 바뀝니다. 사진·영상은 [사진 선택]/[영상 선택]으로 올리면 자동으로 폴더에 복사됩니다.<br><span style="color:var(--mute)">호스팅(인터넷)에 올린 홈페이지는 바뀐 폴더를 다시 업로드해야 반영됩니다.</span>`
+    : `<b>사용 방법</b><ol><li><b>위쪽 [폴더 연결]</b>을 눌러 홈페이지 폴더(<span class="mono">we4dsite</span>)를 선택하면 [저장]이 파일을 직접 고칩니다. (크롬·엣지)</li><li>폴더를 연결하지 않으면 [저장] 시 <span class="mono">content.js</span> 파일이 다운로드되고, <span class="mono">js/content.js</span> 자리에 덮어쓰면 됩니다. 사진·영상도 다운로드되니 <span class="mono">assets</span> 폴더에 넣어 주세요.</li><li><b>[미리보기]</b>로 홈페이지에서 어떻게 보이는지 확인할 수 있습니다.</li></ol>`;
+}
+
+/* ---- 입력 반영 ---- */
+document.addEventListener('input', e => {
+  const el = e.target; if (!el.dataset.path) return;
+  const path = JSON.parse(el.dataset.path);
+  let v = el.type === 'checkbox' ? el.checked : (el.type === 'number' || el.type === 'range') ? (el.value === '' ? '' : Number(el.value)) : el.value;
+  setAt(path, v); saveDraft();
+  if (el.type === 'range') el.nextElementSibling.textContent = v + (el.dataset.unit || '%');
+  if (el.type === 'color') el.nextElementSibling.textContent = v;
+});
+document.addEventListener('click', e => {
+  const del = e.target.closest('[data-del]'); const add = e.target.closest('[data-add]'); const mv = e.target.closest('[data-move]'); const pick = e.target.closest('[data-pick]');
+  const clr = e.target.closest('[data-clear]'); if (clr) { setAt(JSON.parse(clr.dataset.clear), ''); saveDraft(); renderAll(); return; }
+  if (del) { const p = JSON.parse(del.dataset.del); const i = p.pop(); if (confirm('이 항목을 삭제할까요?')) { getAt(p).splice(i, 1); saveDraft(); renderAll(); } }
+  if (add) {
+    const p = JSON.parse(add.dataset.add); const arr = getAt(p); const kind = add.dataset.kind;
+    if (kind === 'prim') arr.push('');
+    else if (kind === 'tuple') arr.push(arr.length ? arr[arr.length - 1].map(c => typeof c === 'number' ? 0 : '') : ['', '']);
+    else { const tpl = arr.length ? arr[arr.length - 1] : (ORIGINAL[p[0]] && ORIGINAL[p[0]][0]) || {}; const blank = JSON.parse(JSON.stringify(tpl)); (function clear(o) { Object.keys(o).forEach(k => { const v = o[k]; if (Array.isArray(v)) o[k] = []; else if (v && typeof v === 'object') clear(v); else if (typeof v === 'number') o[k] = (k === 'width' ? 460 : 0); else if (typeof v === 'boolean') o[k] = false; else if (!['type', 'cat', 'role', 'k', 'layout', 'textPos', 'textAlign', 'textColor', 'bg'].includes(k)) o[k] = ''; }); })(blank); arr.push(blank); }
+    saveDraft(); renderAll(); add.scrollIntoView({ block: 'center' });
+  }
+  if (mv) { const p = JSON.parse(mv.dataset.move); const i = p.pop(); const arr = getAt(p); const j = i + Number(mv.dataset.dir); if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; saveDraft(); renderAll(); }
+  if (pick) { pickTarget = { path: JSON.parse(pick.dataset.pick), key: pick.dataset.key }; const f = $('#filePick'); f.accept = pick.dataset.key === 'video' ? 'video/mp4,video/webm' : 'image/*'; f.value = ''; f.click(); }
+});
+
+/* ---- 파일 업로드 ---- */
+let pickTarget = null;
+const safeName = n => n.normalize('NFC').replace(/[^\w.\-가-힣]/g, '_').toLowerCase();
+async function shrinkImage(file, maxW = 1600, maxH = 1600) {
+  if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return file;
+  const bmp = await createImageBitmap(file); if (bmp.width <= maxW && bmp.height <= maxH) return file;
+  const s = Math.min(maxW / bmp.width, maxH / bmp.height); const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  const type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+  const blob = await new Promise(r => c.toBlob(r, type, 0.88));
+  return new File([blob], file.name.replace(/\.\w+$/, type === 'image/png' ? '.png' : '.jpg'), { type });
+}
+$('#filePick').addEventListener('change', async e => {
+  const file0 = e.target.files[0]; if (!file0 || !pickTarget) return;
+  if (pickTarget.key === 'video' && file0.size > 15 * 1024 * 1024) { toast('영상이 15MB보다 큽니다. 더 작은 파일을 올려 주세요 (10MB 이하 권장)', true); return; }
+  const file = await shrinkImage(file0);
+  const dir = UPLOAD_DIR[pickTarget.key] || 'assets/uploads';
+  const name = safeName(file.name); const rel = dir + '/' + name;
+  if (dirHandle) {
+    try { await writeFile(rel, file); setAt(pickTarget.path, rel); saveDraft(); renderAll(); toast(`업로드 완료: ${rel}`); }
+    catch (err) { toast('파일 저장 실패: ' + err.message, true); }
+  } else if (ONLINE) {
+    pending.set(rel, file); setAt(pickTarget.path, rel); saveDraft(); renderAll(); toast(`파일 준비됨: ${rel} — [저장]을 누르면 인터넷에 함께 올라갑니다`);
+  } else {
+    setAt(pickTarget.path, rel); saveDraft(); renderAll();
+    download(file, name); toast(`파일을 내려받았습니다 → ${dir} 폴더에 넣어 주세요`);
+  }
+});
+
+
+/* ============================================================
+   인터넷 반영 (호스팅된 관리 페이지: we4d.co.kr/admin) — GitHub Pages
+   - 비밀번호로 잠금 해제 → [저장]이 GitHub 저장소에 파일을 바로 기록 (서버 불필요) → 약 1분 뒤 홈페이지 반영
+   - 처음 한 번: GitHub 토큰 + 비밀번호 설정 → 토큰은 이 브라우저에 비밀번호로 암호화해 보관
+   ============================================================ */
+const GH_REPO = 'we4d/we4d-homepage';   // 홈페이지 저장소 (소유자/저장소이름)
+const GH_BRANCH = 'main';
+const ONLINE = /^https?:$/.test(location.protocol) && !/^(localhost|127\.)/.test(location.hostname);
+const API = 'https://api.github.com';
+let netlifyToken = null;   // (이름은 그대로 두고 GitHub 토큰을 담음)
+const pending = new Map();   // 업로드 대기 파일 (경로 → 파일) · [저장] 때 함께 올라감
+
+async function nf(path, opt = {}) {
+  const r = await fetch(API + path, { ...opt, headers: { Authorization: 'Bearer ' + netlifyToken, Accept: 'application/vnd.github+json', ...(opt.headers || {}) } });
+  if (!r.ok) throw new Error(`GitHub 응답 ${r.status}` + (r.status === 401 ? ' (토큰이 잘못됐거나 만료됨)' : r.status === 404 ? ' (저장소를 찾을 수 없음 · 토큰 권한 확인)' : ''));
+  return r.status === 204 ? null : r.json();
+}
+const _b64 = blob => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result.split(',')[1]); fr.onerror = rej; fr.readAsDataURL(blob); });
+// changes: Map('js/content.js' → Blob, ...) — 한 번의 커밋으로 여러 파일을 기록
+async function deployFiles(changes, onStep) {
+  onStep && onStep('현재 상태 확인');
+  const ref = await nf(`/repos/${GH_REPO}/git/ref/heads/${GH_BRANCH}`);
+  const head = await nf(`/repos/${GH_REPO}/git/commits/${ref.object.sha}`);
+  const tree = []; let n = 0;
+  for (const [p, b] of changes) {
+    onStep && onStep(`올리는 중 ${++n}/${changes.size}`);
+    const blob = await nf(`/repos/${GH_REPO}/git/blobs`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: await _b64(b), encoding: 'base64' }) });
+    tree.push({ path: p, mode: '100644', type: 'blob', sha: blob.sha });
+  }
+  onStep && onStep('기록 중');
+  const newTree = await nf(`/repos/${GH_REPO}/git/trees`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ base_tree: head.tree.sha, tree }) });
+  const commit = await nf(`/repos/${GH_REPO}/git/commits`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: '관리 페이지에서 수정 (' + new Date().toLocaleString('ko-KR') + ')', tree: newTree.sha, parents: [head.sha] }) });
+  await nf(`/repos/${GH_REPO}/git/refs/heads/${GH_BRANCH}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sha: commit.sha }) });
+  // GitHub Pages 가 새 내용을 펴는 데 보통 30초~1분
+  for (let i = 0; i < 60; i++) {
+    await new Promise(r => setTimeout(r, 3000));
+    onStep && onStep('반영 중' + '.'.repeat(i % 4));
+    try { const b = await nf(`/repos/${GH_REPO}/pages/builds/latest`); if (b.status === 'built' && b.commit === commit.sha) return b; if (b.status === 'errored') throw new Error('GitHub Pages 반영 오류'); } catch (e) { if (/반영 오류/.test(e.message)) throw e; }
+  }
+  return { state: 'pushed' };   // 기록은 됐고 반영만 조금 더 걸리는 경우
+}
+
+/* 토큰 암호화 보관 (PBKDF2 + AES-GCM) */
+const _te = new TextEncoder(), _td = new TextDecoder();
+async function _key(pw, salt) { const k = await crypto.subtle.importKey('raw', _te.encode(pw), 'PBKDF2', false, ['deriveKey']); return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' }, k, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']); }
+async function sealToken(token, pw) { const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)); const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await _key(pw, salt), _te.encode(token))); localStorage.setItem('we4d_gh', JSON.stringify({ salt: [...salt], iv: [...iv], ct: [...ct] })); }
+async function openToken(pw) { try { const j = JSON.parse(localStorage.getItem('we4d_gh')); return _td.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(j.iv) }, await _key(pw, new Uint8Array(j.salt)), new Uint8Array(j.ct))); } catch (_) { return null; } }
+
+/* 잠금 화면 */
+function showGate() {
+  const has = !!localStorage.getItem('we4d_gh');
+  const g = $('#gate'); g.hidden = false;
+  g.innerHTML = `<form class="gate-box" id="gateForm">
+    <img src="assets/logo.png" alt="WE4D"><h2>${has ? '관리자 비밀번호' : '처음 설정'}</h2>
+    ${has ? `<input type="password" id="gpw" placeholder="비밀번호" autofocus autocomplete="current-password">`
+          : `<p>이 브라우저에서 처음 쓰는 설정입니다. GitHub 토큰을 붙여 넣고, 앞으로 쓸 비밀번호를 정하세요. (토큰은 이 브라우저 안에 비밀번호로 잠가 보관됩니다)</p>
+             <input type="text" id="gtok" placeholder="GitHub 토큰 (github_pat_ 또는 ghp_ 로 시작)" autocomplete="off">
+             <input type="password" id="gpw" placeholder="비밀번호 정하기" autocomplete="new-password">
+             <input type="password" id="gpw2" placeholder="비밀번호 한 번 더" autocomplete="new-password">
+             <small>토큰 만들기: github.com → 오른쪽 위 프로필 → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token (저장소: we4d-homepage · Contents: Read and write · Pages: Read and write)</small>`}
+    <button class="btn btn-lilac" type="submit">${has ? '들어가기' : '설정하고 들어가기'}</button>
+    ${has ? `<a href="#" id="gReset">비밀번호를 잊었어요 (토큰 다시 입력)</a>` : ''}
+    <div class="gate-err" id="gErr"></div>
+  </form>`;
+  $('#gateForm').onsubmit = async e => {
+    e.preventDefault(); const err = $('#gErr'); err.textContent = '';
+    const pw = $('#gpw').value;
+    if (has) {
+      const t = await openToken(pw); if (!t) { err.textContent = '비밀번호가 맞지 않습니다.'; return; }
+      netlifyToken = t;
+    } else {
+      const tok = $('#gtok').value.trim();
+      if (!tok) { err.textContent = 'GitHub 토큰을 붙여 넣어 주세요.'; return; }
+      if (pw.length < 4) { err.textContent = '비밀번호는 4자 이상으로 정해 주세요.'; return; }
+      if (pw !== $('#gpw2').value) { err.textContent = '비밀번호 두 개가 서로 다릅니다.'; return; }
+      netlifyToken = tok;
+    }
+    try { const s = await nf(`/repos/${GH_REPO}`); if (!has) await sealToken(netlifyToken, pw); g.hidden = true; showOnline(s); }
+    catch (ex) { netlifyToken = null; err.textContent = has ? '토큰 확인 실패: ' + ex.message + ' — 아래 링크로 토큰을 다시 입력하세요.' : '토큰 확인 실패: ' + ex.message; }
+  };
+  const r = $('#gReset'); if (r) r.onclick = e => { e.preventDefault(); localStorage.removeItem('we4d_gh'); showGate(); };
+}
+function showOnline(site) {
+  const c = $('#connBtn'); c.classList.add('on'); c.title = '클릭하면 잠금 (다음에 비밀번호 다시 입력)';
+  $('#connTxt').textContent = `인터넷 반영 준비됨 · ${(site && site.full_name) || GH_REPO}`;
+  c.onclick = () => { netlifyToken = null; showGate(); };
+  renderHelp();
+}
+/* ---- 폴더 연결 (File System Access API · 크롬/엣지) ---- */
+let dirHandle = null;
+const idb = { get: k => new Promise(r => { const q = indexedDB.open('we4d-admin', 1); q.onupgradeneeded = () => q.result.createObjectStore('kv'); q.onsuccess = () => { const t = q.result.transaction('kv', 'readonly').objectStore('kv').get(k); t.onsuccess = () => r(t.result); t.onerror = () => r(null); }; q.onerror = () => r(null); }),
+              set: (k, v) => new Promise(r => { const q = indexedDB.open('we4d-admin', 1); q.onupgradeneeded = () => q.result.createObjectStore('kv'); q.onsuccess = () => { q.result.transaction('kv', 'readwrite').objectStore('kv').put(v, k).onsuccess = () => r(true); }; q.onerror = () => r(false); }) };
+async function connectFolder(silent) {
+  if (!window.showDirectoryPicker) { if (!silent) toast('이 브라우저는 폴더 연결을 지원하지 않습니다. 크롬 또는 엣지로 열어 주세요.', true); return; }
+  try {
+    let h = silent ? await idb.get('dir') : null;
+    if (h) { const p = await h.queryPermission({ mode: 'readwrite' }); if (p !== 'granted') { if (silent) { showConn(h, false); return; } if (await h.requestPermission({ mode: 'readwrite' }) !== 'granted') h = null; } }
+    if (!h) { if (silent) return; h = await window.showDirectoryPicker({ mode: 'readwrite' }); }
+    try { await h.getFileHandle('index.html'); } catch (_) { toast('홈페이지 폴더가 아닙니다. index.html 이 있는 we4dsite 폴더를 선택해 주세요.', true); return; }
+    dirHandle = h; await idb.set('dir', h); showConn(h, true); renderHelp();
+  } catch (err) { if (err.name !== 'AbortError') toast('폴더 연결 실패: ' + err.message, true); }
+}
+function showConn(h, ok) { const c = $('#connBtn'); c.classList.toggle('on', ok); $('#connTxt').textContent = ok ? `연결됨: ${h.name} 폴더` : `${h ? h.name + ' 폴더 · 클릭해서 다시 허용' : '폴더 연결 안 됨 · 클릭해서 연결'}`; }
+async function writeFile(relPath, blob) {
+  const parts = relPath.split('/'); const name = parts.pop(); let dir = dirHandle;
+  for (const p of parts) dir = await dir.getDirectoryHandle(p, { create: true });
+  const fh = await dir.getFileHandle(name, { create: true }); const w = await fh.createWritable(); await w.write(blob); await w.close();
+}
+$('#connBtn').onclick = () => connectFolder(false);
+
+/* ---- 임시 저장 / 미리보기 / 저장 ---- */
+function saveDraft() { try { localStorage.setItem('we4d_draft', JSON.stringify(data)); } catch (_) {} }
+function toast(msg, err) { const t = $('#toast'); t.textContent = msg; t.classList.toggle('err', !!err); t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), err ? 4000 : 2400); }
+function download(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+function buildFile() {
+  const head = `/* ============================================================\n   WE4D 홈페이지 — 콘텐츠 설정 파일  (관리 페이지 admin.html 에서 ${new Date().toLocaleString('ko-KR')} 저장)\n   ------------------------------------------------------------\n   ■ 이 파일은 admin.html 에서 편집하는 것을 권장합니다. 직접 고칠 때는 따옴표와 쉼표를 지키세요.\n   ■ 사진/영상은 assets/ 폴더에 넣고 경로를 적어 주세요.\n   ============================================================ */\n\n`;
+  // 같은 데이터(SITE)를 여러 메뉴로 나눠 보여주므로 키를 중복 없이 한 번씩만 씀
+  return head + [...new Set(SECTIONS.map(s => s.key))].map(k => `const ${k} = ${JSON.stringify(data[k], null, 2)};\n`).join('\n');
+}
+$('#btnSave').onclick = async () => {
+  const src = buildFile();
+  try { new Function(src)(); } catch (err) { toast('내용에 오류가 있어 저장할 수 없습니다: ' + err.message, true); return; }
+  if (dirHandle) {
+    try { await writeFile('js/content.js', new Blob([src], { type: 'text/javascript' })); SECTIONS.forEach(s => { ORIGINAL[s.key] = JSON.parse(JSON.stringify(data[s.key])); }); localStorage.removeItem('we4d_draft'); const m = missingI18n().length; toast('저장 완료 — 홈페이지에 반영되었습니다 (새로고침해서 확인)' + (m ? ` · 번역 안 된 새 문장 ${m}개 → [외국어 번역 갱신]을 눌러 주세요` : '')); }
+    catch (err) { toast('저장 실패: ' + err.message, true); }
+  } else if (ONLINE) {
+    if (!netlifyToken) { showGate(); return; }
+    const btn = $('#btnSave'); btn.disabled = true;
+    try {
+      const changes = new Map(pending); changes.set('js/content.js', new Blob([src], { type: 'text/javascript' }));
+      await deployFiles(changes, s => { btn.textContent = s; });
+      pending.clear(); SECTIONS.forEach(s => { ORIGINAL[s.key] = JSON.parse(JSON.stringify(data[s.key])); }); localStorage.removeItem('we4d_draft');
+      const m = missingI18n().length; toast('인터넷 홈페이지에 반영되었습니다 (약 1분 뒤 새로고침해서 확인)' + (m ? ` · 번역 안 된 새 문장 ${m}개 → [외국어 번역 갱신]` : ''));
+    } catch (err) { toast('반영 실패: ' + err.message, true); }
+    btn.disabled = false; btn.textContent = '저장';
+  } else {
+    download(new Blob([src], { type: 'text/javascript;charset=utf-8' }), 'content.js');
+    toast('content.js 를 내려받았습니다 → js/content.js 에 덮어쓰세요');
+  }
+};
+$('#btnPreview').onclick = () => { saveDraft(); window.open('index.html?preview=draft', '_blank'); };
+
+/* ---- 외국어 번역 갱신 (크롬 내장 Translator API · 키/비용 없음) ---- */
+// 화면에 보이는 글자 조각 단위로 사전 키를 만든다: 태그(<b>, <br>)와 WE4D(로고로 바뀜) 기준으로 나눔
+function koPieces(v, out) {
+  if (typeof v === 'string') { v.split(/<[^>]+>|WE4D/).forEach(p => { const k = p.replace(/\s+/g, ' ').trim(); if (/[가-힣]/.test(k)) out.add(k); }); }
+  else if (Array.isArray(v)) v.forEach(x => koPieces(x, out));
+  else if (v && typeof v === 'object') Object.keys(v).forEach(k => { if (!['photo','video','poster','img','image','mapLink','mapLinkKakao','naverTalk','instagram','youtube','telHref'].includes(k)) koPieces(v[k], out); });
+}
+function missingI18n() { const s = new Set(); koPieces(data, s); return [...s].filter(k => !I18N[k]); }
+function buildI18nFile() {
+  const head = `/* ============================================================\n   WE4D 홈페이지 — 번역 사전 (한국어 원문 → 영어 · 중국어 · 일본어)  (관리 페이지에서 ${new Date().toLocaleString('ko-KR')} 갱신)\n   ------------------------------------------------------------\n   ■ 관리 페이지(admin.html)의 [외국어 번역 갱신] 버튼이 이 파일을 다시 씁니다.\n     새 한국어 문장은 크롬 내장 번역으로 자동 채워지고, 이미 있는 번역은 그대로 둡니다.\n   ■ 직접 고칠 때 형식:  "한국어 원문": ["English", "中文", "日本語"],\n   ============================================================ */\nconst I18N_LANGS = ${JSON.stringify(I18N_LANGS)};\nconst I18N = {\n`;
+  return head + Object.keys(I18N).map(k => `  ${JSON.stringify(k)}: ${JSON.stringify(I18N[k])}`).join(',\n') + '\n};\n';
+}
+async function saveI18n() {
+  const src = buildI18nFile();
+  if (dirHandle) { await writeFile('js/i18n-data.js', new Blob([src], { type: 'text/javascript' })); }
+  else if (ONLINE) { if (!netlifyToken) { showGate(); throw new Error('먼저 비밀번호로 잠금을 해제하세요'); } await deployFiles(new Map([['js/i18n-data.js', new Blob([src], { type: 'text/javascript' })]])); }
+  else { download(new Blob([src], { type: 'text/javascript;charset=utf-8' }), 'i18n-data.js'); toast('i18n-data.js 를 내려받았습니다 → js/i18n-data.js 에 덮어쓰세요'); }
+}
+async function getTranslator(to) {
+  const mk = async (from, target) => Translator.create({ sourceLanguage: from, targetLanguage: target, monitor(m) { m.addEventListener('downloadprogress', e => toast(`${target} 번역 데이터 내려받는 중 ${Math.round(e.loaded * 100)}%`)); } });
+  if ((await Translator.availability({ sourceLanguage: 'ko', targetLanguage: to })) !== 'unavailable') { const t = await mk('ko', to); return s => t.translate(s); }
+  // ko→X 가 없으면 ko→en→X 로 우회
+  const a = await mk('ko', 'en'), b = await mk('en', to);
+  return async s => b.translate(await a.translate(s));
+}
+$('#btnI18n').onclick = async () => {
+  const miss = missingI18n();
+  if (!miss.length) { toast('번역할 새 문장이 없습니다 — 사전이 최신입니다'); return; }
+  if (!('Translator' in self)) {
+    // 크롬 138 미만 · 다른 브라우저: 문장 목록을 복사해 번역 요청에 쓰도록
+    try { await navigator.clipboard.writeText(miss.join('\n')); } catch (_) {}
+    toast(`이 브라우저는 자동 번역을 지원하지 않습니다 (크롬 138 이상 필요). 번역이 필요한 문장 ${miss.length}개를 복사했습니다 — Claude에게 붙여 넣어 번역을 요청하세요.`, true); return;
+  }
+  const btn = $('#btnI18n'); btn.disabled = true;
+  try {
+    const tr = { en: await getTranslator('en'), zh: await getTranslator('zh'), ja: await getTranslator('ja') };
+    let n = 0;
+    for (const k of miss) { I18N[k] = [await tr.en(k), await tr.zh(k), await tr.ja(k)]; n++; btn.textContent = `번역 중 ${n}/${miss.length}`; }
+    await saveI18n();
+    toast(`문장 ${n}개를 영어·중국어·일본어로 번역해 저장했습니다 (홈페이지 새로고침 후 확인)`);
+  } catch (err) { toast('자동 번역 실패: ' + err.message, true); }
+  btn.disabled = false; btn.textContent = '외국어 번역 갱신';
+};
+$('#btnReset').onclick = () => { if (!confirm('고친 내용을 모두 버리고 현재 홈페이지 내용으로 되돌릴까요?')) return; SECTIONS.forEach(s => { data[s.key] = JSON.parse(JSON.stringify(ORIGINAL[s.key])); }); localStorage.removeItem('we4d_draft'); renderAll(); toast('원래대로 되돌렸습니다'); };
+
+/* ---- 시작 ---- */
+(async function () {
+  let draft = null; try { draft = JSON.parse(localStorage.getItem('we4d_draft') || 'null'); } catch (_) {}
+  if (draft && JSON.stringify(draft) !== JSON.stringify(ORIGINAL) && confirm('저장하지 않은 수정 내용이 있습니다. 이어서 편집할까요?\n(취소하면 현재 홈페이지 내용으로 시작합니다)')) SECTIONS.forEach(s => { if (draft[s.key] !== undefined) data[s.key] = draft[s.key]; });
+  renderHelp(); renderAll();
+  if (ONLINE) { $('#connBtn').onclick = null; showGate(); } else { await connectFolder(true); renderHelp(); }
+})();
+</script>
+</body>
+</html>

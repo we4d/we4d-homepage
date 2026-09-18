@@ -1,0 +1,12 @@
+이 폴더에 넣을 파일 (파일명은 js/content.js 에 적힌 것과 같게)
+
+hero.mp4              첫 화면 배경 영상 (1920x1080, 15~30초, 소리 없음)
+hero-poster.jpg       영상 로딩 전 정지 이미지
+director.jpg          대표원장 프로필 사진 (세로형 권장)
+director-scene.jpg    트레이닝/연출 현장 사진 (가로형)
+system-banner.jpg     WE4D SYSTEM 배너 배경 (가로로 긴 사진)
+inst/                 강사 사진 (4:5 세로형, 예: inst/han.jpg)
+logos/                기획사 로고 (PNG, 흰색/단색 권장)
+logo.svg              WE4D 로고 (상단 메뉴에 이미지 로고를 쓸 경우)
+favicon.png           브라우저 탭 아이콘
+og.jpg                카카오톡/SNS 공유 썸네일 (1200x630)

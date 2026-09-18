@@ -1,0 +1,11 @@
+# 인터넷(GitHub)에 올리지 않는 것
+github-token.txt
+netlify-token.txt
+serve.ps1
+publish.ps1
+*.bat
+수정방법.html
+공지포스터.html
+인스타카드_3분할.html
+README.md
+.claude/

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WE4D Academy — 아이돌들의 선생님이 만든 진짜 KPOP 트레이닝</title>
+<meta name="description" content="아이돌들의 선생님이 만든 진짜 KPOP 트레이닝 — WE4D 오디션 · 실용음악 · 댄스 전문 학원">
+<meta property="og:title" content="WE4D Academy">
+<meta property="og:description" content="아이돌들의 선생님이 만든 진짜 KPOP 트레이닝">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     ■ 수정 안내
+     · 문구 / 사진 / 영상 / 일정 / 강사 / 레슨  →  js/content.js
+     · 색상 / 글꼴 / 간격                        →  css/style.css (맨 위 :root)
+     · 화면 구조(섹션 순서, 새 섹션 추가)        →  이 파일
+     · data-site="..." 가 붙은 요소는 content.js 의 값으로 자동 채워집니다.
+     ============================================================ -->
+
+<!-- ================================================== GNB 상단 메뉴 -->
+<header class="gnb" id="gnb">
+  <div class="wrap">
+    <a href="#home" class="logo" aria-label="WE4D 홈">
+      <!-- 로고 이미지: assets/logo.png (검정 로고 → CSS에서 흰색으로 반전) -->
+      <img src="assets/logo.png" alt="WE4D"><small data-site="tagline">K-POP Academy</small>
+    </a>
+    <nav class="gnb-links" aria-label="주요 메뉴">
+      <a href="#about" data-nav="about">위포드</a>
+      <a href="#instructors" data-nav="instructors">강사진</a>
+      <a href="#lessons" data-nav="lessons">레슨 안내</a>
+      <a href="#events" data-nav="events">행사 안내</a>
+      <a href="#location" data-nav="location">오시는 길</a>
+    </nav>
+    <div class="gnb-cta">
+      <a href="#consult" class="btn btn-lilac btn-sm">상담하기 <span class="arr">&gt;&gt;</span></a>
+      <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<nav class="mnav" id="mnav" aria-label="모바일 메뉴">
+  <a href="#about" data-nav="about">위포드</a>
+  <a href="#instructors" data-nav="instructors">강사진</a>
+  <a href="#lessons" data-nav="lessons">레슨 안내</a>
+  <a href="#events" data-nav="events">행사 안내</a>
+  <a href="#location" data-nav="location">오시는 길</a>
+  <a href="#consult" class="btn btn-lilac">상담하기 <span class="arr">&gt;&gt;</span></a>
+</nav>
+
+<main>
+<!-- ================================================== [홈] -->
+<section class="page" id="page-home">
+
+  <!-- 히어로: 풀스크린 배경 영상 (content.js → SITE.hero) -->
+  <div class="hero" id="hero" role="link" tabindex="0" aria-label="상담하기 페이지로 이동">
+    <div class="hero-media">
+      <canvas id="heroCanvas" aria-hidden="true"></canvas>
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+    </div>
+    <div class="hero-tint"></div>
+    <div class="hero-shade"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-inner">
+      <span class="eyebrow" data-site="hero.eyebrow">MUSIC · DANCE · K-POP TRAINING · AUDITION</span>
+      <h1 class="d d-xl" data-site="hero.bigText">Real KPOP Training</h1>
+      <div class="hero-cta">
+        <a href="#consult" class="btn btn-lilac btn-xl"><span data-site="hero.cta">상담하기 / 맞춤 수업 추천받기</span> <span class="arr">&gt;&gt;</span></a>
+      </div>
+    </div>
+    <div class="hero-foot">
+      <div class="wrap">
+        <div class="hero-stats" id="heroStats"></div>
+        <div class="scroll-cue"><svg viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8 8-8M4 14l8 8 8-8"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 협력 기획사 로고 티커 (content.js → AGENCIES) -->
+  <div class="ticker-sec">
+    <div class="wrap"><span class="eyebrow">Partner Agencies · 방문 오디션 협력사</span><i></i></div>
+    <div class="ticker" aria-label="협력 기획사 로고"><div class="ticker-track" id="ticker"></div></div>
+  </div>
+
+  <!-- 3포지션 소개 카드 -->
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow eyebrow-lg">Programs</span>
+          <h2 class="d d-lg">Find Your Position</h2>
+          <p class="lead">목표가 다르면 훈련도 달라야 합니다. 세 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.</p>
+        </div>
+        <a href="#lessons" class="btn btn-ghost">레슨 전체 보기 <span class="arr">&gt;&gt;</span></a>
+      </div>
+      <div class="grid g3">
+        <!-- 카드 배경 사진을 넣으려면  <div class="bg" style="background-image:url('assets/track-audition.jpg')"></div> -->
+        <a href="#lessons/audition" class="card pillar"><div class="bg"></div><span class="badge badge-ink">Audition</span><span class="d">오디션</span><div class="pillar-txt"><h3>기획사 데뷔조 기준으로 훈련합니다</h3><p>월 4회 이상 기획사 방문 오디션 · 월말 평가 · 기획사 추천</p><span class="card-link">자세히 <span class="arr">&gt;&gt;</span></span></div></a>
+        <a href="#lessons/entrance" class="card pillar"><div class="bg"></div><span class="badge badge-ink">Entrance</span><span class="d">입시</span><div class="pillar-txt"><h3>실용음악 · 실용무용 · 예고 · 예대 입시</h3><p>학교별 실기 커리큘럼 · 학원 내 모의고사 · 자기소개서/면접 대비</p><span class="card-link">자세히 <span class="arr">&gt;&gt;</span></span></div></a>
+        <a href="#lessons/hobby" class="card pillar"><div class="bg"></div><span class="badge badge-ink">Hobby</span><span class="d">취미</span><div class="pillar-txt"><h3>보컬 · 댄스 · 미디 · 피아노 · 작곡</h3><p>처음 시작해도 괜찮아요. 전 과목 개인 레슨 · 월 단위 수강</p><span class="card-link">자세히 <span class="arr">&gt;&gt;</span></span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 학부모님께 (content.js → SITE.parents) -->
+  <section class="sec tint" id="parents">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">For Parents</span>
+          <h2 class="d d-lg" data-site="parents.en">To Parents</h2>
+          <p class="kr-title" style="margin-top:14px" data-site="parents.title"></p>
+          <p class="lead" data-site="parents.lead"></p>
+        </div>
+        <a href="#consult" class="btn btn-ink">학부모 상담 신청 <span class="arr">&gt;&gt;</span></a>
+      </div>
+      <div class="promise" id="parentsGrid"></div>
+    </div>
+  </section>
+
+  <!-- Why WE4D -->
+  <section class="sec dark">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Why WE4D</span>
+          <h2 class="d d-lg">Taught by<br>the Trainers</h2>
+          <p class="lead">'아이돌 출신'이 아니라 '아이돌을 만든' 선생님들입니다. 기획사 안에서 실제로 데뷔조를 평가하던 기준을 그대로 가져왔습니다.</p>
+        </div>
+        <a href="#about" class="btn btn-ghost">WE4D 소개 <span class="arr">&gt;&gt;</span></a>
+      </div>
+      <div class="grid g4">
+        <div class="card"><span class="badge badge-lilac">01</span><h3>기획사 현직 · 출신 트레이너</h3><p>보컬/댄스 디렉터 전원이 기획사 트레이닝 파트 경력 5년 이상.</p></div>
+        <div class="card"><span class="badge badge-lilac">02</span><h3>월 4회+ 방문 오디션</h3><p>CUBE · TOP MEDIA · FNC · KQ 등 기획사 캐스팅팀이 학원으로 직접 옵니다.</p></div>
+        <div class="card"><span class="badge badge-lilac">03</span><h3>VOD + 개인연습 + 오프라인</h3><p>수업 전 VOD 예습, 연습실 개인연습, 오프라인 코칭의 3단계 트레이닝.</p></div>
+        <div class="card"><span class="badge badge-lilac">04</span><h3>매월 WE4D REPORT</h3><p>출석 · 수업 참여도 · 담당 트레이너 평가 · 성장 포인트를 매월 카카오톡으로 보내 드립니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 다가오는 오디션 (EVENTS 에서 자동) -->
+  <section class="sec light">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Upcoming</span>
+          <h2 class="d d-lg">Audition Schedule</h2>
+          <p class="lead">가장 가까운 기획사 방문 오디션 일정입니다. 전체 달력은 행사 안내에서 확인하세요.</p>
+        </div>
+        <a href="#events" class="btn btn-ghost">전체 일정 보기 <span class="arr">&gt;&gt;</span></a>
+      </div>
+      <div class="up-list" id="upList"></div>
+    </div>
+  </section>
+
+  <!-- CTA 밴드 -->
+  <section class="sec dark" style="padding:clamp(56px,7vw,100px) 0">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2 class="d d-lg">Not sure where<br>to <em>start?</em></h2>
+        <div class="actions">
+          <p class="mute" style="text-align:right;max-width:26em;margin-bottom:6px">10분 상담이면 충분합니다. 목표 · 현재 실력 · 스케줄을 듣고 가장 맞는 수업을 추천해 드려요.</p>
+          <a href="#consult" class="btn btn-lilac btn-xl">상담하기 / 맞춤 수업 추천받기 <span class="arr">&gt;&gt;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================== [WE4D] -->
+<section class="page" id="page-about">
+  <section class="sec light page-hero" style="padding-bottom:0">
+    <div class="wrap">
+      <span class="eyebrow">About WE4D</span>
+      <h1 class="d d-xl">We Make<br>Debut Happen</h1>
+    </div>
+  </section>
+
+  <!-- WE4D 의 뜻: 4개의 D (content.js → FOUR_D) -->
+  <section class="sec light" id="fourd" style="padding-top:clamp(40px,5vw,64px)">
+    <div class="wrap">
+      <div class="fourd-head">
+        <div>
+          <span class="eyebrow">What is 4D</span>
+          <h2 class="kr-title" data-site="fourd.title">WE4D의 4D는 네 개의 D입니다.</h2>
+          <p class="lead" data-site="fourd.lead"></p>
+        </div>
+      </div>
+      <div class="fourd" id="fourdGrid"></div>
+    </div>
+  </section>
+
+  <!-- 대표원장 인사말 (content.js → DIRECTOR) -->
+  <section class="sec light" id="greeting">
+    <div class="wrap greet">
+      <div class="stack single">
+        <!-- 대표원장 사진: content.js → DIRECTOR.photo (assets/director.jpg) -->
+        <div class="ph sub" id="dirPhoto">
+          <div class="fig"><svg viewBox="0 0 200 240" fill="none" aria-hidden="true"><ellipse cx="100" cy="70" rx="42" ry="50" fill="#fff"/><path d="M20 240c0-60 36-96 80-96s80 36 80 96" fill="#fff"/></svg></div>
+          <span class="tag"><span data-dir="nameKr">서지환</span><small>대표</small></span>
+        </div>
+        <div class="stamp" data-dir="stamp">WE4D<br>SINCE<br>2017</div>
+      </div>
+      <div class="greet-txt">
+        <span class="eyebrow">Greeting</span>
+        <h2 class="kr-title" data-dir="headline"></h2>
+        <div id="dirParas"></div>
+        <div class="sign"><span class="d" data-dir="nameEn">Seo Ji-hwan</span><span data-dir="role"></span></div>
+        <ul class="career" id="dirCareer"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WE4D SYSTEM 6단계 (content.js → STEPS) -->
+  <section class="sec dark">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Training Process</span>
+          <h2 class="d d-lg">WE4D System</h2>
+          <p class="lead">입학부터 오디션까지, 모든 수강생은 같은 6단계를 밟습니다. 단계마다 트레이너 평가를 통과해야 다음으로 넘어갑니다.</p>
+        </div>
+      </div>
+      <div class="sys-banner" id="sysBanner"><span class="d"><b>WE4D</b>WE4D SYSTEM</span></div>
+      <ul class="syslist" id="steps"></ul>
+    </div>
+  </section>
+
+  <section class="sec light" style="padding-top:0">
+    <div class="wrap">
+      <div class="big-cta">
+        <span class="eyebrow">Ready?</span>
+        <h2 class="d d-lg">Let's Talk</h2>
+        <p>레벨 테스트와 포지션 추천은 무료입니다. 상담 후 결정하셔도 늦지 않아요.</p>
+        <a href="#consult" class="btn btn-lilac btn-xl">상담하기 <span class="arr">&gt;&gt;</span></a>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================== [강사진] (content.js → INSTRUCTORS) -->
+<section class="page" id="page-instructors">
+  <section class="sec dark page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Instructors</span>
+      <h1 class="d d-xl">The Trainers</h1>
+      <p class="lead">분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다. 프로필을 클릭하면 상세 경력과 포트폴리오를 볼 수 있습니다.</p>
+    </div>
+  </section>
+  <section class="sec dark" style="padding-top:0">
+    <div class="wrap">
+      <div class="subtabs" id="instTabs" role="tablist" style="margin-bottom:56px"></div>
+      <div id="instSections"></div>
+    </div>
+  </section>
+  <section class="sec light">
+    <div class="wrap">
+      <div class="big-cta">
+        <span class="eyebrow">1:1 Match</span>
+        <h2 class="d d-lg">Meet Your Trainer</h2>
+        <p>상담에서 목표와 성향에 맞는 담당 트레이너를 배정해 드립니다. 첫 수업 후 변경도 가능해요.</p>
+        <a href="#consult" class="btn btn-lilac btn-xl">상담하기 <span class="arr">&gt;&gt;</span></a>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================== [레슨 안내] (content.js → LESSONS) -->
+<section class="page" id="page-lessons">
+  <section class="sec light page-hero" style="padding-bottom:0">
+    <div class="wrap">
+      <span class="eyebrow">Lessons</span>
+      <h1 class="d d-xl">Curriculum</h1>
+      <p class="lead">오디션 · 입시 · 취미 세 포지션. 각 포지션은 레슨 단계, 주차별 과정, 수강 혜택으로 구성됩니다.</p>
+    </div>
+  </section>
+  <section class="sec light" style="padding-top:48px">
+    <div class="wrap">
+      <div class="tabs" id="lessonTabs" role="tablist">
+        <button class="on" data-tab="audition" role="tab"><span class="d">Audition</span>오디션</button>
+        <button data-tab="entrance" role="tab"><span class="d">Entrance</span>입시</button>
+        <button data-tab="hobby" role="tab"><span class="d">Hobby</span>취미</button>
+      </div>
+      <div id="lessonPanes"></div>
+    </div>
+  </section>
+  <section class="sec dark">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2 class="d d-lg">Which position<br>is <em>mine?</em></h2>
+        <div class="actions">
+          <p class="mute" style="text-align:right;max-width:26em;margin-bottom:6px">무료 레벨 테스트 후 포지션과 담당 트레이너를 추천해 드립니다.</p>
+          <a href="#consult" class="btn btn-lilac btn-xl">맞춤 수업 추천받기 <span class="arr">&gt;&gt;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================== [행사 안내] (content.js → NOTICES · EVENTS · HOLIDAYS) -->
+<section class="page" id="page-events">
+  <section class="sec dark page-hero" style="padding-bottom:32px">
+    <div class="wrap">
+      <span class="eyebrow">Events &amp; Schedule</span>
+      <h1 class="d d-xl">Audition<br>Schedule</h1>
+    </div>
+  </section>
+  <section class="sec dark" style="padding-top:0">
+    <div class="wrap">
+      <p class="lead" style="margin:-16px 0 32px;color:var(--mute);font-size:14px">WE4D와 협력 기획사가 함께하는 비공개/공개 오디션 일정입니다. 일정을 클릭하면 상세 내용이 나타납니다.</p>
+      <div class="notice">
+        <div class="nt">NOTICE</div>
+        <ul id="noticeList"></ul>
+      </div>
+      <div class="cal-wrap">
+        <div class="cal-head">
+          <div class="cal-nav">
+            <button id="calPrev" aria-label="이전 달"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <h2 id="calTitle"></h2>
+            <button id="calNext" aria-label="다음 달"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5l7 7-7 7"/></svg></button>
+            <button class="today" id="calToday">TODAY</button>
+          </div>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--lilac-2)"></i>기획사 방문 오디션</span>
+          <span><i style="background:#F3F0F8"></i>WE4D 내부 행사</span>
+          <span><i style="background:var(--blue)"></i>온라인 오디션 · 마감</span>
+          <span><i style="background:var(--red)"></i>공연 · 쇼케이스</span>
+          <span style="margin-left:auto"><i style="background:transparent;border:1px solid var(--red)"></i>공휴일 · 휴원</span>
+        </div>
+        <div class="cal">
+          <div class="dow"><div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div></div>
+          <div class="days" id="calDays"></div>
+        </div>
+        <div class="ev-detail" id="evDetail"></div>
+      </div>
+      <div class="cal-cta">
+        <p>재원생이 아니어도 참가할 수 있습니다. 외부 지원자는 사전 영상 심사를 거쳐 참가가 확정됩니다.</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================== [오시는 길] (content.js → SITE.address 등) -->
+<section class="page" id="page-location">
+  <section class="sec light page-hero" style="padding-bottom:0">
+    <div class="wrap">
+      <span class="eyebrow">Location</span>
+      <h1 class="d d-xl">Visit Us</h1>
+    </div>
+  </section>
+  <section class="sec light" style="padding-top:48px">
+    <div class="wrap">
+      <div class="loc">
+        <div class="map">
+          <!-- 지도 이미지: assets/map.jpg (클릭하면 네이버지도로 이동) -->
+          <a data-site-href="mapLink" href="#" target="_blank" rel="noopener" class="map-img"><img src="assets/map.jpg" alt="WE4D 위치 — 서울 강동구 양재대로 1603 약제빌딩 (명일역 · 굽은다리역 사이)"></a>
+          <div class="map-links">
+            <a class="btn btn-ink btn-sm" data-site-href="mapLink" href="#" target="_blank" rel="noopener">네이버지도 <span class="arr">&gt;&gt;</span></a>
+            <a class="btn btn-paper btn-sm" data-site-href="mapLinkKakao" href="#" target="_blank" rel="noopener">카카오맵 <span class="arr">&gt;&gt;</span></a>
+          </div>
+        </div>
+        <div class="info">
+          <div class="card">
+            <h3><span class="badge badge-lilac">Address</span></h3>
+            <p class="addr"><span data-site="address"></span><small data-site="addressSub"></small></p>
+          </div>
+          <div class="card">
+            <h3><span class="badge badge-lilac">Transit</span> 대중교통</h3>
+            <ul class="transit" id="transit"></ul>
+          </div>
+          <div class="card">
+            <h3><span class="badge badge-lilac">Hours</span> 운영시간</h3>
+            <div class="hours" id="hours"></div>
+          </div>
+        </div>
+      </div>
+      <div class="big-cta">
+        <span class="eyebrow">Consultation</span>
+        <h2 class="d d-lg">Come See Us</h2>
+        <p>방문 상담은 예약제로 운영됩니다. 아래 버튼으로 상담을 신청하면 24시간 내 연락드려요.</p>
+        <a href="#consult" class="btn btn-lilac btn-xl">상담하기 <span class="arr">&gt;&gt;</span></a>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================================================== [상담하기] -->
+<section class="page" id="page-consult">
+  <section class="sec tint page-hero" style="padding-bottom:0">
+    <div class="wrap">
+      <span class="eyebrow">Consultation</span>
+      <h1 class="d d-xl">Let's Talk</h1>
+      <p class="lead">상담 신청서를 남겨 주시면 24시간 내 담당 트레이너가 연락드립니다. 목표에 맞는 포지션과 수업을 추천해 드려요.</p>
+    </div>
+  </section>
+  <section class="sec tint" style="padding-top:40px">
+    <div class="wrap consult">
+      <div>
+        <form class="form" id="consultForm" novalidate>
+          <div class="row">
+            <div class="field"><label for="cName">이름 <i>*</i></label><input id="cName" name="name" required placeholder="홍길동"></div>
+            <div class="field"><label for="cPhone">연락처 <i>*</i></label><input id="cPhone" name="phone" type="tel" required placeholder="010-0000-0000"></div>
+          </div>
+          <div class="row">
+            <div class="field"><label for="cAge">연령대 <i>*</i></label>
+              <select id="cAge" name="age" required><option value="">선택</option><option>초등학생</option><option>중학생</option><option>고등학생</option><option>20대</option><option>30대 이상</option><option>학부모 대리 상담</option></select></div>
+            <div class="field"><label for="cTime">연락 희망 시간</label>
+              <select id="cTime" name="time"><option>언제든 괜찮아요</option><option>오전 (10–12시)</option><option>오후 (13–18시)</option><option>저녁 (18–21시)</option></select></div>
+          </div>
+          <div class="field"><label>관심 포지션 <i>*</i></label>
+            <div class="opts">
+              <label><input type="radio" name="track" value="오디션" required>오디션</label>
+              <label><input type="radio" name="track" value="입시">입시</label>
+              <label><input type="radio" name="track" value="취미">취미</label>
+              <label><input type="radio" name="track" value="모름">아직 모르겠어요</label>
+            </div>
+          </div>
+          <div class="field"><label>관심 분야 (복수 선택)</label>
+            <div class="opts">
+              <label><input type="checkbox" name="field" value="보컬">보컬</label>
+              <label><input type="checkbox" name="field" value="댄스">댄스</label>
+              <label><input type="checkbox" name="field" value="미디">미디</label>
+              <label><input type="checkbox" name="field" value="피아노">피아노</label>
+              <label><input type="checkbox" name="field" value="작곡">작곡</label>
+              <label><input type="checkbox" name="field" value="랩">랩</label>
+            </div>
+          </div>
+          <div class="field"><label for="cMsg">문의 내용</label><textarea id="cMsg" name="msg" placeholder="현재 경험(예: 독학 1년, 학원 경험 없음), 목표, 궁금한 점을 편하게 적어 주세요."></textarea><span class="hint">영상 링크(유튜브/드라이브)를 함께 남기면 사전 피드백을 드려요.</span></div>
+          <label class="consent"><input type="checkbox" name="consent" required><span>개인정보 수집·이용에 동의합니다. 수집 항목(이름, 연락처, 문의 내용)은 상담 목적으로만 사용되며 상담 완료 후 6개월 내 파기됩니다.</span></label>
+          <button class="btn btn-ink btn-xl" type="submit">상담 신청하기 <span class="arr">&gt;&gt;</span></button>
+        </form>
+        <div class="form form-done" id="consultDone">
+          <div class="ok"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg></div>
+          <h3 class="d d-md">One more step</h3>
+          <p class="lead" style="text-align:center" id="doneLead">아래 내용이 담긴 <b>문자 앱이 열립니다. '보내기'만 눌러 주세요.</b><br>문자 앱이 열리지 않으면 아래 버튼을 눌러 주세요.</p>
+          <pre class="done-msg" id="doneMsg"></pre>
+          <div class="done-actions">
+            <a class="btn btn-ink btn-xl" id="doneSms" href="#">문자로 보내기 <span class="arr">&gt;&gt;</span></a>
+            <a class="btn btn-ghost btn-xl" id="doneMail" href="#" style="display:none">이메일로 보내기 <span class="arr">&gt;&gt;</span></a>
+            <button class="btn btn-ghost" id="doneCopy" type="button">내용 복사</button>
+            <a class="btn btn-ghost" data-site-href="telHref" href="#">전화로 상담하기</a>
+          </div>
+          <p class="hint" style="color:var(--mute);font-size:13px;text-align:center">PC에서 신청하셨다면 '내용 복사' 후 <b data-site="tel"></b> 로 문자를 보내시거나 오른쪽 '네이버 톡톡'으로 문의해 주세요.<br>확인 후 영업일 기준 24시간 내 연락드립니다.</p>
+        </div>
+      </div>
+      <aside class="side">
+        <div class="card">
+          <h3>바로 연락하기</h3>
+          <div class="contact">
+            <a href="#" data-site-href="telHref"><span data-site="tel"></span> <span>TEL</span></a>
+            <a href="#" data-site-href="naverTalk" target="_blank" rel="noopener"><span data-site="naverTalkName"></span> <span>NAVER TALK</span></a>
+            <a href="#" data-site-href="instagram" target="_blank" rel="noopener"><span data-site="instagramName"></span> <span>INSTAGRAM</span></a>
+          </div>
+        </div>
+        <div class="card faq">
+          <h3>자주 묻는 질문</h3>
+          <div id="faq"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</section>
+</main>
+
+<!-- ================================================== 푸터 -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#home" class="logo"><img src="assets/logo.png" alt="WE4D" style="height:44px"></a>
+        <p>아이돌들의 선생님이 만든 진짜 KPOP 트레이닝. 오디션 · 실용음악 · 실용무용 · 취미 전문 아카데미.</p>
+        <p class="mono" style="font-size:11px;letter-spacing:.06em"><span data-site="address"></span> · <span data-site="tel"></span></p>
+      </div>
+      <div><h5>Menu</h5><ul><li><a href="#about">위포드</a></li><li><a href="#instructors">강사진</a></li><li><a href="#lessons">레슨 안내</a></li><li><a href="#events">행사 안내</a></li><li><a href="#location">오시는 길</a></li></ul></div>
+      <div><h5>Lessons</h5><ul><li><a href="#lessons/audition">오디션</a></li><li><a href="#lessons/entrance">입시</a></li><li><a href="#lessons/hobby">취미 · 보컬/댄스</a></li><li><a href="#lessons/hobby">미디 · 피아노 · 작곡</a></li></ul></div>
+      <div><h5>Contact</h5><ul><li><a href="#consult">상담하기</a></li><li><a href="#events">오디션 일정</a></li><li><a href="#" data-site-href="instagram" target="_blank" rel="noopener">Instagram</a></li><li><a href="#" data-site-href="youtube" target="_blank" rel="noopener">YouTube</a></li></ul></div>
+    </div>
+    <div class="foot-mark" aria-hidden="true">WE4D</div>
+    <div class="foot-bot"><span>© 2026 WE4D ACADEMY. ALL RIGHTS RESERVED.</span><span data-site="bizNo"></span><a href="admin.html" class="adm" rel="nofollow">관리자</a></div>
+  </div>
+</footer>
+
+<!-- ================================================== 우측 하단 플로팅 상담 배너 -->
+<div class="float" id="float">
+  <div class="bubble" id="bubble"><button aria-label="닫기" id="bubbleX">×</button><span data-site="floatBubble"></span><br><span class="mute" style="font-weight:400;font-size:12px" data-site="floatBubbleSub"></span></div>
+  <a href="#consult" class="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.2L4 21l1.8-4.6A8 8 0 1 1 21 12z"/></svg>상담하기<span class="dot"></span></a>
+</div>
+
+<!-- ================================================== 모달: 강사 프로필 -->
+<div class="modal" id="instModal" role="dialog" aria-modal="true" aria-label="강사 프로필">
+  <div class="bg" data-close></div>
+  <div class="box"><button class="x" data-close aria-label="닫기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="imodal" id="instModalBody"></div></div>
+</div>
+
+<script src="js/content.js"></script>
+<script src="js/app.js"></script>
+<script src="js/i18n-data.js"></script>
+<script src="js/i18n.js"></script>
+</body>
+</html>
