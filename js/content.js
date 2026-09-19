@@ -1,5 +1,5 @@
-﻿/* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (관리 페이지 admin.html 에서 2026. 9. 18. 오후 6:58:11 저장)
+/* ============================================================
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (관리 페이지 admin.html 에서 2026. 9. 19. 오후 3:21:03 저장)
    ------------------------------------------------------------
    ■ 이 파일은 admin.html 에서 편집하는 것을 권장합니다. 직접 고칠 때는 따옴표와 쉼표를 지키세요.
    ■ 사진/영상은 assets/ 폴더에 넣고 경로를 적어 주세요.
@@ -35,7 +35,7 @@ const SITE = {
     "tint": "rgba(198, 160, 255, 1)",
     "brightness": 150,
     "shade": 50,
-    "accent": "for your debut",
+    "accent": "- for your debut -",
     "bigText": "Real KPOP Training",
     "cta": "상담하기 / 맞춤 수업 추천받기",
     "ctaColor": "#6D28D9",
@@ -155,7 +155,7 @@ const SITE = {
   "colors": {
     "hero": "",
     "heroAccent": "",
-    "tagline": "",
+    "tagline": "#adea53",
     "sectionTitle": "",
     "sectionLabel": "",
     "pillarTitle": "",
@@ -165,13 +165,14 @@ const SITE = {
   },
   "design": {
     "heroTitle": 140,
-    "heroAccent": 100,
+    "heroAccent": 85,
     "sectionTitle": 100,
     "sectionLabel": 100,
     "pillarTitle": 100,
     "cardTitle": 100,
     "lead": 100,
-    "body": 100
+    "body": 100,
+    "taglineSize": 18
   },
   "floatBubble": "궁금한 게 있나요?",
   "floatBubbleSub": "평균 응답 10분 · 무료 레벨 테스트",
