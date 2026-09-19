@@ -126,7 +126,7 @@ main{padding:28px 32px 120px;max-width:1100px}
    ============================================================ */
 const SECTIONS = [
   { key: 'POPUPS',      title: '팝업창 (이벤트 · 공지)', desc: '홈페이지를 열 때 뜨는 팝업. [팝업 켜기]를 체크하면 표시됩니다. 사진 · 글 위치 · 색 · 표시 기간을 정할 수 있고, 여러 개를 동시에 띄울 수도 있습니다.' },
-  { key: 'SITE', keys: ['name', 'logoSize', 'tagline'], id: 'top', title: '상단 메뉴 · 로고', desc: '맨 위 메뉴의 로고 크기와 로고 옆 글씨' },
+  { key: 'SITE', keys: ['name', 'logoSize', 'tagline'], id: 'top', title: '상단 메뉴 · 로고', desc: '맨 위 메뉴의 로고 크기와 로고 아래 글씨' },
   { key: 'SITE', sub: 'hero',    id: 'hero',    title: '첫 화면',            desc: '배경 영상 · 색 · 밝기, 첫 화면 문구와 글씨 크기, 하단 숫자' },
   { key: 'SITE', sub: 'parents', id: 'parents', title: '학부모님께',          desc: '홈 화면 "학부모님께 드리는 세 가지 약속"' },
   { key: 'SITE', sub: 'fourd',   id: 'fourd',   title: '4D 의미',            desc: '위포드 페이지 — iDol · Debut · Dream · EDucation' },
@@ -145,10 +145,10 @@ const SECTIONS = [
   { key: 'AGENCIES',    title: '협력 기획사 로고',      desc: '첫 화면 로고 띠. 로고 파일을 올리고 h(높이)로 크기 조절' }
 ];
 const LABELS = {
-  name:'학원 이름', tagline:'로고 옆 작은 글씨', logoSize:'로고 크기', taglineSize:'↳ 로고 옆 글씨 크기', hero:'첫 화면', video:'배경 영상', poster:'영상 로딩 전 이미지', tint:'영상 색 틴트', brightness:'영상 밝기 (100 = 원본)', shade:'화면 어둡게 정도 (위·아래 그라데이션)', eyebrow:'제목 위 작은 글씨', bigText:'큰 제목', cta:'버튼 문구', ctaColor:'버튼 색', ctaText:'버튼 글자 색', stats:'하단 숫자', n:'숫자/이름', unit:'단위', label:'설명',
+  name:'학원 이름', tagline:'로고 아래 작은 글씨', logoSize:'로고 크기', taglineSize:'↳ 로고 아래 글씨 크기', hero:'첫 화면', video:'배경 영상', poster:'영상 로딩 전 이미지', tint:'영상 색 틴트', brightness:'영상 밝기 (100 = 원본)', shade:'화면 어둡게 정도 (위·아래 그라데이션)', accent:'제목 위 흘림체 문구 (비우면 안 보임)', bigText:'큰 제목', cta:'버튼 문구', ctaColor:'버튼 색', ctaText:'버튼 글자 색', stats:'하단 숫자', n:'숫자/이름', unit:'단위', label:'설명',
   tel:'전화번호 (표시용)', telLink:'전화번호 (숫자만)', telHref:'전화 링크 (tel:번호)', notifyPhone:'상담 문자 받을 번호 (숫자만)', email:'상담 받을 이메일 주소', formEndpoint:'자동 전송 서비스 주소 (Formspree 등 · 없으면 비워두기)', naverTalk:'네이버 톡톡 링크', naverTalkName:'톡톡 버튼 문구', instagram:'인스타그램 링크', instagramName:'인스타그램 표시 이름', youtube:'유튜브 링크',
   address:'주소', addressSub:'주소 보조 설명', mapQuery:'지도 검색어', mapLink:'네이버지도 링크', mapLinkKakao:'카카오맵 링크', hours:'운영시간', transit:'대중교통', bizNo:'사업자 정보', fourd:'4D 의미', title:'제목', lead:'소개 문장', items:'항목', floatBubble:'플로팅 배너 문구', floatBubbleSub:'플로팅 배너 작은 글씨', demoToday:'달력 기준일 (비우면 오늘)',
-  design:'글씨 크기', heroTitle:'첫 화면 큰 제목', heroEyebrow:'첫 화면 작은 글씨', sectionTitle:'섹션 큰 제목', sectionLabel:'섹션 작은 라벨', pillarTitle:'오디션·입시·취미 글씨', cardTitle:'카드 제목', body:'본문 전체',
+  design:'글씨 크기', heroTitle:'첫 화면 큰 제목', heroAccent:'첫 화면 흘림체 문구', sectionTitle:'섹션 큰 제목', sectionLabel:'섹션 작은 라벨', pillarTitle:'오디션·입시·취미 글씨', cardTitle:'카드 제목', body:'본문 전체',
   photo:'사진', scenePhoto:'(사용 안 함) 현장 사진', nameKr:'이름 (한글)', nameEn:'이름 (영문)', role:'직책', sceneTag:'(사용 안 함)', stamp:'동그란 도장 글씨', headline:'인사말 제목', paragraphs:'인사말 본문 (문단별)', career:'약력',
   t:'제목', d:'설명', tag:'오른쪽 작은 표시', k:'구분 코드', en:'영문', kr:'한글', tab:'탭 이름', cat:'분야 코드 (vocal/dance/midi)', q:'한 줄 소개', focus:'전문 분야', portfolio:'포트폴리오 링크', c1:'(사진 없을 때 색1)', c2:'(사진 없을 때 색2)',
   audition:'오디션', entrance:'입시', hobby:'취미', facts:'숫자 3개', steps:'레슨 단계', weeks:'주차별 과정', perks:'수강 혜택', sub:'과목별',
@@ -166,16 +166,16 @@ const COLOR_KEYS = new Set(['textColor','bg','ctaColor','ctaText']);
 const TUPLE_HEADS = { hours:['요일','시간'], transit:['배지 색','배지 글자','설명'], items:['영문 (강조 글자는 <b></b>)','한글','설명'], career:['기간','내용'], facts:['숫자','설명'], steps:['단계명','설명'], weeks:['기간','내용','진행률 %'], NOTICES:['배지 색 (red/lilac/blue)','배지 글자','내용','날짜'], FAQ:['질문','답변'] };
 const HIDDEN = new Set(['c1','c2','scenePhoto','sceneTag','s','mapQuery','portfolio']);
 const FILE_KEYS = new Set(['video','poster','photo','img','image','SYSTEM_BANNER']);
-const SLIDER_KEYS = new Set(['heroTitle','heroEyebrow','sectionTitle','sectionLabel','pillarTitle','cardTitle','lead','body']);
+const SLIDER_KEYS = new Set(['heroTitle','heroAccent','sectionTitle','sectionLabel','pillarTitle','cardTitle','lead','body']);
 // 첫 화면 영상 슬라이더: 키 → [최소, 최대, 간격, 기본값]
 const HERO_SLIDERS = { brightness:[60,200,5,105], shade:[0,100,5,100], logoSize:[20,64,1,30], taglineSize:[8,18,1,10] };
 const SLIDER_UNIT = { logoSize: 'px', taglineSize: 'px' };
 // 문구 입력칸 바로 아래에 붙는 글씨 크기 슬라이더: "경로" → SITE.design 의 키
-const SLIDER_AFTER = { 'SITE.tagline': 'taglineSize', 'SITE.hero.bigText': 'heroTitle', 'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
-const SLIDER_AFTER_LABEL = { taglineSize: '↳ 로고 옆 글씨 크기', heroTitle: '↳ 위 제목 글씨 크기', heroEyebrow: '↳ 위 글씨 크기', lead: '↳ 소개 문장 글씨 크기 (모든 화면 공통)', cardTitle: '↳ 위 카드 제목 글씨 크기 (모든 화면 공통)' };
+const SLIDER_AFTER = { 'SITE.tagline': 'taglineSize', 'SITE.hero.bigText': 'heroTitle', 'SITE.hero.accent': 'heroAccent', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
+const SLIDER_AFTER_LABEL = { taglineSize: '↳ 로고 아래 글씨 크기', heroTitle: '↳ 위 제목 글씨 크기', heroAccent: '↳ 위 흘림체 글씨 크기', lead: '↳ 소개 문장 글씨 크기 (모든 화면 공통)', cardTitle: '↳ 위 카드 제목 글씨 크기 (모든 화면 공통)' };
 // 문구 입력칸 아래에 붙는 글씨 색: "경로" → SITE.colors 의 키 (크기 슬라이더 다음에 표시)
-const COLOR_AFTER = { 'SITE.hero.bigText': 'hero', 'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.tagline': 'tagline', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
-const COLOR_LABEL = { hero: '↳ 위 제목 글씨 색', heroEyebrow: '↳ 위 글씨 색', tagline: '↳ 로고 옆 글씨 색', lead: '↳ 소개 문장 글씨 색 (모든 화면 공통)', cardTitle: '↳ 카드 제목 글씨 색 (모든 화면 공통)', sectionTitle: '섹션 큰 제목 색', sectionLabel: '섹션 작은 라벨 색', pillarTitle: '오디션·입시·취미 글씨 색', body: '본문 글씨 색' };
+const COLOR_AFTER = { 'SITE.hero.bigText': 'hero', 'SITE.hero.accent': 'heroAccent', 'SITE.tagline': 'tagline', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
+const COLOR_LABEL = { hero: '↳ 위 제목 글씨 색', heroAccent: '↳ 위 흘림체 글씨 색', tagline: '↳ 로고 아래 글씨 색', lead: '↳ 소개 문장 글씨 색 (모든 화면 공통)', cardTitle: '↳ 카드 제목 글씨 색 (모든 화면 공통)', sectionTitle: '섹션 큰 제목 색', sectionLabel: '섹션 작은 라벨 색', pillarTitle: '오디션·입시·취미 글씨 색', body: '본문 글씨 색' };
 function renderColorPick(v, path) { return `<div class="sl" style="grid-template-columns:52px 1fr auto"><input type="color" ${pathAttr(path)} value="${/^#[0-9a-f]{6}$/i.test(v || '') ? v : '#ffffff'}" style="width:48px;height:36px;padding:2px;border:1px solid var(--line);border-radius:8px;background:#fff"><span class="mono">${v ? esc(v) : '기본색 (화면마다 자동)'}</span><button type="button" class="btn btn-line btn-sm" data-clear="${esc(JSON.stringify(path))}">기본으로</button></div>`; }
 const UPLOAD_DIR = { video:'assets', poster:'assets', photo:'assets/inst', img:'assets/logos', image:'assets/popup', SYSTEM_BANNER:'assets' };
 
@@ -183,10 +183,10 @@ const UPLOAD_DIR = { video:'assets', poster:'assets', photo:'assets/inst', img:'
 const SOURCE = { SITE, DIRECTOR, STEPS, SYSTEM_BANNER, INST_CATS, INSTRUCTORS, LESSONS, NOTICES, EVENTS, HOLIDAYS, FAQ, AGENCIES, POPUPS: (typeof POPUPS !== 'undefined' ? POPUPS : []) };
 const ORIGINAL = {}; const data = {};
 SECTIONS.forEach(s => { ORIGINAL[s.key] = JSON.parse(JSON.stringify(SOURCE[s.key])); data[s.key] = JSON.parse(JSON.stringify(SOURCE[s.key])); });
-if (!data.SITE.design) data.SITE.design = { heroTitle:100, heroEyebrow:100, sectionTitle:100, sectionLabel:100, pillarTitle:100, cardTitle:100, lead:100, body:100 };
+if (!data.SITE.design) data.SITE.design = { heroTitle:100, heroAccent:100, sectionTitle:100, sectionLabel:100, pillarTitle:100, cardTitle:100, lead:100, body:100 };
 // 나중에 추가된 설정 항목이 content.js 에 없으면 기본값을 채워 넣음 (칸이 안 보이는 일 방지)
-const DEFAULTS = { logoSize: 30, taglineSize: 10 }; Object.keys(DEFAULTS).forEach(k => { if (data.SITE[k] == null) data.SITE[k] = DEFAULTS[k]; });
-if (!data.SITE.colors) data.SITE.colors = {}; ['hero','heroEyebrow','tagline','sectionTitle','sectionLabel','pillarTitle','cardTitle','lead','body'].forEach(k => { if (data.SITE.colors[k] == null) data.SITE.colors[k] = ''; });
+const DEFAULTS = { logoSize: 30, taglineSize: 10 }; if (data.SITE.hero.accent == null) data.SITE.hero.accent = ''; if (data.SITE.design.heroAccent == null) data.SITE.design.heroAccent = 100; Object.keys(DEFAULTS).forEach(k => { if (data.SITE[k] == null) data.SITE[k] = DEFAULTS[k]; });
+if (!data.SITE.colors) data.SITE.colors = {}; ['hero','heroAccent','tagline','sectionTitle','sectionLabel','pillarTitle','cardTitle','lead','body'].forEach(k => { if (data.SITE.colors[k] == null) data.SITE.colors[k] = ''; });
 const HERO_DEFAULTS = { brightness: 105, shade: 100, ctaColor: "#D8B4FE", ctaText: "#0A0A0A" }; Object.keys(HERO_DEFAULTS).forEach(k => { if (data.SITE.hero[k] == null) data.SITE.hero[k] = HERO_DEFAULTS[k]; });
 
 const $ = (s, r = document) => r.querySelector(s);

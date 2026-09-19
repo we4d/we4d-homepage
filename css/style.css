@@ -110,7 +110,8 @@ ul{margin:0;padding:0;list-style:none}
 .logo{display:flex;align-items:baseline;gap:10px}
 .logo .d{font-size:26px;letter-spacing:.02em}
 .logo .d b{color:var(--lilac);font-weight:inherit}
-.logo small{font-family:var(--mono);font-size:var(--tagline-fs,10px);letter-spacing:.2em;color:var(--mute-d);text-transform:uppercase}
+.logo{flex-direction:column;align-items:flex-start;gap:4px}   /* 로고 아래에 작은 문구 */
+.logo small{font-family:var(--mono);font-size:var(--tagline-fs,10px);margin:0;white-space:nowrap;letter-spacing:.2em;color:var(--mute-d);text-transform:uppercase}
 .logo img{height:var(--logo-h,30px);width:auto;filter:brightness(0) invert(1)}   /* 검정 로고를 흰색으로 */
 .gnb-links{display:flex;gap:6px}
 .gnb-links a{padding:10px 14px;border-radius:999px;font-weight:500;font-size:15px;color:rgba(255,255,255,.78);transition:color .2s,background .2s}
@@ -153,8 +154,7 @@ ul{margin:0;padding:0;list-style:none}
   linear-gradient(180deg,rgba(10,10,10,.45) 0%,rgba(10,10,10,0) 28%,rgba(10,10,10,0) 72%,var(--ink) 100%)}
 .hero-grain{position:absolute;inset:0;z-index:-1;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .hero-inner{text-align:center;padding:0 24px;max-width:1100px;position:relative;z-index:1}
-.hero-inner .eyebrow{font-size:calc(12px * var(--sc-hero-eyebrow,1));color:var(--lilac-2);display:inline-flex;align-items:center;gap:14px;margin-bottom:28px}
-.hero-inner .eyebrow::before,.hero-inner .eyebrow::after{content:"";width:36px;height:1px;background:var(--lilac)}
+.hero-accent{display:block;font-family:"Great Vibes",cursive;font-size:calc(clamp(40px,5.6vw,78px) * var(--sc-hero-accent,1));color:#fff;line-height:1;margin:0 0 -4px;text-shadow:0 6px 30px rgba(0,0,0,.5)}   /* 제목 위 흘림체 한 줄 (관리자: 첫 화면 → 제목 위 흘림체 문구) */
 .hero h1{font-weight:900;font-size:clamp(30px,5.4vw,74px);line-height:1.18;letter-spacing:-.02em;text-shadow:0 8px 40px rgba(0,0,0,.5)}
 .hero h1 em{font-style:normal;color:var(--lilac)}
 .hero .d-xl{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.75);margin-bottom:10px;font-size:calc(clamp(34px,5.6vw,80px) * var(--sc-hero,1));letter-spacing:.02em;line-height:1}
@@ -164,7 +164,7 @@ ul{margin:0;padding:0;list-style:none}
 .hero-cta{margin-top:40px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .hero-cta .btn{background:var(--hero-cta,var(--lilac));color:var(--hero-cta-text,var(--ink))}   /* 첫 화면 상담 버튼 색 · 관리자 페이지에서 변경 */
 .hero-foot{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:0 0 28px}
-.hero-foot .wrap{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.hero-foot .wrap{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;width:calc(100% - 48px)}   /* 하단 숫자는 화면 왼쪽 끝에 붙임 (가운데 정렬 폭 무시) */
 .hero-stats{display:flex;gap:36px}
 .hero-stats div{display:grid;gap:2px}
 .hero-stats b{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:28px;line-height:1;color:var(--lilac-2)}
@@ -699,7 +699,7 @@ footer{background:var(--ink);color:var(--paper);border-top:1px solid var(--line-
    app.js 가 <html data-c-키> 와 --c-키 변수를 넣어 줌
    ============================================================ */
 html[data-c-hero] .hero .d-xl{-webkit-text-stroke-color:var(--c-hero)}
-html[data-c-heroEyebrow] .hero-inner .eyebrow{color:var(--c-heroEyebrow)}
+html[data-c-heroAccent] .hero-accent{color:var(--c-heroAccent)}
 html[data-c-tagline] .logo small{color:var(--c-tagline)}
 html[data-c-sectionTitle] .sec-head h2,html[data-c-sectionTitle] .kr-title,html[data-c-sectionTitle] .page-hero .d-xl{color:var(--c-sectionTitle)}
 html[data-c-sectionLabel] .sec .eyebrow,html[data-c-sectionLabel] .ticker-sec .eyebrow,html[data-c-sectionLabel] .page-hero .eyebrow{color:var(--c-sectionLabel)}
@@ -707,3 +707,4 @@ html[data-c-pillarTitle] .pillar .d{color:var(--c-pillarTitle)}
 html[data-c-cardTitle] .card h3,html[data-c-cardTitle] .pr h3,html[data-c-cardTitle] .pillar h3{color:var(--c-cardTitle)}
 html[data-c-lead] .lead{color:var(--c-lead)}
 html[data-c-body] body{color:var(--c-body)}
+@media (max-width:640px){.logo small{display:none}}   /* 좁은 화면에서는 로고 아래 문구 숨김 */

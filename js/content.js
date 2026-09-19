@@ -26,7 +26,7 @@ const POPUPS = [
 
 const SITE = {
   "name": "WE4D",
-  "tagline": "K-POP Academy",
+  "tagline": "MUSIC · DANCE · K-POP TRAINING · AUDITION",
   "logoSize": 47,
   "taglineSize": 10,
   "hero": {
@@ -35,7 +35,7 @@ const SITE = {
     "tint": "rgba(198, 160, 255, 1)",
     "brightness": 150,
     "shade": 50,
-    "eyebrow": "MUSIC · DANCE · K-POP TRAINING · AUDITION",
+    "accent": "for your debut",
     "bigText": "Real KPOP Training",
     "cta": "상담하기 / 맞춤 수업 추천받기",
     "ctaColor": "#6D28D9",
@@ -154,7 +154,7 @@ const SITE = {
   },
   "colors": {
     "hero": "",
-    "heroEyebrow": "",
+    "heroAccent": "",
     "tagline": "",
     "sectionTitle": "",
     "sectionLabel": "",
@@ -165,7 +165,7 @@ const SITE = {
   },
   "design": {
     "heroTitle": 140,
-    "heroEyebrow": 140,
+    "heroAccent": 100,
     "sectionTitle": 100,
     "sectionLabel": 100,
     "pillarTitle": 100,

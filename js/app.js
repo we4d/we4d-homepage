@@ -41,7 +41,7 @@ $$('[data-dir]').forEach(el => { const v = get(DIRECTOR, el.dataset.dir); if (v 
 /* 글씨 크기 설정 (content.js → SITE.design) → CSS 변수 */
 (function () {
   const d = SITE.design || {};
-  const map = { heroTitle: 'hero', heroEyebrow: 'hero-eyebrow', sectionTitle: 'h2', sectionLabel: 'label', pillarTitle: 'pillar', cardTitle: 'card', lead: 'lead', body: 'body' };
+  const map = { heroTitle: 'hero', heroAccent: 'hero-accent', sectionTitle: 'h2', sectionLabel: 'label', pillarTitle: 'pillar', cardTitle: 'card', lead: 'lead', body: 'body' };
   Object.keys(map).forEach(k => document.documentElement.style.setProperty('--sc-' + map[k], String((Number(d[k]) || 100) / 100)));
 })();
 
