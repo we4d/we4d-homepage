@@ -154,7 +154,7 @@ ul{margin:0;padding:0;list-style:none}
   linear-gradient(180deg,rgba(10,10,10,.45) 0%,rgba(10,10,10,0) 28%,rgba(10,10,10,0) 72%,var(--ink) 100%)}
 .hero-grain{position:absolute;inset:0;z-index:-1;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .hero-inner{text-align:center;padding:0 24px;max-width:1100px;position:relative;z-index:1}
-.hero-accent{display:block;font-family:"Great Vibes",cursive;font-size:calc(clamp(40px,5.6vw,78px) * var(--sc-hero-accent,1));color:#fff;line-height:1;margin:0 0 -4px;text-shadow:0 6px 30px rgba(0,0,0,.5)}   /* 제목 위 흘림체 한 줄 (관리자: 첫 화면 → 제목 위 흘림체 문구) */
+.hero-accent{display:block;font-family:"Great Vibes",cursive;font-size:calc(clamp(40px,5.6vw,78px) * var(--sc-hero-accent,1));color:#fff;line-height:1;margin:0 0 12px;text-shadow:0 6px 30px rgba(0,0,0,.5)}   /* 제목 위 흘림체 한 줄 (관리자: 첫 화면 → 제목 위 흘림체 문구) */
 .hero h1{font-weight:900;font-size:clamp(30px,5.4vw,74px);line-height:1.18;letter-spacing:-.02em;text-shadow:0 8px 40px rgba(0,0,0,.5)}
 .hero h1 em{font-style:normal;color:var(--lilac)}
 .hero .d-xl{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.75);margin-bottom:10px;font-size:calc(clamp(34px,5.6vw,80px) * var(--sc-hero,1));letter-spacing:.02em;line-height:1}
