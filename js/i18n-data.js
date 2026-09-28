@@ -119,7 +119,7 @@ const I18N = {
   "레벨 테스트와 포지션 추천은 무료입니다. 상담 후 결정하셔도 늦지 않아요.": ["Level tests and position recommendations are free. It's fine to decide after the consultation.", "等级测试和方向推荐均免费。咨询后再决定也不迟。", "レベルテストとポジション提案は無料です。相談の後に決めても遅くありません。"],
 
   /* 강사진 */
-  "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다. 프로필을 클릭하면 상세 경력과 포트폴리오를 볼 수 있습니다.": ["Top specialists in each field guide your dream. Click a profile to see career details and portfolio.", "各领域顶尖专家为您的梦想引路。点击头像可查看详细履历和作品集。", "各分野のトップ専門家が皆さんの夢をガイドします。プロフィールをクリックすると詳しい経歴とポートフォリオが見られます。"],
+  "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다. 프로필을 클릭하면 상세 경력을 볼 수 있습니다.": ["Top specialists in each field guide your dream. Click a profile to see career details.", "各领域顶尖专家为您的梦想引路。点击头像可查看详细履历和作品集。", "各分野のトップ専門家が皆さんの夢をガイドします。プロフィールをクリックすると詳しい経歴とポートフォリオが見られます。"],
   "보컬": ["Vocal", "声乐", "ボーカル"],
   "댄스": ["Dance", "舞蹈", "ダンス"],
   "미디·작곡": ["MIDI · Songwriting", "MIDI · 作曲", "MIDI · 作曲"],
@@ -233,7 +233,7 @@ const I18N = {
   "연습실 이용 (주 3회)": ["Practice room access (3x/week)", "练习室使用（每周3次）", "練習室利用（週3回）"],
   "분기 쇼케이스 참여 (선택)": ["Quarterly showcase (optional)", "季度展演（可选）", "四半期ショーケース参加（任意）"],
   "포지션 변경 시 수강료 이월": ["Tuition carries over when changing positions", "更换方向时学费可结转", "ポジション変更時に受講料を繰越"],
-  "무료 레벨 테스트 후 포지션과 담당 트레이너를 추천해 드립니다.": ["After a free level test we recommend a position and trainer.", "免费等级测试后，为您推荐方向和导师。", "無料レベルテストの後、ポジションと担当トレーナーをご提案します。"],
+  "무료 레벨 테스트 후 포지션과 담당 트레이너를 배정해 드립니다.": ["After a free level test we assign a position and trainer.", "免费等级测试后，为您推荐方向和导师。", "無料レベルテストの後、ポジションと担当トレーナーをご提案します。"],
   "맞춤 수업 추천받기": ["Get a lesson recommendation", "获取课程推荐", "最適なレッスンを提案してもらう"],
 
   /* 행사 안내 */
