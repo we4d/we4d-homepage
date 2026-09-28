@@ -26,7 +26,7 @@ const POPUPS = [
 
 const SITE = {
   "name": "WE4D",
-  "tagline": "MUSIC · DANCE · K-POP TRAINING · AUDITION",
+  "tagline": "i<em>D</em>ol · <em>D</em>ebut · <em>D</em>ream · E<em>D</em>ucation",
   "logoSize": 47,
   "taglineSize": 18,
   "hero": {
@@ -36,6 +36,7 @@ const SITE = {
     "brightness": 150,
     "shade": 50,
     "accent": "- for your debut -",
+    "eyebrow": "MUSIC · DANCE · K-POP TRAINING · AUDITION",
     "bigText": "Real KPOP Training",
     "cta": "상담하기 / 맞춤 수업 추천받기",
     "ctaColor": "#6D28D9",
@@ -127,8 +128,6 @@ const SITE = {
   ],
   "bizNo": "사업자등록번호 000-00-00000 · 대표 이로사",
   "fourd": {
-    "band": "i<em>D</em>ol · <em>D</em>ebut · <em>D</em>ream · E<em>D</em>ucation",
-    "bandSub": "각자의 포지션을 찾아, 실력과 인성을 기본기부터",
     "title": "WE4D의 4D는 네 개의 D입니다.",
     "lead": "아이돌(iDol), 데뷔(Debut), 꿈(Dream), 그리고 교육(EDucation).<br>우리는 각자에게 맞는 포지션을 찾아 주고, 실력과 인성을 기본기부터 탄탄하게 가르칩니다.",
     "items": [
@@ -157,8 +156,7 @@ const SITE = {
   "colors": {
     "hero": "",
     "heroAccent": "",
-    "band": "",
-    "bandSub": "",
+    "heroEyebrow": "#FFFFFF",
     "tagline": "#adea53",
     "sectionTitle": "",
     "sectionLabel": "",
@@ -170,8 +168,7 @@ const SITE = {
   "design": {
     "heroTitle": 140,
     "heroAccent": 85,
-    "band": 100,
-    "bandSub": 100,
+    "heroEyebrow": 100,
     "sectionTitle": 100,
     "sectionLabel": 100,
     "pillarTitle": 100,
