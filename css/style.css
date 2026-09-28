@@ -722,3 +722,6 @@ html[data-c-heroEyebrow] .hero-inner .hero-sub{color:var(--c-heroEyebrow)}
 .page-hero.has-banner h1,.page-hero.has-banner h2,.page-hero.has-banner .kr-title{color:#fff}
 .page-hero.has-banner .lead{color:rgba(255,255,255,.88);max-width:34em}
 .page-hero.has-banner .eyebrow{color:var(--lilac)}
+
+/* [위포드] 페이지 맨 아래 상담 상자 — 위/아래 여백 같게 (가운데 정렬) */
+#page-about .big-cta{margin-top:0}
