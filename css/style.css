@@ -725,3 +725,4 @@ html[data-c-heroEyebrow] .hero-inner .hero-sub{color:var(--c-heroEyebrow)}
 
 /* [위포드] 페이지 맨 아래 상담 상자 — 위/아래 여백 같게 (가운데 정렬) */
 #page-about .big-cta{margin-top:0}
+.page-hero .d-xl{font-size:calc(clamp(40px,7.2vw,104px) * var(--sc-h2,1) * var(--bn-ts,1))}   /* 페이지 제목 크기 (관리 페이지에서 페이지별 조절) */

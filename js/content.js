@@ -156,12 +156,12 @@ const SITE = {
     ]
   },
   "banners": {
-    "about": { "banner": "", "bh": 46, "dim": 60 },
-    "instructors": { "banner": "", "bh": 46, "dim": 60 },
-    "lessons": { "banner": "", "bh": 46, "dim": 60 },
-    "events": { "banner": "", "bh": 46, "dim": 60 },
-    "location": { "banner": "", "bh": 46, "dim": 60 },
-    "consult": { "banner": "", "bh": 46, "dim": 60 }
+    "about": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
+    "instructors": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
+    "lessons": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
+    "events": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
+    "location": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
+    "consult": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 }
   },
   "colors": {
     "hero": "",

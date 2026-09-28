@@ -75,7 +75,9 @@ $$('[data-dir]').forEach(el => { const v = get(DIRECTOR, el.dataset.dir); if (v 
   const B = SITE.banners || {};
   $$('[data-banner]').forEach(sec => {
     const b = B[sec.dataset.banner];
-    if (!b || !b.banner) return;
+    if (!b) return;
+    sec.style.setProperty('--bn-ts', String((Number(b.ts) || 100) / 100));   // 페이지 제목 크기
+    if (!b.banner) return;
     sec.classList.add('has-banner');
     // 경로를 절대 주소로 바꿔 둠 (CSS 변수는 style.css 위치 기준으로 해석되기 때문)
     sec.style.setProperty('--bn-img', "url('" + new URL(b.banner, location.href).href + "')");
