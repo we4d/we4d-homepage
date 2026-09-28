@@ -28,7 +28,7 @@ const SITE = {
   "name": "WE4D",
   "tagline": "MUSIC · DANCE · K-POP TRAINING · AUDITION",
   "logoSize": 47,
-  "taglineSize": 10,
+  "taglineSize": 18,
   "hero": {
     "video": "assets/hero.mp4",
     "poster": "assets/hero-poster.jpg",
@@ -128,7 +128,7 @@ const SITE = {
   "bizNo": "사업자등록번호 000-00-00000 · 대표 이로사",
   "fourd": {
     "title": "WE4D의 4D는 네 개의 D입니다.",
-    "lead": "아이돌(iDol), 데뷔(Debut), 꿈(Dream), 그리고 교육(EDucation). 우리는 각자에게 맞는 포지션을 찾아 주고, 실력과 인성을 기본기부터 탄탄하게 가르칩니다.",
+    "lead": "아이돌(iDol), 데뷔(Debut), 꿈(Dream), 그리고 교육(EDucation).<br>우리는 각자에게 맞는 포지션을 찾아 주고, 실력과 인성을 기본기부터 탄탄하게 가르칩니다.",
     "items": [
       [
         "i<b>D</b>ol",
@@ -171,8 +171,7 @@ const SITE = {
     "pillarTitle": 100,
     "cardTitle": 100,
     "lead": 100,
-    "body": 100,
-    "taglineSize": 18
+    "body": 100
   },
   "floatBubble": "궁금한 게 있나요?",
   "floatBubbleSub": "평균 응답 10분 · 무료 레벨 테스트",

@@ -234,7 +234,8 @@ function renderObject(obj, path) {
 function renderField(k, v, path) {
   let html = `<div class="field"><label>${esc(lab(k))}</label><div>${renderValue(v, path, k)}</div></div>`;
   const sk = SLIDER_AFTER[path.join('.')];
-  if (sk) { const d = data.SITE.design; html += `<div class="field field-sl"><label>${esc(SLIDER_AFTER_LABEL[sk] || '↳ 글씨 크기')}</label><div>${renderValue(d[sk], ['SITE', 'design', sk], sk)}</div></div>`; }
+  // 크기 값이 SITE.design 에 있으면 그쪽, 아니면 SITE 바로 아래(예: taglineSize)
+  if (sk) { const inDesign = data.SITE.design[sk] != null; const p = inDesign ? ['SITE', 'design', sk] : ['SITE', sk]; const val = inDesign ? data.SITE.design[sk] : data.SITE[sk]; html += `<div class="field field-sl"><label>${esc(SLIDER_AFTER_LABEL[sk] || '↳ 글씨 크기')}</label><div>${renderValue(val, p, sk)}</div></div>`; }
   const ck = COLOR_AFTER[path.join('.')];
   if (ck) html += `<div class="field field-sl"><label>${esc(COLOR_LABEL[ck] || '↳ 글씨 색')}</label><div>${renderColorPick(data.SITE.colors[ck], ['SITE', 'colors', ck])}</div></div>`;
   return html;
