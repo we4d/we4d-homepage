@@ -167,7 +167,7 @@ const SITE = {
   },
   "design": {
     "heroTitle": 140,
-    "heroAccent": 85,
+    "heroAccent": 100,
     "heroEyebrow": 100,
     "sectionTitle": 100,
     "sectionLabel": 100,
