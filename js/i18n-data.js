@@ -107,7 +107,7 @@ const I18N = {
   "오리엔테이션": ["Orientation", "入学指导", "オリエンテーション"],
   "사전 수준 진단(보컬·댄스 15분 레벨 테스트) 및 오디션 · 입시 · 취미 포지션 안내": ["Initial assessment (15-min vocal/dance level test) and introduction to the Audition, Entrance Exam and Hobby positions", "水平测评（声乐·舞蹈15分钟等级测试）并介绍试镜、艺考、兴趣三个方向", "事前レベル診断（ボーカル・ダンス15分レベルテスト）とオーディション · 受験 · 趣味ポジションの案内"],
   "포지션 · 트레이너 배정": ["Position & trainer assignment", "方向 · 导师分配", "ポジション · トレーナー配属"],
-  "학생의 성향과 목표에 맞는 포지션을 찾고 담당 트레이너 배정 · 전 과목 개인 레슨 · 첫 수업 후 변경 가능": ["Find the position that fits the student's personality and goals, assign a trainer · One-on-one lessons in all subjects · Changeable after the first class", "根据学生特点和目标确定方向并分配导师 · 全科目一对一 · 首课后可调整", "生徒の性格と目標に合うポジションを見つけ担当トレーナーを配属 · 全科目個人レッスン · 初回授業後に変更可"],
+  "학생의 성향과 목표에 맞는 포지션을 찾고 담당 트레이너 배정 · 전 과목 개인 레슨": ["Find the position that fits the student's personality and goals, assign a trainer · One-on-one lessons in all subjects", "根据学生特点和目标确定方向并分配导师 · 全科目一对一", "生徒の性格と目標に合うポジションを見つけ担当トレーナーを配属 · 全科目個人レッスン"],
   "트레이닝": ["Training", "训练", "トレーニング"],
   "각 과정에 따른 VOD + 개인연습 + 오프라인 교육, 지속적인 체중·체형 관리, 피부톤·체형에 맞는 의상 상담": ["VOD + individual practice + in-person coaching for each course, ongoing weight and body management, styling advice for skin tone and body type", "各课程的VOD + 个人练习 + 线下教学，持续的体重·体型管理，根据肤色·体型的服装建议", "各課程に応じたVOD + 個人練習 + オフライン教育、継続的な体重・体型管理、肌色・体型に合わせた衣装相談"],
   "미션": ["Mission", "任务", "ミッション"],
@@ -138,7 +138,7 @@ const I18N = {
   "연습생 연구 · 자문 (학생의 환경과 건강을 함께 살핍니다)": ["Trainee research · Advisory (we look after students' environment and health)", "练习生研究 · 顾问（共同关注学生的环境与健康）", "練習生研究 · アドバイザリー（生徒の環境と健康を一緒に見守ります）"],
   "허유정": ["Heo Yu-jeong", "Heo Yu-jeong", "ホ・ユジョン"],
   "아이돌 연습생 연구 · 자문": ["Idol trainee research · Advisory", "偶像练习生研究 · 顾问", "アイドル練習生研究 · アドバイザリー"],
-  "상담에서 목표와 성향에 맞는 담당 트레이너를 배정해 드립니다. 첫 수업 후 변경도 가능해요.": ["In your consultation we assign a trainer matched to your goals and personality. You can change after the first class.", "咨询时会根据目标和特点为您分配导师。首课后也可以更换。", "相談で目標と性格に合う担当トレーナーを配属します。初回授業後の変更も可能です。"],
+  "상담에서 목표와 성향에 맞는 담당 트레이너를 배정해 드립니다.": ["In your consultation we assign a trainer matched to your goals and personality.", "咨询时会根据目标和特点为您分配导师。", "相談で目標と性格に合う担当トレーナーを配属します。"],
   "소개 준비 중입니다.": ["Profile coming soon.", "简介准备中。", "紹介文は準備中です。"],
 
   /* 레슨 안내 */
