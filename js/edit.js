@@ -24,7 +24,8 @@
   /* ---------- 작은 도우미 ---------- */
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const getAt = p => p.reduce((o, k) => (o == null ? o : o[k]), DATA);
-  const setAt = (p, v) => { const q = p.slice(), last = q.pop(); const t = getAt(q); if (t) t[last] = v; };
+  // 중간에 없는 목록/묶음은 만들어 가며 값을 넣음 (예: 아직 약력이 없는 강사)
+  const setAt = (p, v) => { let o = DATA; for (let i = 0; i < p.length - 1; i++) { if (o[p[i]] == null) o[p[i]] = typeof p[i + 1] === 'number' ? [] : {}; o = o[p[i]]; } o[p[p.length - 1]] = v; };
   function toast(msg, isErr) {
     let t = document.querySelector('.ed-toast'); if (!t) { t = el('div', 'ed-toast'); document.body.appendChild(t); }
     t.textContent = msg; t.classList.toggle('err', !!isErr); t.classList.add('on');
@@ -79,7 +80,8 @@
       if (n.matches('.ticker-track *')) return;
       n.dataset.ed = '1';
     });
-    document.querySelectorAll('img').forEach(img => { if (!img.closest(SKIP) && !img.closest('.logo')) img.dataset.edImg = '1'; });
+    document.querySelectorAll('img').forEach(img => { if (!img.closest('.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm')) img.dataset.edImg = '1'; });
+    document.querySelectorAll('[data-bg]').forEach(n => { n.dataset.edImg = 'bg'; });
     const hv = document.getElementById('heroVideo'); if (hv) hv.dataset.edImg = 'video';
     document.querySelectorAll('[data-banner]').forEach(s => { s.dataset.edImg = 'banner'; });
   }
@@ -105,6 +107,7 @@
 
   function saveText(node, html) {
     const p = node.dataset.p ? JSON.parse(node.dataset.p) : null;
+    if (node.dataset.prefix) html = (node.dataset.prefix + ' ' + html).trim();   // 연도 등 앞부분을 붙여서 저장
     if (p) setAt(p, html);
     else if (node.dataset.site) { const path = ['SITE'].concat(node.dataset.site.split('.')); setAt(path, html); }
     else if (node.dataset.dir) setAt(['DIRECTOR', node.dataset.dir], html);
@@ -178,13 +181,19 @@
     const f = filePick.files[0]; if (!f || !pickTarget) return;
     const isVideo = /^video\//.test(f.type);
     if (isVideo && f.size > 30 * 1024 * 1024) { toast('영상이 너무 큽니다 (30MB 이하 권장)', true); return; }
-    const file = isVideo ? f : await shrink(f);
-    const dir = pickTarget.dir || 'assets/uploads';
-    const name = file.name.replace(/[^\w.\-]+/g, '_').toLowerCase();
-    const rel = dir + '/' + name;
+    let rel, file;
+    if (pickTarget.kind === 'file') {           // 같은 파일 자리를 그대로 덮어쓰기 (로고 · 지도처럼 경로가 고정된 사진)
+      rel = pickTarget.path;
+      file = await shrink(f, /\.png$/i.test(rel) ? 'image/png' : 'image/jpeg');
+    } else {
+      file = isVideo ? f : await shrink(f);
+      rel = (pickTarget.dir || 'assets/uploads') + '/' + file.name.replace(/[^\w.\-]+/g, '_').toLowerCase();
+    }
     pending.set(rel, file);
     const url = URL.createObjectURL(file);
-    if (pickTarget.kind === 'img') { setAt(pickTarget.path, rel); pickTarget.node.src = url; }
+    if (pickTarget.kind === 'file') { document.querySelectorAll('img').forEach(x => { if (x.getAttribute('src') === rel) x.src = url; }); }
+    else if (pickTarget.kind === 'bg') { setAt(pickTarget.path, rel); pickTarget.node.style.backgroundImage = `url("${url}")`; pickTarget.node.classList.add('has-photo'); }
+    else if (pickTarget.kind === 'img') { setAt(pickTarget.path, rel); pickTarget.node.src = url; }
     else if (pickTarget.kind === 'video') { SITE.hero.video = rel; pickTarget.node.src = url; pickTarget.node.play && pickTarget.node.play().catch(() => {}); }
     else if (pickTarget.kind === 'banner') {
       const key = pickTarget.node.dataset.banner;
@@ -196,19 +205,37 @@
     }
     dirty = true; updateBar(); toast('사진을 바꿨습니다 — [저장]을 누르면 반영됩니다');
   });
-  function shrink(file) {
+  function shrink(file, force) {
     return new Promise(res => {
       const img = new Image(); img.onload = () => {
         const max = 1600, sc = Math.min(1, max / Math.max(img.width, img.height));
-        if (sc === 1 && file.size < 900 * 1024) return res(file);
+        if (sc === 1 && file.size < 900 * 1024 && (!force || force === file.type)) return res(file);
         const c = el('canvas'); c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc);
         c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-        const type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        const type = force || (file.type === 'image/png' ? 'image/png' : 'image/jpeg');
         c.toBlob(b => res(new File([b], file.name.replace(/\.\w+$/, type === 'image/png' ? '.png' : '.jpg'), { type })), type, 0.88);
       };
       img.onerror = () => res(file);
       img.src = URL.createObjectURL(file);
     });
+  }
+
+  /* ---------- 사진 도구창 (사진 바꾸기 + 크기) ---------- */
+  function openImgTool(node, pick, sz) {
+    closeTool();
+    const t = el('div', 'ed-tool');
+    t.innerHTML = `<h6>${sz.name}</h6>` +
+      `<div class="row"><span>크기</span><input type="range" min="${sz.min}" max="${sz.max}" step="1" value="${sz.get()}" data-k="isize"><b data-out>${sz.get()}px</b></div>` +
+      `<button class="mini" data-k="pick">사진 바꾸기</button>` +
+      `<div class="note">크기를 옮기면 바로 보입니다. [저장]을 눌러야 홈페이지에 반영됩니다.</div>`;
+    document.body.appendChild(t);
+    const r = node.getBoundingClientRect();
+    t.style.top = (window.scrollY + r.bottom + 10) + 'px';
+    t.style.left = Math.max(12, Math.min(window.scrollX + r.left, window.scrollX + innerWidth - 280)) + 'px';
+    const range = t.querySelector('[data-k=isize]');
+    range.addEventListener('input', () => { const v = Number(range.value); sz.set(v); t.querySelector('[data-out]').textContent = v + 'px'; dirty = true; updateBar(); });
+    t.querySelector('[data-k=pick]').addEventListener('click', pick);
+    tool = t;
   }
 
   /* ---------- 오른쪽 클릭: 항목 추가 · 삭제 ---------- */
@@ -263,11 +290,15 @@
       e.preventDefault(); e.stopPropagation();
       if (img.dataset.edImg === 'video') askFile({ kind: 'video', node: img, dir: 'assets' }, 'video/*');
       else if (img.dataset.edImg === 'banner') askFile({ kind: 'banner', node: img, dir: 'assets/banner' }, 'image/*');
+      else if (img.dataset.edImg === 'bg') askFile({ kind: 'bg', node: img, path: JSON.parse(img.dataset.bg), dir: 'assets' }, 'image/*');
       else {
         const p = img.dataset.p ? JSON.parse(img.dataset.p) : null;
-        if (!p) { toast('이 사진은 관리 페이지(표 형식)에서 바꿔 주세요', true); return; }
-        const dir = p[0] === 'INSTRUCTORS' ? 'assets/inst' : p[0] === 'AGENCIES' ? 'assets/logos' : 'assets';
-        askFile({ kind: 'img', node: img, path: p, dir }, 'image/*');
+        const pick = p
+          ? () => askFile({ kind: 'img', node: img, path: p, dir: p[0] === 'INSTRUCTORS' ? 'assets/inst' : p[0] === 'AGENCIES' ? 'assets/logos' : 'assets' }, 'image/*')
+          : () => askFile({ kind: 'file', node: img, path: img.getAttribute('src').replace(/[?#].*$/, '') }, 'image/*');
+        if (img.closest('.logo')) openImgTool(img, pick, { name: 'WE4D 로고', min: 20, max: 90, get: () => SITE.logoSize || 44, set: v => { SITE.logoSize = v; document.documentElement.style.setProperty('--logo-h', v + 'px'); } });
+        else if (p && p[0] === 'AGENCIES') openImgTool(img, pick, { name: '기획사 로고', min: 16, max: 90, get: () => AGENCIES[p[1]].h || 36, set: v => { AGENCIES[p[1]].h = v; document.querySelectorAll(`#ticker img[data-p='${img.dataset.p}']`).forEach(x => x.style.height = v + 'px'); } });
+        else pick();
       }
       return;
     }

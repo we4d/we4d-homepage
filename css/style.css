@@ -316,7 +316,9 @@ ul{margin:0;padding:0;list-style:none}
 .career{margin-top:36px;border-top:1px solid var(--line)}
 .career li{display:grid;grid-template-columns:90px 1fr;gap:18px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
 .career li span{font-family:var(--mono);font-size:12px;color:var(--lilac);letter-spacing:.06em;padding-top:3px}
+.career li span.t{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:normal;padding-top:0}   /* 약력 내용 (연도 옆 글) */
 .sec.light .career li span{color:var(--violet)}
+.sec.light .career li span.t{color:inherit}
 @media (max-width:860px){.greet{grid-template-columns:1fr}.stack{max-width:520px}}
 
 /* ---------- [WE4D] WE4D SYSTEM 배너 + 6단계 리스트 ---------- */
@@ -612,6 +614,7 @@ ul{margin:0;padding:0;list-style:none}
 .imodal .career{margin-top:0;border-top:0}
 .imodal .career li{grid-template-columns:auto 1fr;padding:9px 0;font-size:14.5px}
 .imodal .career li span{color:var(--violet)}
+.imodal .career li span.t{color:inherit}
 .imodal .port{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .imodal .port a,.imodal .port div{aspect-ratio:16/10;border-radius:12px;background:linear-gradient(160deg,#EEE9F6,#DDD3EE);background-size:cover;background-position:center;display:grid;place-items:center;color:var(--violet);position:relative;overflow:hidden;cursor:pointer}
 .imodal .port a::after,.imodal .port div::after{content:"";position:absolute;inset:0;background:rgba(124,58,237,0);transition:background .25s}

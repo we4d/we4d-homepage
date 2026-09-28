@@ -134,25 +134,25 @@ hero.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') 
    ============================================================ */
 $('#ticker').innerHTML = [...AGENCIES, ...AGENCIES].map((a, i) => { const j = i % AGENCIES.length; return a.img ? `<span class="lg" title="${a.n}"><img src="${a.img}" alt="${a.n}" style="height:${a.h || 36}px" loading="lazy" data-p='["AGENCIES",${j},"img"]'></span>` : `<span class="lg ${a.s || ''}" data-p='["AGENCIES",${j},"n"]'>${a.n}</span>`; }).join('');
 (function () {
-  const up = EVENTS.filter(e => e.type === 'agency' && dateOf(e) >= TODAY).sort((a, b) => dateOf(a) - dateOf(b)).slice(0, 4);
-  $('#upList').innerHTML = up.map(e => `<div class="up"><div class="date"><b>${String(e.d).padStart(2, '0')}</b>${MONTHS[e.m - 1].slice(0, 3).toUpperCase()} ${e.y}</div><div><h4>${e.t}</h4><p>${e.note}</p></div></div>`).join('');
+  const up = EVENTS.map((e, i) => [e, i]).filter(([e]) => e.type === 'agency' && dateOf(e) >= TODAY).sort((a, b) => dateOf(a[0]) - dateOf(b[0])).slice(0, 4);
+  $('#upList').innerHTML = up.map(([e, i]) => `<div class="up" data-item='["EVENTS",${i}]'><div class="date"><b>${String(e.d).padStart(2, '0')}</b>${MONTHS[e.m - 1].slice(0, 3).toUpperCase()} ${e.y}</div><div><h4 data-p='["EVENTS",${i},"t"]'>${e.t}</h4><p data-p='["EVENTS",${i},"note"]'>${e.note}</p></div></div>`).join('');
 })();
 
 /* ============================================================
    3. WE4D — 원장 사진 · 약력 · SYSTEM 6단계
    ============================================================ */
 (function () {
-  const setPhoto = (el, src) => { if (!el || !src) return; const img = new Image(); img.onload = () => { el.style.backgroundImage = `url("${src}")`; el.classList.add('has-photo'); }; img.src = src; };
-  setPhoto($('#dirPhoto'), DIRECTOR.photo);
-  setPhoto($('#dirScene'), DIRECTOR.scenePhoto);   // (현장 사진 카드는 현재 사용 안 함)
-  setPhoto($('#sysBanner'), (window.__draft && window.__draft.SYSTEM_BANNER !== undefined) ? window.__draft.SYSTEM_BANNER : SYSTEM_BANNER);
+  const setPhoto = (el, src, path) => { if (!el) return; if (path) el.dataset.bg = JSON.stringify(path); if (!src) return; const img = new Image(); img.onload = () => { el.style.backgroundImage = `url("${src}")`; el.classList.add('has-photo'); }; img.src = src; };
+  setPhoto($('#dirPhoto'), DIRECTOR.photo, ['DIRECTOR', 'photo']);
+  setPhoto($('#dirScene'), DIRECTOR.scenePhoto, ['DIRECTOR', 'scenePhoto']);   // (현장 사진 카드는 현재 사용 안 함)
+  setPhoto($('#sysBanner'), (window.__draft && window.__draft.SYSTEM_BANNER !== undefined) ? window.__draft.SYSTEM_BANNER : SYSTEM_BANNER, ['SYSTEM_BANNER']);
   $('#dirParas').innerHTML = DIRECTOR.paragraphs.map((p, i) => `<p class="lead" data-p='["DIRECTOR","paragraphs",${i}]'>${p}</p>`).join('');
   const careerEl = $('#dirCareer');
-  if (DIRECTOR.career && DIRECTOR.career.length) careerEl.innerHTML = DIRECTOR.career.map(c => `<li><span>${c[0]}</span>${c[1]}</li>`).join('');
+  if (DIRECTOR.career && DIRECTOR.career.length) careerEl.innerHTML = DIRECTOR.career.map((c, i) => `<li data-item='["DIRECTOR","career",${i}]'><span data-p='["DIRECTOR","career",${i},0]'>${c[0]}</span><span class="t" data-p='["DIRECTOR","career",${i},1]'>${c[1]}</span></li>`).join('');
   else careerEl.remove();
   if ($('#parentsGrid') && SITE.parents) $('#parentsGrid').innerHTML = SITE.parents.items.map((p, i) => `<div class="pr" data-item='["SITE","parents","items",${i}]'><span class="pr-n">0${i + 1}</span><h3 data-p='["SITE","parents","items",${i},0]'>${p[0]}</h3><p data-p='["SITE","parents","items",${i},1]'>${p[1]}</p></div>`).join('');
   if ($('#fourdGrid') && SITE.fourd) $('#fourdGrid').innerHTML = SITE.fourd.items.map((d, i) => `<div class="fd" data-item='["SITE","fourd","items",${i}]'><span class="fd-n">0${i + 1}</span><div class="fd-en d" data-p='["SITE","fourd","items",${i},0]'>${d[0]}</div><div class="fd-kr" data-p='["SITE","fourd","items",${i},1]'>${d[1]}</div><p data-p='["SITE","fourd","items",${i},2]'>${d[2]}</p></div>`).join('');
-  if ($('#steps')) $('#steps').innerHTML = STEPS.map((s, i) => `<li><span class="n">0${i + 1}</span><div><h3>${s.t}</h3><p>${s.d}</p></div><span class="tag">${s.tag}</span></li>`).join('');
+  if ($('#steps')) $('#steps').innerHTML = STEPS.map((s, i) => `<li data-item='["STEPS",${i}]'><span class="n">0${i + 1}</span><div><h3 data-p='["STEPS",${i},"t"]'>${s.t}</h3><p data-p='["STEPS",${i},"d"]'>${s.d}</p></div><span class="tag" data-p='["STEPS",${i},"tag"]'>${s.tag}</span></li>`).join('');
 })();
 
 /* ============================================================
@@ -164,11 +164,11 @@ function profCard(i) {
   const idx = INSTRUCTORS.indexOf(i);
   return `<button class="prof" data-inst="${idx}" data-item='["INSTRUCTORS",${idx}]'>${profPic(i, 'pic')}<span class="badge ${isLead(i) ? 'badge-lilac' : 'badge-line'} role" data-p='["INSTRUCTORS",${idx},"role"]'>${i.role}</span></div><div class="meta"><span class="d" data-p='["INSTRUCTORS",${idx},"en"]'>${i.en}</span><b data-p='["INSTRUCTORS",${idx},"kr"]'>${i.kr}</b><span class="${isLead(i) ? 'dir' : ''}" data-p='["INSTRUCTORS",${idx},"title"]'>${i.title || i.role}</span></div></button>`;
 }
-$('#instTabs').innerHTML = INST_CATS.map((c, i) => `<button class="${i ? '' : 'on'}" data-cat="${c.k}" role="tab">${c.tab} <span class="mono" style="font-size:11px;opacity:.7">${c.en.toUpperCase()}</span></button>`).join('');
-$('#instSections').innerHTML = INST_CATS.map(c => {
+$('#instTabs').innerHTML = INST_CATS.map((c, i) => `<button class="${i ? '' : 'on'}" data-cat="${c.k}" role="tab"><span data-p='["INST_CATS",${i},"tab"]'>${c.tab}</span> <span class="mono" style="font-size:11px;opacity:.7">${c.en.toUpperCase()}</span></button>`).join('');
+$('#instSections').innerHTML = INST_CATS.map((c, ci) => {
   const list = INSTRUCTORS.filter(i => i.cat === c.k);
   return `<div class="iset" id="inst-${c.k}">
-  <div class="ihead"><div><h2 class="d">${c.en}</h2><p>${c.kr}</p></div><span class="cnt">${list.length} ${c.k === 'advisor' ? 'ADVISOR' : 'TRAINERS'}</span></div>
+  <div class="ihead"><div><h2 class="d" data-p='["INST_CATS",${ci},"en"]'>${c.en}</h2><p data-p='["INST_CATS",${ci},"kr"]'>${c.kr}</p></div><span class="cnt">${list.length} ${c.k === 'advisor' ? 'ADVISOR' : 'TRAINERS'}</span></div>
   <div class="carousel"><button class="arrow prev" aria-label="이전"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></button><div class="igrid">${list.map(profCard).join('')}</div><button class="arrow next" aria-label="다음"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 5l7 7-7 7"/></svg></button></div>
 </div>`;
 }).join('');
@@ -188,26 +188,30 @@ $('#instTabs').addEventListener('click', e => { const b = e.target.closest('butt
 document.addEventListener('click', e => {
   const p = e.target.closest('[data-inst]'); if (!p) return;
   const i = INSTRUCTORS[+p.dataset.inst];
-  const career = (i.career && i.career.length) ? i.career.map(c => { const m = c.match(/^(\S+)\s(.*)$/); return `<li><span>${m ? m[1] : ''}</span>${m ? m[2] : c}</li>`; }).join('') : '<li><span></span><span style="color:var(--mute)">소개 준비 중입니다.</span></li>';
-  $('#instModalBody').innerHTML = `${profPic(i, 'pic')}</div><div class="body"><span class="badge ${isLead(i) ? 'badge-lilac' : 'badge-ink'}">${i.role}</span><div class="d">${i.en}</div><div class="kr">${i.kr}${i.title ? ` · ${i.title}` : ''}</div>${i.q ? `<p class="quote">${i.q}</p>` : ''}<h4>Career</h4><ul class="career">${career}</ul><h4>Focus</h4><p style="font-size:15px">${i.focus || '—'}</p></div>`;
+  const j = +p.dataset.inst;
+  const career = (i.career && i.career.length) ? i.career.map((c, ci) => { const m = c.match(/^(\S+)\s(.*)$/); return `<li data-item='["INSTRUCTORS",${j},"career",${ci}]'><span>${m ? m[1] : ''}</span><span class="t" data-p='["INSTRUCTORS",${j},"career",${ci}]' data-prefix="${m ? m[1] : ''}">${m ? m[2] : c}</span></li>`; }).join('') : `<li data-item='["INSTRUCTORS",${j},"career",0]'><span></span><span class="t" style="color:var(--mute)" data-p='["INSTRUCTORS",${j},"career",0]'>소개 준비 중입니다.</span></li>`;
+  $('#instModalBody').innerHTML = `${profPic(i, 'pic')}</div><div class="body"><span class="badge ${isLead(i) ? 'badge-lilac' : 'badge-ink'}" data-p='["INSTRUCTORS",${j},"role"]'>${i.role}</span><div class="d" data-p='["INSTRUCTORS",${j},"en"]'>${i.en}</div><div class="kr"><span data-p='["INSTRUCTORS",${j},"kr"]'>${i.kr}</span>${i.title ? ` · <span data-p='["INSTRUCTORS",${j},"title"]'>${i.title}</span>` : ''}</div>${i.q ? `<p class="quote" data-p='["INSTRUCTORS",${j},"q"]'>${i.q}</p>` : ''}<h4>Career</h4><ul class="career">${career}</ul><h4>Focus</h4><p style="font-size:15px" data-p='["INSTRUCTORS",${j},"focus"]'>${i.focus || '—'}</p></div>`;
   openModal('#instModal');
 });
 
 /* ============================================================
    5. 레슨 안내 — 탭 · 취미 칩
    ============================================================ */
-function lessonCards(d) {
+function lessonCards(d, base) {
+  const P = (...k) => `data-p='${JSON.stringify(base.concat(k))}'`, IT = (...k) => `data-item='${JSON.stringify(base.concat(k))}'`;
+  const steps = d.steps || [], weeks = d.weeks || [], perks = d.perks || [];
+  // 내용이 없는 카드는 아예 보이지 않게
   return `<div class="lcards">
-    <div class="lcard"><div class="head"><h3>레슨 단계</h3><span class="d">Steps</span></div><ol>${d.steps.map((s, i) => `<li><i>${i + 1}</i><div><b>${s[0]}</b><span>${s[1]}</span></div></li>`).join('')}</ol></div>
-    <div class="lcard"><div class="head"><h3>주차별 교육 과정</h3><span class="d">Timeline</span></div><div class="weeks">${d.weeks.map(w => `<div class="week"><i>${w[0]}</i><div class="bar" style="--w:${w[2]}%"><span>${w[1]}</span></div></div>`).join('')}</div></div>
-    <div class="lcard"><div class="head"><h3>수강 혜택</h3><span class="d">Benefits</span></div><ul>${d.perks.map(p => `<li>${p}</li>`).join('')}</ul></div>
+    ${steps.length ? `<div class="lcard"><div class="head"><h3>레슨 단계</h3><span class="d">Steps</span></div><ol>${steps.map((s, i) => `<li ${IT('steps', i)}><i>${i + 1}</i><div><b ${P('steps', i, 0)}>${s[0]}</b><span ${P('steps', i, 1)}>${s[1] || ''}</span></div></li>`).join('')}</ol></div>` : ''}
+    ${weeks.length ? `<div class="lcard"><div class="head"><h3>주차별 교육 과정</h3><span class="d">Timeline</span></div><div class="weeks">${weeks.map((w, i) => `<div class="week" ${IT('weeks', i)}><i ${P('weeks', i, 0)}>${w[0]}</i><div class="bar" style="--w:${w[2]}%"><span ${P('weeks', i, 1)}>${w[1]}</span></div></div>`).join('')}</div></div>` : ''}
+    ${perks.length ? `<div class="lcard"><div class="head"><h3>수강 혜택</h3><span class="d">Benefits</span></div><ul>${perks.map((p, i) => `<li ${IT('perks', i)} ${P('perks', i)}>${p}</li>`).join('')}</ul></div>` : ''}
   </div>`;
 }
 $('#lessonPanes').innerHTML = Object.entries(LESSONS).map(([k, d], idx) => {
   const subKeys = d.sub ? Object.keys(d.sub) : null;
   return `<div class="tabpane${idx === 0 ? ' on' : ''}" data-pane="${k}">
-    <div class="lesson-intro"><div><span class="eyebrow">${d.en}</span><h2 class="kr-title">${d.kr}</h2><p class="lead">${d.lead}</p></div><div class="facts">${d.facts.map(f => `<div class="fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join('')}</div></div>
-    ${subKeys ? `<div class="chips" data-chips>${subKeys.map((s, i) => `<button class="${i ? '' : 'on'}" data-sub="${s}">${s}</button>`).join('')}</div><div data-subpane>${lessonCards(d.sub[subKeys[0]])}</div>` : lessonCards(d)}
+    <div class="lesson-intro"><div><span class="eyebrow" data-p='["LESSONS","${k}","en"]'>${d.en}</span><h2 class="kr-title" data-p='["LESSONS","${k}","kr"]'>${d.kr}</h2><p class="lead" data-p='["LESSONS","${k}","lead"]'>${d.lead}</p></div><div class="facts">${d.facts.map((f, i) => `<div class="fact" data-item='["LESSONS","${k}","facts",${i}]'><b data-p='["LESSONS","${k}","facts",${i},0]'>${f[0]}</b><span data-p='["LESSONS","${k}","facts",${i},1]'>${f[1]}</span></div>`).join('')}</div></div>
+    ${subKeys ? `<div class="chips" data-chips>${subKeys.map((s, i) => `<button class="${i ? '' : 'on'}" data-sub="${s}">${s}</button>`).join('')}</div><div data-subpane>${lessonCards(d.sub[subKeys[0]], ['LESSONS', k, 'sub', subKeys[0]])}</div>` : lessonCards(d, ['LESSONS', k])}
   </div>`;
 }).join('');
 function setLessonTab(k) { $$('#lessonTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === k)); $$('.tabpane').forEach(p => p.classList.toggle('on', p.dataset.pane === k)); }
@@ -215,7 +219,7 @@ $('#lessonTabs').addEventListener('click', e => { const b = e.target.closest('bu
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-sub]'); if (!b) return;
   const wrap = b.closest('.tabpane'); $$('[data-sub]', wrap).forEach(x => x.classList.toggle('on', x === b));
-  $('[data-subpane]', wrap).innerHTML = lessonCards(LESSONS[wrap.dataset.pane].sub[b.dataset.sub]);
+  $('[data-subpane]', wrap).innerHTML = lessonCards(LESSONS[wrap.dataset.pane].sub[b.dataset.sub], ['LESSONS', wrap.dataset.pane, 'sub', b.dataset.sub]);
 });
 
 /* ============================================================
@@ -244,7 +248,8 @@ $('#calToday').onclick = () => { calY = TODAY.getFullYear(); calM = TODAY.getMon
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-evkey]'); if (!b) return;
   const [y, m, d, ...t] = b.dataset.evkey.split('-'); const ev = EVENTS.find(x => x.y == y && x.m == m && x.d == d && x.t === t.join('-')); if (!ev) return;
-  $('#evDetail').innerHTML = `<span class="badge ${evBadge[ev.type]}" style="justify-self:start">${evLabel[ev.type]}</span><h4>${ev.t} · ${ev.m}월 ${ev.d}일 ${ev.time}</h4><p>${ev.note}</p>`;
+  const ei = EVENTS.indexOf(ev);
+  $('#evDetail').innerHTML = `<span class="badge ${evBadge[ev.type]}" style="justify-self:start">${evLabel[ev.type]}</span><h4><span data-p='["EVENTS",${ei},"t"]'>${ev.t}</span> · ${ev.m}월 ${ev.d}일 <span data-p='["EVENTS",${ei},"time"]'>${ev.time}</span></h4><p data-p='["EVENTS",${ei},"note"]'>${ev.note}</p>`;
   $('#evDetail').classList.add('on'); $('#evDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 renderCal();
@@ -252,8 +257,8 @@ renderCal();
 /* ============================================================
    7. 오시는 길 · 상담 사이드 (content.js 값)
    ============================================================ */
-$('#transit').innerHTML = SITE.transit.map(t => `<li><span class="ln" style="background:${t[0]}">${t[1]}</span><span>${t[2]}</span></li>`).join('');
-$('#hours').innerHTML = SITE.hours.map(h => `<span>${h[0]}</span><div>${h[1]}</div>`).join('') + `<span>TEL</span><div><a href="tel:${SITE.telLink}" style="font-weight:700">${SITE.tel}</a></div>`;
+$('#transit').innerHTML = SITE.transit.map((t, i) => `<li data-item='["SITE","transit",${i}]'><span class="ln" style="background:${t[0]}" data-p='["SITE","transit",${i},1]'>${t[1]}</span><span data-p='["SITE","transit",${i},2]'>${t[2]}</span></li>`).join('');
+$('#hours').innerHTML = SITE.hours.map((h, i) => `<span data-p='["SITE","hours",${i},0]'>${h[0]}</span><div data-p='["SITE","hours",${i},1]'>${h[1]}</div>`).join('') + `<span>TEL</span><div><a href="tel:${SITE.telLink}" style="font-weight:700" data-site="tel">${SITE.tel}</a></div>`;
 $('#faq').innerHTML = FAQ.map((f, i) => `<details data-item='["FAQ",${i}]'><summary data-p='["FAQ",${i},0]'>${f[0]}</summary><p data-p='["FAQ",${i},1]'>${f[1]}</p></details>`).join('');
 
 /* ============================================================
@@ -350,10 +355,10 @@ $('#bubbleX').onclick = () => $('#bubble').remove();
   wrap.innerHTML = `<div class="popups-bg"></div><div class="popups-row">` + list.map(p => {
     const i = POPUPS.indexOf(p);
     const align = p.textAlign || 'center', pos = p.textPos || 'bottom';
-    const txt = `<div class="pp-txt" style="text-align:${align};color:${p.textColor || '#fff'}">${p.title ? `<h3>${p.title}</h3>` : ''}${p.text ? `<p>${p.text}</p>` : ''}${p.link ? `<a class="btn btn-lilac btn-sm" href="${p.link}">${p.linkText || '자세히 보기'} <span class="arr">&gt;&gt;</span></a>` : ''}</div>`;
+    const txt = `<div class="pp-txt" style="text-align:${align};color:${p.textColor || '#fff'}">${p.title ? `<h3 data-p='["POPUPS",${i},"title"]'>${p.title}</h3>` : ''}${p.text ? `<p data-p='["POPUPS",${i},"text"]'>${p.text}</p>` : ''}${p.link ? `<a class="btn btn-lilac btn-sm" href="${p.link}"><span data-p='["POPUPS",${i},"linkText"]'>${p.linkText || '자세히 보기'}</span> <span class="arr">&gt;&gt;</span></a>` : ''}</div>`;
     const body = p.layout === 'overlay' && p.image
-      ? `<div class="pp-overlay pos-${pos}" style="background-image:url('${p.image}')">${txt}</div>`
-      : `${p.image ? `<img class="pp-img" src="${p.image}" alt="">` : ''}${txt}`;
+      ? `<div class="pp-overlay pos-${pos}" style="background-image:url('${p.image}')" data-bg='["POPUPS",${i},"image"]'>${txt}</div>`
+      : `${p.image ? `<img class="pp-img" src="${p.image}" alt="" data-p='["POPUPS",${i},"image"]'>` : ''}${txt}`;
     return `<div class="pp" style="--w:${p.width || 460}px;background:${p.bg || '#141218'}"><button class="pp-x" data-pp-close aria-label="닫기">×</button>${body}<div class="pp-foot"><label><input type="checkbox" data-pp-today="${i}"> 오늘 하루 보지 않기</label><button data-pp-close>닫기</button></div></div>`;
   }).join('') + `</div>`;
   document.body.appendChild(wrap);
