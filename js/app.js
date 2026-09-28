@@ -52,6 +52,8 @@ $$('[data-dir]').forEach(el => { const v = get(DIRECTOR, el.dataset.dir); if (v 
   // 영상 밝기(100 = 원본) · 어둡게 정도(0 = 그라데이션 없음, 100 = 최대) — 관리자 페이지 슬라이더
   document.documentElement.style.setProperty('--hero-bright', String((Number(SITE.hero.brightness) || 105) / 100));
   document.documentElement.style.setProperty('--hero-shade', String((SITE.hero.shade == null ? 100 : Number(SITE.hero.shade)) / 100));
+  document.documentElement.style.setProperty('--hero-gray', String((SITE.hero.gray == null ? 100 : Number(SITE.hero.gray)) / 100));   // 흑백 정도(0 = 원본 컬러)
+  document.documentElement.style.setProperty('--hero-sat', String((Number(SITE.hero.sat) || 100) / 100));   // 색 진하기
   if (SITE.hero.ctaColor) document.documentElement.style.setProperty('--hero-cta', SITE.hero.ctaColor);
   if (SITE.hero.ctaText) document.documentElement.style.setProperty('--hero-cta-text', SITE.hero.ctaText);
   if (SITE.logoSize) document.documentElement.style.setProperty('--logo-h', SITE.logoSize + 'px');   // 상단 메뉴 로고 높이
@@ -66,6 +68,20 @@ $$('[data-dir]').forEach(el => { const v = get(DIRECTOR, el.dataset.dir); if (v 
     v.play && v.play().catch(() => {});
   } else v.remove();
   $('#heroStats').innerHTML = SITE.hero.stats.map(s => `<div><b>${s.n}${s.unit ? `<small>${s.unit}</small>` : ''}</b><span>${s.label}</span></div>`).join('');
+})();
+
+/* 페이지별 배너 사진 (content.js → SITE.banners · 사진을 비우면 원래대로 글만 나옴) */
+(function () {
+  const B = SITE.banners || {};
+  $$('[data-banner]').forEach(sec => {
+    const b = B[sec.dataset.banner];
+    if (!b || !b.banner) return;
+    sec.classList.add('has-banner');
+    // 경로를 절대 주소로 바꿔 둠 (CSS 변수는 style.css 위치 기준으로 해석되기 때문)
+    sec.style.setProperty('--bn-img', "url('" + new URL(b.banner, location.href).href + "')");
+    sec.style.setProperty('--bn-h', (Number(b.bh) || 46) + 'vh');
+    sec.style.setProperty('--bn-dim', String((b.dim == null ? 60 : Number(b.dim)) / 100));
+  });
 })();
 
 /* 히어로 배경 캔버스 (영상이 없거나 로딩 전 · 블러 퍼플) */

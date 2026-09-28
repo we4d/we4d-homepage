@@ -32,9 +32,11 @@ const SITE = {
   "hero": {
     "video": "assets/hero.mp4",
     "poster": "assets/hero-poster.jpg",
-    "tint": "rgba(198, 160, 255, 1)",
-    "brightness": 150,
-    "shade": 50,
+    "tint": "rgba(214, 186, 255, 0.28)",
+    "brightness": 108,
+    "gray": 0,
+    "sat": 110,
+    "shade": 55,
     "accent": "- MUSIC · DANCE · K-POP TRAINING · AUDITION -",
     "eyebrow": "",
     "bigText": "Real KPOP Training",
@@ -152,6 +154,14 @@ const SITE = {
         "실력만 키우는 곳이 아닙니다. 인성과 태도까지, 아이들을 진심으로 위하는 교육을 합니다."
       ]
     ]
+  },
+  "banners": {
+    "about": { "banner": "", "bh": 46, "dim": 60 },
+    "instructors": { "banner": "", "bh": 46, "dim": 60 },
+    "lessons": { "banner": "", "bh": 46, "dim": 60 },
+    "events": { "banner": "", "bh": 46, "dim": 60 },
+    "location": { "banner": "", "bh": 46, "dim": 60 },
+    "consult": { "banner": "", "bh": 46, "dim": 60 }
   },
   "colors": {
     "hero": "",
