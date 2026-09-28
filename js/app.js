@@ -41,7 +41,7 @@ $$('[data-dir]').forEach(el => { const v = get(DIRECTOR, el.dataset.dir); if (v 
 /* 글씨 크기 설정 (content.js → SITE.design) → CSS 변수 */
 (function () {
   const d = SITE.design || {};
-  const map = { heroTitle: 'hero', heroAccent: 'hero-accent', sectionTitle: 'h2', sectionLabel: 'label', pillarTitle: 'pillar', cardTitle: 'card', lead: 'lead', body: 'body' };
+  const map = { heroTitle: 'hero', heroAccent: 'hero-accent', band: 'band', bandSub: 'band-sub', sectionTitle: 'h2', sectionLabel: 'label', pillarTitle: 'pillar', cardTitle: 'card', lead: 'lead', body: 'body' };
   Object.keys(map).forEach(k => document.documentElement.style.setProperty('--sc-' + map[k], String((Number(d[k]) || 100) / 100)));
 })();
 
@@ -134,7 +134,7 @@ $('#ticker').innerHTML = [...AGENCIES, ...AGENCIES].map(a => a.img ? `<span clas
   else careerEl.remove();
   if ($('#parentsGrid') && SITE.parents) $('#parentsGrid').innerHTML = SITE.parents.items.map((p, i) => `<div class="pr"><span class="pr-n">0${i + 1}</span><h3>${p[0]}</h3><p>${p[1]}</p></div>`).join('');
   if ($('#fourdGrid') && SITE.fourd) $('#fourdGrid').innerHTML = SITE.fourd.items.map((d, i) => `<div class="fd"><span class="fd-n">0${i + 1}</span><div class="fd-en d">${d[0]}</div><div class="fd-kr">${d[1]}</div><p>${d[2]}</p></div>`).join('');
-  $('#steps').innerHTML = STEPS.map((s, i) => `<li><span class="n">0${i + 1}</span><div><h3>${s.t}</h3><p>${s.d}</p></div><span class="tag">${s.tag}</span></li>`).join('');
+  if ($('#steps')) $('#steps').innerHTML = STEPS.map((s, i) => `<li><span class="n">0${i + 1}</span><div><h3>${s.t}</h3><p>${s.d}</p></div><span class="tag">${s.tag}</span></li>`).join('');
 })();
 
 /* ============================================================

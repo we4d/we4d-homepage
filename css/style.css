@@ -708,3 +708,13 @@ html[data-c-cardTitle] .card h3,html[data-c-cardTitle] .pr h3,html[data-c-cardTi
 html[data-c-lead] .lead{color:var(--c-lead)}
 html[data-c-body] body{color:var(--c-body)}
 @media (max-width:640px){.logo small{display:none}}   /* 좁은 화면에서는 로고 아래 문구 숨김 */
+
+/* WE4D 뜻 한 줄 띠 (홈 · 기획사 로고 아래) — 문구·크기는 관리 페이지에서 */
+.dband{background:var(--lilac-2);color:var(--ink);padding:18px 0}
+.dband .wrap{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;text-align:center}
+.dband b{font-weight:900;font-size:calc(clamp(15px,1.5vw,19px) * var(--sc-band,1))}
+.dband b em{font-style:normal;color:var(--violet)}
+.dband span{font-size:calc(clamp(13px,1.3vw,16px) * var(--sc-band-sub,1));color:#4C1D95}
+.dband:has(b:empty):has(span:empty){display:none}   /* 두 칸 다 비우면 띠 자체를 숨김 */
+html[data-c-band] .dband b{color:var(--c-band)}
+html[data-c-bandSub] .dband span{color:var(--c-bandSub)}
