@@ -67,7 +67,7 @@ $$('[data-dir]').forEach(el => { const v = get(DIRECTOR, el.dataset.dir); if (v 
     v.addEventListener('error', () => v.remove());   // 영상 파일이 없으면 애니메이션 배경만 표시
     v.play && v.play().catch(() => {});
   } else v.remove();
-  $('#heroStats').innerHTML = SITE.hero.stats.map(s => `<div><b>${s.n}${s.unit ? `<small>${s.unit}</small>` : ''}</b><span>${s.label}</span></div>`).join('');
+  $('#heroStats').innerHTML = SITE.hero.stats.map((s, i) => `<div><b data-p='["SITE","hero","stats",${i},"n"]'>${s.n}${s.unit ? `<small>${s.unit}</small>` : ''}</b><span data-p='["SITE","hero","stats",${i},"label"]'>${s.label}</span></div>`).join('');
 })();
 
 /* 페이지별 배너 사진 (content.js → SITE.banners · 사진을 비우면 원래대로 글만 나옴) */
@@ -132,7 +132,7 @@ hero.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') 
 /* ============================================================
    2. 홈 — 로고 티커 · 다가오는 오디션
    ============================================================ */
-$('#ticker').innerHTML = [...AGENCIES, ...AGENCIES].map(a => a.img ? `<span class="lg" title="${a.n}"><img src="${a.img}" alt="${a.n}" style="height:${a.h || 36}px" loading="lazy"></span>` : `<span class="lg ${a.s || ''}">${a.n}</span>`).join('');
+$('#ticker').innerHTML = [...AGENCIES, ...AGENCIES].map((a, i) => { const j = i % AGENCIES.length; return a.img ? `<span class="lg" title="${a.n}"><img src="${a.img}" alt="${a.n}" style="height:${a.h || 36}px" loading="lazy" data-p='["AGENCIES",${j},"img"]'></span>` : `<span class="lg ${a.s || ''}" data-p='["AGENCIES",${j},"n"]'>${a.n}</span>`; }).join('');
 (function () {
   const up = EVENTS.filter(e => e.type === 'agency' && dateOf(e) >= TODAY).sort((a, b) => dateOf(a) - dateOf(b)).slice(0, 4);
   $('#upList').innerHTML = up.map(e => `<div class="up"><div class="date"><b>${String(e.d).padStart(2, '0')}</b>${MONTHS[e.m - 1].slice(0, 3).toUpperCase()} ${e.y}</div><div><h4>${e.t}</h4><p>${e.note}</p></div></div>`).join('');
@@ -146,12 +146,12 @@ $('#ticker').innerHTML = [...AGENCIES, ...AGENCIES].map(a => a.img ? `<span clas
   setPhoto($('#dirPhoto'), DIRECTOR.photo);
   setPhoto($('#dirScene'), DIRECTOR.scenePhoto);   // (현장 사진 카드는 현재 사용 안 함)
   setPhoto($('#sysBanner'), (window.__draft && window.__draft.SYSTEM_BANNER !== undefined) ? window.__draft.SYSTEM_BANNER : SYSTEM_BANNER);
-  $('#dirParas').innerHTML = DIRECTOR.paragraphs.map(p => `<p class="lead">${p}</p>`).join('');
+  $('#dirParas').innerHTML = DIRECTOR.paragraphs.map((p, i) => `<p class="lead" data-p='["DIRECTOR","paragraphs",${i}]'>${p}</p>`).join('');
   const careerEl = $('#dirCareer');
   if (DIRECTOR.career && DIRECTOR.career.length) careerEl.innerHTML = DIRECTOR.career.map(c => `<li><span>${c[0]}</span>${c[1]}</li>`).join('');
   else careerEl.remove();
-  if ($('#parentsGrid') && SITE.parents) $('#parentsGrid').innerHTML = SITE.parents.items.map((p, i) => `<div class="pr"><span class="pr-n">0${i + 1}</span><h3>${p[0]}</h3><p>${p[1]}</p></div>`).join('');
-  if ($('#fourdGrid') && SITE.fourd) $('#fourdGrid').innerHTML = SITE.fourd.items.map((d, i) => `<div class="fd"><span class="fd-n">0${i + 1}</span><div class="fd-en d">${d[0]}</div><div class="fd-kr">${d[1]}</div><p>${d[2]}</p></div>`).join('');
+  if ($('#parentsGrid') && SITE.parents) $('#parentsGrid').innerHTML = SITE.parents.items.map((p, i) => `<div class="pr" data-item='["SITE","parents","items",${i}]'><span class="pr-n">0${i + 1}</span><h3 data-p='["SITE","parents","items",${i},0]'>${p[0]}</h3><p data-p='["SITE","parents","items",${i},1]'>${p[1]}</p></div>`).join('');
+  if ($('#fourdGrid') && SITE.fourd) $('#fourdGrid').innerHTML = SITE.fourd.items.map((d, i) => `<div class="fd" data-item='["SITE","fourd","items",${i}]'><span class="fd-n">0${i + 1}</span><div class="fd-en d" data-p='["SITE","fourd","items",${i},0]'>${d[0]}</div><div class="fd-kr" data-p='["SITE","fourd","items",${i},1]'>${d[1]}</div><p data-p='["SITE","fourd","items",${i},2]'>${d[2]}</p></div>`).join('');
   if ($('#steps')) $('#steps').innerHTML = STEPS.map((s, i) => `<li><span class="n">0${i + 1}</span><div><h3>${s.t}</h3><p>${s.d}</p></div><span class="tag">${s.tag}</span></li>`).join('');
 })();
 
@@ -159,10 +159,10 @@ $('#ticker').innerHTML = [...AGENCIES, ...AGENCIES].map(a => a.img ? `<span clas
    4. 강사진 — 섹션별 캐러셀 + 프로필 모달
    ============================================================ */
 const isLead = i => i.role && i.role !== 'TRAINER';   // TRAINER 외의 직책은 강조 색으로
-function profPic(i, cls) { return `<div class="${cls}" style="--c1:${i.c1 || '#2B2338'};--c2:${i.c2 || '#0F0D14'}">${i.photo ? `<img src="${i.photo}" alt="${i.kr}">` : FIG}`; }
+function profPic(i, cls) { const j = INSTRUCTORS.indexOf(i); return `<div class="${cls}" style="--c1:${i.c1 || '#2B2338'};--c2:${i.c2 || '#0F0D14'}">${i.photo ? `<img src="${i.photo}" alt="${i.kr}" data-p='["INSTRUCTORS",${j},"photo"]'>` : `<span data-p='["INSTRUCTORS",${j},"photo"]'>${FIG}</span>`}`; }
 function profCard(i) {
   const idx = INSTRUCTORS.indexOf(i);
-  return `<button class="prof" data-inst="${idx}">${profPic(i, 'pic')}<span class="badge ${isLead(i) ? 'badge-lilac' : 'badge-line'} role">${i.role}</span></div><div class="meta"><span class="d">${i.en}</span><b>${i.kr}</b><span class="${isLead(i) ? 'dir' : ''}">${i.title || i.role}</span></div></button>`;
+  return `<button class="prof" data-inst="${idx}" data-item='["INSTRUCTORS",${idx}]'>${profPic(i, 'pic')}<span class="badge ${isLead(i) ? 'badge-lilac' : 'badge-line'} role" data-p='["INSTRUCTORS",${idx},"role"]'>${i.role}</span></div><div class="meta"><span class="d" data-p='["INSTRUCTORS",${idx},"en"]'>${i.en}</span><b data-p='["INSTRUCTORS",${idx},"kr"]'>${i.kr}</b><span class="${isLead(i) ? 'dir' : ''}" data-p='["INSTRUCTORS",${idx},"title"]'>${i.title || i.role}</span></div></button>`;
 }
 $('#instTabs').innerHTML = INST_CATS.map((c, i) => `<button class="${i ? '' : 'on'}" data-cat="${c.k}" role="tab">${c.tab} <span class="mono" style="font-size:11px;opacity:.7">${c.en.toUpperCase()}</span></button>`).join('');
 $('#instSections').innerHTML = INST_CATS.map(c => {
@@ -221,7 +221,7 @@ document.addEventListener('click', e => {
 /* ============================================================
    6. 행사 안내 — 공지 · 달력
    ============================================================ */
-$('#noticeList').innerHTML = NOTICES.map(n => `<li><span class="badge badge-${n[0]}">${n[1]}</span><span>${n[2]}</span><time>${n[3]}</time></li>`).join('');
+$('#noticeList').innerHTML = NOTICES.map((n, i) => `<li data-item='["NOTICES",${i}]'><span class="badge badge-${n[0]}" data-p='["NOTICES",${i},1]'>${n[1]}</span><span data-p='["NOTICES",${i},2]'>${n[2]}</span><time data-p='["NOTICES",${i},3]'>${n[3]}</time></li>`).join('');
 let calY = TODAY.getFullYear(), calM = TODAY.getMonth();
 function renderCal() {
   $('#calTitle').innerHTML = `<small>${MONTHS[calM].toUpperCase()}</small>${calY}년 ${calM + 1}월`;
@@ -254,7 +254,7 @@ renderCal();
    ============================================================ */
 $('#transit').innerHTML = SITE.transit.map(t => `<li><span class="ln" style="background:${t[0]}">${t[1]}</span><span>${t[2]}</span></li>`).join('');
 $('#hours').innerHTML = SITE.hours.map(h => `<span>${h[0]}</span><div>${h[1]}</div>`).join('') + `<span>TEL</span><div><a href="tel:${SITE.telLink}" style="font-weight:700">${SITE.tel}</a></div>`;
-$('#faq').innerHTML = FAQ.map(f => `<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('');
+$('#faq').innerHTML = FAQ.map((f, i) => `<details data-item='["FAQ",${i}]'><summary data-p='["FAQ",${i},0]'>${f[0]}</summary><p data-p='["FAQ",${i},1]'>${f[1]}</p></details>`).join('');
 
 /* ============================================================
    8. 모달 · 폼
@@ -391,3 +391,21 @@ logoize();
 new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n => { if (n.nodeType === 1) logoize(n); }))).observe(document.body, { childList: true, subtree: true });
 
 route();
+
+/* ============================================================
+   10. 화면에 직접 적어 둔 글 덮어쓰기 (SITE.texts)
+       현장 편집 모드(?edit=1)에서 고친 글이 여기에 저장됩니다.
+       키 = 그 글이 있는 위치(선택자). 구조가 바뀌면 자동으로 원래 글이 나옵니다.
+   ============================================================ */
+(function () {
+  const T = SITE.texts || {};
+  Object.keys(T).forEach(sel => {
+    try { const el = document.querySelector(sel); if (el && T[sel] != null) el.innerHTML = T[sel]; } catch (_) {}
+  });
+})();
+
+/* 현장 편집 모드 — 주소 뒤에 ?edit=1 이 붙었을 때만 편집 도구를 불러옴 */
+if (/[?&]edit=1/.test(location.search)) {
+  const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'css/edit.css?v=' + Date.now(); document.head.appendChild(l);
+  const s = document.createElement('script'); s.src = 'js/edit.js?v=' + Date.now(); document.body.appendChild(s);
+}

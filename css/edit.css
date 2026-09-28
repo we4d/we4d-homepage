@@ -1,0 +1,51 @@
+/* ============================================================
+   현장 편집 모드 (we4d.co.kr/admin) — 홈페이지를 보면서 직접 고치기
+   ============================================================ */
+body.ed-on { padding-top: 54px; }
+.ed-bar{position:fixed;left:0;right:0;top:0;height:54px;z-index:9000;background:#141018;color:#fff;display:flex;align-items:center;gap:10px;padding:0 16px;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;font-size:13px;box-shadow:0 6px 24px -8px rgba(0,0,0,.6)}
+.ed-bar .sp{flex:1}
+.ed-bar b{font-weight:800;letter-spacing:.02em}
+.ed-bar .st{opacity:.7;font-size:12px}
+.ed-btn{border:0;border-radius:999px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer;background:rgba(255,255,255,.12);color:#fff}
+.ed-btn:hover{background:rgba(255,255,255,.2)}
+.ed-btn.on{background:#D8B4FE;color:#141018}
+.ed-btn[disabled]{opacity:.5;cursor:default}
+
+/* 편집 가능한 곳 표시 */
+body.ed-on [data-ed]{outline:1px dashed rgba(124,58,237,.45);outline-offset:3px;cursor:text;transition:outline-color .15s,background .15s}
+body.ed-on [data-ed]:hover{outline-color:#7C3AED;background:rgba(124,58,237,.08)}
+body.ed-on [data-ed-img]{outline:2px dashed rgba(124,58,237,.6);outline-offset:2px;cursor:pointer}
+body.ed-on [data-ed-img]:hover{outline-color:#7C3AED}
+body.ed-on [data-ed].ed-active{outline:2px solid #7C3AED;background:rgba(124,58,237,.1)}
+body.ed-on [data-item]{position:relative}
+body.ed-on [data-item]:hover{outline:1px dashed rgba(216,180,254,.6);outline-offset:6px}
+
+/* 떠 있는 도구창 */
+.ed-tool{position:absolute;z-index:9100;background:#fff;color:#141018;border-radius:14px;box-shadow:0 18px 50px -12px rgba(0,0,0,.45);padding:12px 14px;display:grid;gap:10px;width:260px;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;font-size:12.5px}
+.ed-tool h6{margin:0;font-size:12px;font-weight:800;color:#4C1D95}
+.ed-tool .row{display:grid;grid-template-columns:64px 1fr auto;gap:8px;align-items:center}
+.ed-tool input[type=range]{width:100%;accent-color:#7C3AED}
+.ed-tool input[type=color]{width:34px;height:26px;padding:1px;border:1px solid #ddd;border-radius:6px;background:#fff}
+.ed-tool .mini{border:1px solid #e3dcf1;background:#fff;border-radius:8px;padding:5px 9px;font:inherit;cursor:pointer}
+.ed-tool .mini:hover{background:#f4f1fb}
+.ed-tool .note{color:#6B6577;font-size:11.5px;line-height:1.5}
+
+/* 오른쪽 클릭 메뉴 */
+.ed-menu{position:absolute;z-index:9200;background:#fff;border-radius:12px;box-shadow:0 18px 50px -12px rgba(0,0,0,.45);padding:6px;min-width:170px;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;font-size:13px}
+.ed-menu button{display:block;width:100%;text-align:left;border:0;background:none;padding:9px 12px;border-radius:8px;font:inherit;cursor:pointer;color:#141018}
+.ed-menu button:hover{background:#F3F0F8}
+.ed-menu button.danger{color:#DC2626}
+.ed-menu hr{border:0;border-top:1px solid #eee;margin:4px 0}
+
+/* 잠금 화면 */
+.ed-gate{position:fixed;inset:0;z-index:9500;background:#0A0A0A;display:grid;place-items:center;padding:24px;font-family:"Noto Sans KR","Malgun Gothic",sans-serif}
+.ed-gate form{width:min(430px,100%);background:#fff;border-radius:20px;padding:30px;display:grid;gap:11px}
+.ed-gate h2{margin:0;font-size:19px;font-weight:900}
+.ed-gate p,.ed-gate small{margin:0;font-size:12.5px;color:#6B6577;line-height:1.6}
+.ed-gate input{padding:12px 14px;border-radius:12px;border:1.5px solid #e3dcf1;font-size:15px}
+.ed-gate button{padding:12px;border:0;border-radius:999px;background:#D8B4FE;font-weight:800;cursor:pointer;font-size:14px}
+.ed-gate .err{color:#DC2626;font-size:12.5px;min-height:1em}
+.ed-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9600;background:#141018;color:#fff;padding:12px 20px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;transition:opacity .25s;pointer-events:none;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;max-width:90vw;text-align:center}
+.ed-toast.on{opacity:1}
+.ed-toast.err{background:#DC2626}
+@media (max-width:640px){ .ed-bar{gap:6px;padding:0 10px;font-size:12px} .ed-btn{padding:8px 12px} .ed-tool{width:min(260px,92vw)} }
