@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (관리 페이지 admin.html 에서 2026. 9. 19. 오후 3:25:03 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (관리 페이지 admin.html 에서 2026. 9. 28. 오후 4:07:59 저장)
    ------------------------------------------------------------
    ■ 이 파일은 admin.html 에서 편집하는 것을 권장합니다. 직접 고칠 때는 따옴표와 쉼표를 지키세요.
    ■ 사진/영상은 assets/ 폴더에 넣고 경로를 적어 주세요.
@@ -28,15 +28,15 @@ const SITE = {
   "name": "WE4D",
   "tagline": "i<em>D</em>ol · <em>D</em>ebut · <em>D</em>ream · E<em>D</em>ucation",
   "logoSize": 47,
-  "taglineSize": 18,
+  "taglineSize": 14,
   "hero": {
     "video": "assets/hero.mp4",
     "poster": "assets/hero-poster.jpg",
     "tint": "rgba(198, 160, 255, 1)",
     "brightness": 150,
     "shade": 50,
-    "accent": "- for your debut -",
-    "eyebrow": "MUSIC · DANCE · K-POP TRAINING · AUDITION",
+    "accent": "- MUSIC · DANCE · K-POP TRAINING · AUDITION -",
+    "eyebrow": "",
     "bigText": "Real KPOP Training",
     "cta": "상담하기 / 맞춤 수업 추천받기",
     "ctaColor": "#6D28D9",
@@ -155,7 +155,7 @@ const SITE = {
   },
   "colors": {
     "hero": "",
-    "heroAccent": "",
+    "heroAccent": "#9ff47b",
     "heroEyebrow": "#FFFFFF",
     "tagline": "#adea53",
     "sectionTitle": "",
@@ -167,7 +167,7 @@ const SITE = {
   },
   "design": {
     "heroTitle": 140,
-    "heroAccent": 100,
+    "heroAccent": 125,
     "heroEyebrow": 100,
     "sectionTitle": 100,
     "sectionLabel": 100,
@@ -360,7 +360,10 @@ const LESSONS = {
     "kr": "기획사 데뷔조 기준으로 훈련합니다",
     "lead": "월 4회 이상 기획사 방문 오디션, 월말 평가, 기획사 추천으로 이어지는 포지션입니다. 보컬+댄스 병행이 기본입니다.",
     "facts": [],
-    "steps": [],
+    "steps": [
+      "베이직 클래스",
+      "프라이빗 클래스"
+    ],
     "weeks": [],
     "perks": []
   },
