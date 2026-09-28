@@ -138,7 +138,7 @@ const I18N = {
   "연습생 연구 · 자문 (학생의 환경과 건강을 함께 살핍니다)": ["Trainee research · Advisory (we look after students' environment and health)", "练习生研究 · 顾问（共同关注学生的环境与健康）", "練習生研究 · アドバイザリー（生徒の環境と健康を一緒に見守ります）"],
   "허유정": ["Heo Yu-jeong", "Heo Yu-jeong", "ホ・ユジョン"],
   "아이돌 연습생 연구 · 자문": ["Idol trainee research · Advisory", "偶像练习生研究 · 顾问", "アイドル練習生研究 · アドバイザリー"],
-  "상담에서 목표와 성향에 맞는 담당 트레이너를 배정해 드립니다.": ["In your consultation we assign a trainer matched to your goals and personality.", "咨询时会根据目标和特点为您分配导师。", "相談で目標と性格に合う担当トレーナーを配属します。"],
+  "상담에서 목표와 포지션에 맞는 담당 트레이너를 배정해 드립니다.": ["In your consultation we assign a trainer matched to your goals and position.", "咨询时会根据目标和方向为您分配导师。", "相談で目標とポジションに合う担当トレーナーを配属します。"],
   "소개 준비 중입니다.": ["Profile coming soon.", "简介准备中。", "紹介文は準備中です。"],
 
   /* 레슨 안내 */

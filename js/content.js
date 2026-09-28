@@ -155,6 +155,9 @@ const SITE = {
       ]
     ]
   },
+  "instructors": {
+    "note": "상담에서 목표와 포지션에 맞는 담당 트레이너를 배정해 드립니다."
+  },
   "banners": {
     "about": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
     "instructors": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },

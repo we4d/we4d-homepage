@@ -131,6 +131,7 @@ const SECTIONS = [
   { key: 'SITE', sub: 'parents', id: 'parents', title: '학부모님께',          desc: '홈 화면 "학부모님께 드리는 세 가지 약속"' },
   { key: 'SITE', sub: 'fourd',   id: 'fourd',   title: '4D 의미',            desc: '위포드 페이지 — iDol · Debut · Dream · EDucation' },
   { key: 'SITE', rest: true,      id: 'info',    title: '연락처 · 주소 · 운영시간', desc: '학원 이름, 전화, 이메일, 톡톡 · 인스타 링크, 주소, 운영시간, 플로팅 배너, 사업자 정보' },
+  { key: 'SITE', sub: 'instructors', id: 'instnote', title: '강사진 페이지 문구', desc: '강사진 페이지 맨 아래 상담 상자의 안내 문장' },
   { key: 'SITE', sub: 'banners', id: 'banners', title: '페이지 상단 (배너 사진 · 제목 크기)', desc: '각 메뉴 맨 위 영역. 사진을 비우면 지금처럼 글만 나옵니다. 제목 크기는 페이지마다 따로 조절됩니다' },
   { key: 'SITE', design: true,    id: 'design',  title: '공통 글씨 (입력칸이 없는 곳)', desc: '홈페이지에 고정으로 적힌 글씨의 크기·색입니다. 나머지 글씨는 각 글 입력칸 바로 아래에서 조절하세요' },
   { key: 'DIRECTOR',    title: '대표원장 인사말',      desc: '위포드 페이지 — 이름, 사진, 인사말, 약력' },
@@ -146,7 +147,7 @@ const SECTIONS = [
   { key: 'AGENCIES',    title: '협력 기획사 로고',      desc: '첫 화면 로고 띠. 맨 아래 [+ 추가] 버튼으로 기획사를 추가하고, 로고 파일을 올린 뒤 크기 슬라이더로 맞추세요' }
 ];
 const LABELS = {
-  banners:'페이지별 배너 사진', banner:'배너 사진 (비우면 글만 나옴)', bh:'배너 높이 (화면 기준 %)', ts:'페이지 제목 크기', dim:'사진 어둡게 (글씨 잘 보이게)', about:'위포드 페이지', instructors:'강사진 페이지', lessons:'레슨 안내 페이지', events:'행사 안내 페이지', location:'오시는 길 페이지', consult:'상담하기 페이지',
+  banners:'페이지별 배너 사진', note:'안내 문장', banner:'배너 사진 (비우면 글만 나옴)', bh:'배너 높이 (화면 기준 %)', ts:'페이지 제목 크기', dim:'사진 어둡게 (글씨 잘 보이게)', about:'위포드 페이지', instructors:'강사진 페이지', lessons:'레슨 안내 페이지', events:'행사 안내 페이지', location:'오시는 길 페이지', consult:'상담하기 페이지',
   name:'학원 이름', tagline:'로고 아래 작은 글씨 (강조할 글자는 <em></em>)', logoSize:'로고 크기', taglineSize:'↳ 로고 아래 글씨 크기', hero:'첫 화면', video:'배경 영상', poster:'영상 로딩 전 이미지', tint:'영상 색 틴트', brightness:'영상 밝기 (100 = 원본)', gray:'흑백 정도 (0 = 원본 컬러)', sat:'색 진하기 (100 = 원본)', shade:'화면 어둡게 정도 (위·아래 그라데이션)', accent:'제목 위 흘림체 문구 (비우면 안 보임)', eyebrow:'제목 아래 작은 글씨', bigText:'큰 제목', cta:'버튼 문구', ctaColor:'버튼 색', ctaText:'버튼 글자 색', stats:'하단 숫자', n:'숫자/이름', unit:'단위', label:'설명',
   tel:'전화번호 (표시용)', telLink:'전화번호 (숫자만)', telHref:'전화 링크 (tel:번호)', notifyPhone:'상담 문자 받을 번호 (숫자만)', email:'상담 받을 이메일 주소', formEndpoint:'자동 전송 서비스 주소 (Formspree 등 · 없으면 비워두기)', naverTalk:'네이버 톡톡 링크', naverTalkName:'톡톡 버튼 문구', instagram:'인스타그램 링크', instagramName:'인스타그램 표시 이름', youtube:'유튜브 링크',
   address:'주소', addressSub:'주소 보조 설명', mapQuery:'지도 검색어', mapLink:'네이버지도 링크', mapLinkKakao:'카카오맵 링크', hours:'운영시간', transit:'대중교통', bizNo:'사업자 정보', fourd:'4D 의미', title:'제목', lead:'소개 문장', items:'항목', floatBubble:'플로팅 배너 문구', floatBubbleSub:'플로팅 배너 작은 글씨', demoToday:'달력 기준일 (비우면 오늘)',
@@ -166,7 +167,7 @@ const SELECT_KEYS = {
 const DATE_KEYS = new Set(['from','until','demoToday']);
 const COLOR_KEYS = new Set(['textColor','bg','ctaColor','ctaText']);
 const TUPLE_HEADS = { hours:['요일','시간'], transit:['배지 색','배지 글자','설명'], items:['영문 (강조 글자는 <b></b>)','한글','설명'], career:['기간','내용'], facts:['숫자','설명'], steps:['단계명','설명'], weeks:['기간','내용','진행률 %'], NOTICES:['배지 색 (red/lilac/blue)','배지 글자','내용','날짜'], FAQ:['질문','답변'] };
-const LABELS_CTX = { AGENCIES: { n: '회사 이름', img: '로고 파일 (PNG · 배경 투명)', h: '로고 크기 (높이)' } };
+const LABELS_CTX = { SITE: { note: '안내 문장' }, AGENCIES: { n: '회사 이름', img: '로고 파일 (PNG · 배경 투명)', h: '로고 크기 (높이)' } };
 const HIDDEN = new Set(['c1','c2','scenePhoto','sceneTag','s','mapQuery','portfolio']);
 const FILE_KEYS = new Set(['video','poster','photo','img','image','banner','SYSTEM_BANNER']);
 const SLIDER_KEYS = new Set(['heroTitle','heroAccent','heroEyebrow','sectionTitle','sectionLabel','pillarTitle','cardTitle','lead','body']);
