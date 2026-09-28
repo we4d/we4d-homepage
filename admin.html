@@ -132,7 +132,7 @@ const SECTIONS = [
   { key: 'SITE', sub: 'fourd',   id: 'fourd',   title: '4D 의미',            desc: '위포드 페이지 — iDol · Debut · Dream · EDucation' },
   { key: 'SITE', rest: true,      id: 'info',    title: '연락처 · 주소 · 운영시간', desc: '학원 이름, 전화, 이메일, 톡톡 · 인스타 링크, 주소, 운영시간, 플로팅 배너, 사업자 정보' },
   { key: 'SITE', sub: 'banners', id: 'banners', title: '페이지 상단 (배너 사진 · 제목 크기)', desc: '각 메뉴 맨 위 영역. 사진을 비우면 지금처럼 글만 나옵니다. 제목 크기는 페이지마다 따로 조절됩니다' },
-  { key: 'SITE', design: true,    id: 'design',  title: '그 밖의 글씨 크기 · 색', desc: '입력칸이 따로 없는 글씨(영문 섹션 제목, 오디션·입시·취미, 본문 전체)의 크기와 색. 크기 100%가 기본, 색은 [기본으로]를 누르면 화면마다 자동' },
+  { key: 'SITE', design: true,    id: 'design',  title: '공통 글씨 (입력칸이 없는 곳)', desc: '홈페이지에 고정으로 적힌 글씨의 크기·색입니다. 나머지 글씨는 각 글 입력칸 바로 아래에서 조절하세요' },
   { key: 'DIRECTOR',    title: '대표원장 인사말',      desc: '위포드 페이지 — 이름, 사진, 인사말, 약력' },
   { key: 'STEPS',       title: 'SYSTEM 6단계',        desc: '위포드 페이지 — 교육 과정 6단계' },
   { key: 'SYSTEM_BANNER', title: 'SYSTEM 배너 사진', desc: '6단계 위 배너 배경 사진 (없으면 그라데이션)' },
@@ -174,11 +174,31 @@ const SLIDER_KEYS = new Set(['heroTitle','heroAccent','heroEyebrow','sectionTitl
 const HERO_SLIDERS = { ts:[50,170,5,100], h:[10,70,1,34], bh:[25,80,1,46], dim:[0,90,5,60], brightness:[60,200,5,105], gray:[0,100,5,0], sat:[50,180,5,100], shade:[0,100,5,100], logoSize:[20,64,1,30], taglineSize:[8,18,1,10] };
 const SLIDER_UNIT = { h:'px', bh:'vh', logoSize: 'px', taglineSize: 'px' };
 // 문구 입력칸 바로 아래에 붙는 글씨 크기 슬라이더: "경로" → SITE.design 의 키
-const SLIDER_AFTER = { 'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.tagline': 'taglineSize', 'SITE.hero.bigText': 'heroTitle', 'SITE.hero.accent': 'heroAccent', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
-const SLIDER_AFTER_LABEL = { heroEyebrow: '↳ 위 글씨 크기', taglineSize: '↳ 로고 아래 글씨 크기', heroTitle: '↳ 위 제목 글씨 크기', heroAccent: '↳ 위 흘림체 글씨 크기', lead: '↳ 소개 문장 글씨 크기 (모든 화면 공통)', cardTitle: '↳ 위 카드 제목 글씨 크기 (모든 화면 공통)' };
+const SLIDER_AFTER = {
+  'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.tagline': 'taglineSize', 'SITE.hero.bigText': 'heroTitle', 'SITE.hero.accent': 'heroAccent',
+  'SITE.parents.en': 'sectionTitle', 'SITE.parents.title': 'cardTitle', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle',
+  'SITE.fourd.title': 'sectionTitle', 'SITE.fourd.lead': 'lead', 'SITE.fourd.items': 'cardTitle',
+  'DIRECTOR.headline': 'sectionTitle', 'DIRECTOR.paragraphs': 'lead', 'DIRECTOR.role': 'body',
+  'STEPS': 'cardTitle', 'INST_CATS': 'cardTitle', 'INSTRUCTORS': 'cardTitle', 'LESSONS': 'cardTitle', 'NOTICES': 'body', 'EVENTS': 'body', 'FAQ': 'body'
+};
+const SLIDER_AFTER_LABEL = {
+  heroEyebrow: '↳ 위 글씨 크기', taglineSize: '↳ 로고 아래 글씨 크기', heroTitle: '↳ 위 제목 글씨 크기', heroAccent: '↳ 위 문구 글씨 크기',
+  sectionTitle: '↳ 위 제목 글씨 크기 (같은 종류 제목 공통)', lead: '↳ 위 문장 글씨 크기 (모든 화면 공통)',
+  cardTitle: '↳ 위 카드 제목 글씨 크기 (모든 화면 공통)', body: '↳ 위 본문 글씨 크기 (모든 화면 공통)'
+};
 // 문구 입력칸 아래에 붙는 글씨 색: "경로" → SITE.colors 의 키 (크기 슬라이더 다음에 표시)
-const COLOR_AFTER = { 'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.hero.bigText': 'hero', 'SITE.hero.accent': 'heroAccent', 'SITE.tagline': 'tagline', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle' };
-const COLOR_LABEL = { heroEyebrow: '↳ 위 글씨 색', hero: '↳ 위 제목 글씨 색', heroAccent: '↳ 위 흘림체 글씨 색', tagline: '↳ 로고 아래 글씨 색', lead: '↳ 소개 문장 글씨 색 (모든 화면 공통)', cardTitle: '↳ 카드 제목 글씨 색 (모든 화면 공통)', sectionTitle: '섹션 큰 제목 색', sectionLabel: '섹션 작은 라벨 색', pillarTitle: '오디션·입시·취미 글씨 색', body: '본문 글씨 색' };
+const COLOR_AFTER = {
+  'SITE.hero.eyebrow': 'heroEyebrow', 'SITE.hero.bigText': 'hero', 'SITE.hero.accent': 'heroAccent', 'SITE.tagline': 'tagline',
+  'SITE.parents.en': 'sectionTitle', 'SITE.parents.title': 'cardTitle', 'SITE.parents.lead': 'lead', 'SITE.parents.items': 'cardTitle',
+  'SITE.fourd.title': 'sectionTitle', 'SITE.fourd.lead': 'lead', 'SITE.fourd.items': 'cardTitle',
+  'DIRECTOR.headline': 'sectionTitle', 'DIRECTOR.paragraphs': 'lead',
+  'STEPS': 'cardTitle', 'INST_CATS': 'cardTitle', 'INSTRUCTORS': 'cardTitle', 'LESSONS': 'cardTitle', 'NOTICES': 'body', 'EVENTS': 'body', 'FAQ': 'body'
+};
+const COLOR_LABEL = {
+  heroEyebrow: '↳ 위 글씨 색', hero: '↳ 위 제목 글씨 색', heroAccent: '↳ 위 문구 글씨 색', tagline: '↳ 로고 아래 글씨 색',
+  sectionTitle: '↳ 위 제목 글씨 색 (같은 종류 제목 공통)', sectionLabel: '↳ 작은 라벨 색 (공통)', pillarTitle: '↳ 오디션·입시·취미 글씨 색',
+  lead: '↳ 위 문장 글씨 색 (모든 화면 공통)', cardTitle: '↳ 위 카드 제목 글씨 색 (모든 화면 공통)', body: '↳ 위 본문 글씨 색 (모든 화면 공통)'
+};
 function renderColorPick(v, path) { return `<div class="sl" style="grid-template-columns:52px 1fr auto"><input type="color" ${pathAttr(path)} value="${/^#[0-9a-f]{6}$/i.test(v || '') ? v : '#ffffff'}" style="width:48px;height:36px;padding:2px;border:1px solid var(--line);border-radius:8px;background:#fff"><span class="mono">${v ? esc(v) : '기본색 (화면마다 자동)'}</span><button type="button" class="btn btn-line btn-sm" data-clear="${esc(JSON.stringify(path))}">기본으로</button></div>`; }
 const UPLOAD_DIR = { video:'assets', poster:'assets', photo:'assets/inst', img:'assets/logos', image:'assets/popup', banner:'assets/banner', SYSTEM_BANNER:'assets' };
 
@@ -234,15 +254,23 @@ function renderFile(v, path, key) {
 function renderObject(obj, path) {
   return `<div class="group">${Object.keys(obj).filter(k => !HIDDEN.has(k)).map(k => renderField(k, obj[k], path.concat(k))).join('')}</div>`;
 }
-function renderField(k, v, path) {
-  const ctx = LABELS_CTX[path[0]] && LABELS_CTX[path[0]][k];
-  let html = `<div class="field"><label>${esc(ctx || lab(k))}</label><div>${renderValue(v, path, k)}</div></div>`;
-  const sk = SLIDER_AFTER[path.join('.')];
-  // 크기 값이 SITE.design 에 있으면 그쪽, 아니면 SITE 바로 아래(예: taglineSize)
-  if (sk) { const inDesign = data.SITE.design[sk] != null; const p = inDesign ? ['SITE', 'design', sk] : ['SITE', sk]; const val = inDesign ? data.SITE.design[sk] : data.SITE[sk]; html += `<div class="field field-sl"><label>${esc(SLIDER_AFTER_LABEL[sk] || '↳ 글씨 크기')}</label><div>${renderValue(val, p, sk)}</div></div>`; }
-  const ck = COLOR_AFTER[path.join('.')];
+// 글 바로 아래에 붙는 '크기 · 색' 줄 (SLIDER_AFTER / COLOR_AFTER 에 등록된 경로)
+function afterRows(mapKey) {
+  let html = '';
+  const sk = SLIDER_AFTER[mapKey];
+  if (sk) {
+    const inDesign = data.SITE.design[sk] != null;
+    const p = inDesign ? ['SITE', 'design', sk] : ['SITE', sk];
+    const val = inDesign ? data.SITE.design[sk] : data.SITE[sk];
+    html += `<div class="field field-sl"><label>${esc(SLIDER_AFTER_LABEL[sk] || '↳ 글씨 크기')}</label><div>${renderValue(val, p, sk)}</div></div>`;
+  }
+  const ck = COLOR_AFTER[mapKey];
   if (ck) html += `<div class="field field-sl"><label>${esc(COLOR_LABEL[ck] || '↳ 글씨 색')}</label><div>${renderColorPick(data.SITE.colors[ck], ['SITE', 'colors', ck])}</div></div>`;
   return html;
+}
+function renderField(k, v, path) {
+  const ctx = LABELS_CTX[path[0]] && LABELS_CTX[path[0]][k];
+  return `<div class="field"><label>${esc(ctx || lab(k))}</label><div>${renderValue(v, path, k)}</div></div>` + afterRows(path.join('.'));
 }
 function renderPrimList(arr, path) {
   return `<div class="rows" ${pathAttr(path)}>${arr.map((x, i) => `<div class="row" style="grid-template-columns:1fr 30px">${String(x).length > 70 ? `<textarea ${pathAttr(path.concat(i))} style="min-height:60px">${esc(x)}</textarea>` : `<input type="text" ${pathAttr(path.concat(i))} value="${esc(x)}">`}<button class="x" data-del="${esc(JSON.stringify(path.concat(i)))}" title="삭제">×</button></div>`).join('')}</div><button class="btn btn-line btn-sm add" data-add="${esc(JSON.stringify(path))}" data-kind="prim">+ 줄 추가</button>`;
@@ -266,7 +294,7 @@ function renderAll() {
     else if (s.keys) body = s.keys.filter(k => k in v).map(k => renderField(k, v[k], [s.key, k])).join('');
     else if (s.rest) { const used = new Set(SECTIONS.filter(x => x.key === s.key).flatMap(x => x.sub ? [x.sub] : (x.keys || [])).concat('design')); body = Object.keys(v).filter(k => !used.has(k) && !HIDDEN.has(k)).map(k => renderField(k, v[k], [s.key, k])).join(''); }
     else if (s.design) { const placed = new Set(Object.values(SLIDER_AFTER)); const pc = new Set(Object.values(COLOR_AFTER)); body = Object.keys(v.design).filter(k => !placed.has(k)).map(k => renderField(k, v.design[k], [s.key, 'design', k]) + (k in v.colors && !pc.has(k) ? `<div class="field field-sl"><label>${esc(COLOR_LABEL[k] || '↳ 색')}</label><div>${renderColorPick(v.colors[k], [s.key, 'colors', k])}</div></div>` : '')).join(''); }
-    else body = (typeof v === 'object') ? (Array.isArray(v) ? renderValue(v, [s.key], s.key) : fields(v, [s.key])) : renderField(s.key, v, [s.key]);
+    else body = (typeof v === 'object') ? (Array.isArray(v) ? renderValue(v, [s.key], s.key) + afterRows(s.key) : fields(v, [s.key])) : renderField(s.key, v, [s.key]);
     return `<section class="sec" id="sec-${s.id || s.key}"><h2>${esc(s.title)}</h2><p class="desc">${esc(s.desc)}</p>${body}</section>`;
   }).join('');
   $('#sideNav').innerHTML = SECTIONS.map(s => `<a href="#sec-${s.id || s.key}">${esc(s.title)}</a>`).join('') + `<div class="hint">고친 내용은 브라우저에 임시 저장됩니다.<br>[저장]을 눌러야 홈페이지에 반영됩니다.</div>`;
