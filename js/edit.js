@@ -373,7 +373,7 @@
       const a = e.target.dataset.a;
       if (a === 'save') save(e.target);
       if (a === 'view') { if (dirty && !confirm('저장하지 않은 수정이 있습니다. 나갈까요?')) return; location.href = '/'; }
-      if (a === 'form') { if (dirty && !confirm('저장하지 않은 수정이 있습니다. 나갈까요?')) return; location.href = '/admin.html'; }
+      if (a === 'form') { if (dirty && !confirm('저장하지 않은 수정이 있습니다. 나갈까요?')) return; location.href = 'admin-form.html'; }
     });
     document.body.classList.add('ed-on');
     updateBar();
