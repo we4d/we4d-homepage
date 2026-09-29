@@ -159,7 +159,8 @@
     const r = node.getBoundingClientRect();
     t.style.top = (window.scrollY + r.bottom + 10) + 'px';
     t.style.left = Math.max(12, Math.min(window.scrollX + r.left, window.scrollX + innerWidth - 280)) + 'px';
-    t.addEventListener('mousedown', e => e.preventDefault());
+    // 도구창 빈 곳을 눌러도 글 편집이 풀리지 않게. 단, 막대·색·버튼은 그대로 눌리게 둔다
+    t.addEventListener('mousedown', e => { if (!e.target.closest('input,button,select,textarea,label')) e.preventDefault(); });
     const range = t.querySelector('[data-k=size]');
     if (range) range.addEventListener('input', () => {
       const v = Number(range.value);
