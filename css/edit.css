@@ -49,3 +49,10 @@ body.ed-on [data-item]:hover{outline:1px dashed rgba(216,180,254,.6);outline-off
 .ed-toast.on{opacity:1}
 .ed-toast.err{background:#DC2626}
 @media (max-width:640px){ .ed-bar{gap:6px;padding:0 10px;font-size:12px} .ed-btn{padding:8px 12px} .ed-tool{width:min(260px,92vw)} }
+
+/* 글상자 폭 조절 손잡이 · 도구창 글씨체 선택 */
+body.ed-on [data-ed].ed-resize{min-width:90px}
+.ed-wh{position:absolute;z-index:9050;width:12px;border-radius:6px;background:linear-gradient(180deg,#7C3AED,#D8B4FE);opacity:.85;cursor:ew-resize;touch-action:none;box-shadow:0 2px 10px rgba(124,58,237,.5)}
+.ed-wh:hover{opacity:1}
+.ed-tool select{width:100%;padding:5px 6px;border:1px solid #e3dcf1;border-radius:8px;font:inherit;background:#fff}
+.ed-tool .row small.note{font-size:11px}

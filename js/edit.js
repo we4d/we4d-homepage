@@ -15,6 +15,8 @@
   if (typeof POPUPS !== 'undefined') DATA.POPUPS = POPUPS;
   if (!SITE.texts) SITE.texts = {};
   if (!SITE.sizes) SITE.sizes = {};
+  if (!SITE.widths) SITE.widths = {};
+  if (!SITE.fonts) SITE.fonts = {};
   if (!SITE.colors) SITE.colors = {};
   if (!SITE.design) SITE.design = {};
 
@@ -89,13 +91,64 @@
 
   /* ---------- 글 편집 ---------- */
   let active = null, tool = null;
-  function closeTool() { if (tool) { tool.remove(); tool = null; } if (active) { active.classList.remove('ed-active'); active.removeAttribute('contenteditable'); active = null; } }
+  /* ---------- 글상자 폭 손잡이 (오른쪽 세로 막대를 끌면 폭이 바뀜) ---------- */
+  let wh = null, whTarget = null;
+  const placeHandle = () => {
+    if (!wh || !whTarget) return;
+    const r = whTarget.getBoundingClientRect();
+    wh.style.top = (window.scrollY + r.top) + 'px';
+    wh.style.left = (window.scrollX + r.right - 6) + 'px';
+    wh.style.height = Math.max(24, r.height) + 'px';
+  };
+  function hideHandle() {
+    if (wh) { wh.remove(); wh = null; }
+    whTarget = null;
+    removeEventListener('scroll', placeHandle, true); removeEventListener('resize', placeHandle);
+  }
+  function showHandle(node) {
+    hideHandle();
+    wh = el('div', 'ed-wh'); wh.title = '끌어서 글상자 폭 조절';
+    document.body.appendChild(wh); whTarget = node; placeHandle();
+    addEventListener('scroll', placeHandle, true); addEventListener('resize', placeHandle);
+    wh.addEventListener('pointerdown', e => {
+      e.preventDefault(); e.stopPropagation();
+      wh.setPointerCapture(e.pointerId);
+      const x0 = e.clientX, w0 = node.getBoundingClientRect().width;
+      const mv = ev => {
+        const w = Math.max(90, Math.round(w0 + (ev.clientX - x0)));
+        node.style.width = w + 'px'; node.style.maxWidth = w + 'px'; placeHandle();
+      };
+      const up = () => { wh.removeEventListener('pointermove', mv); wh.removeEventListener('pointerup', up); keepWidth(node); };
+      wh.addEventListener('pointermove', mv); wh.addEventListener('pointerup', up);
+    });
+  }
+  // 바뀐 폭을 저장 (max-width 로 두어 좁은 화면에서는 자동으로 줄어들게)
+  function keepWidth(node) {
+    if (!node || !node.style.maxWidth) return;
+    const w = Math.round(parseFloat(node.style.maxWidth));
+    if (!w) return;
+    SITE.widths[selectorOf(node)] = w;
+    node.style.width = '';
+    dirty = true; updateBar();
+  }
+  function closeTool() {
+    if (tool) { tool.remove(); tool = null; }
+    if (active) {
+      keepWidth(active); hideHandle();
+      active.classList.remove('ed-active', 'ed-resize');
+      active.style.width = '';
+      active.removeAttribute('contenteditable'); active = null;
+    }
+  }
 
   function startEdit(node, ev) {
     if (active === node) return;
     closeTool();
     active = node; node.classList.add('ed-active');
     node.setAttribute('contenteditable', 'true');
+    // 덩어리(문단·제목)면 오른쪽에 손잡이를 달아 글상자 폭을 끌어서 조절
+    const disp = getComputedStyle(node).display;
+    if (/^(block|flex|grid|list-item|table-cell)$/.test(disp)) { node.classList.add('ed-resize'); showHandle(node); }
     node.focus();
     const before = node.innerHTML;
     node.addEventListener('blur', function onBlur() {
@@ -135,6 +188,9 @@
     }));
   }
 
+  // 고를 수 있는 글씨체 (실제 글꼴은 app.js 의 FONT_STACKS)
+  const FONTS = [['', '기본'], ['gothic', '고딕 (기본 본문)'], ['dodum', '고운돋움 (부드러운 고딕)'], ['myeongjo', '명조 (나눔명조)'], ['black', '굵은 제목 (블랙한산스)'], ['pen', '손글씨 (나눔펜)'], ['archivo', '영문 대문자 (Archivo)'], ['mono', '라벨·숫자 (모노)']];
+
   // 클릭한 글자 하나의 크기 (SITE.sizes) — 원래 크기의 몇 % 인지로 저장
   function baseFontSize(node) {
     const keep = node.style.fontSize; node.style.fontSize = '';
@@ -149,12 +205,15 @@
     const base = baseFontSize(node);
     const t = el('div', 'ed-tool');
     const colorVal = info.color ? (SITE.colors[info.color] || '') : '';
+    const canWide = node.classList.contains('ed-resize');
     t.innerHTML =
       `<h6>${info.name}</h6>` +
       `<div class="row"><span>크기</span><input type="range" min="50" max="250" step="5" value="${pct}" data-k="size"><b data-out>${pct}%</b></div>` +
       (info.color ? `<div class="row"><span>색</span><input type="color" value="${/^#[0-9a-f]{6}$/i.test(colorVal) ? colorVal : '#ffffff'}" data-k="color"><button class="mini" data-k="colorReset">기본색</button></div>` : '') +
+      `<div class="row"><span>글씨체</span><select data-k="font">${FONTS.map(([k, label]) => `<option value="${k}"${(SITE.fonts[sel] || '') === k ? ' selected' : ''}>${label}</option>`).join('')}</select><span></span></div>` +
+      (canWide ? `<div class="row"><span>글상자</span><small class="note" style="margin:0">오른쪽 보라색 막대를 끌어 폭 조절</small><button class="mini" data-k="wreset">원래대로</button></div>` : '') +
       (info.banner ? bannerRows(info.banner) : '') +
-      `<div class="note">크기는 <b>클릭한 글자만</b> 바뀝니다. 색은 같은 종류의 글이 함께 바뀝니다.</div>`;
+      `<div class="note">크기 · 글씨체 · 글상자 폭은 <b>클릭한 글자만</b> 바뀝니다. 색은 같은 종류의 글이 함께 바뀝니다.</div>`;
     document.body.appendChild(t);
     const r = node.getBoundingClientRect();
     t.style.top = (window.scrollY + r.bottom + 10) + 'px';
@@ -167,6 +226,18 @@
       if (v === 100) { delete SITE.sizes[sel]; node.style.fontSize = ''; }
       else { SITE.sizes[sel] = v; node.style.fontSize = (base * v / 100).toFixed(1) + 'px'; }
       t.querySelector('[data-out]').textContent = v + '%';
+      dirty = true; updateBar();
+    });
+    const fsel = t.querySelector('[data-k=font]');
+    if (fsel) fsel.addEventListener('change', () => {
+      const k = fsel.value;
+      if (k) { SITE.fonts[sel] = k; node.style.fontFamily = (window.FONT_STACKS || {})[k] || ''; }
+      else { delete SITE.fonts[sel]; node.style.fontFamily = ''; }
+      dirty = true; updateBar();
+    });
+    const wr = t.querySelector('[data-k=wreset]');
+    if (wr) wr.addEventListener('click', () => {
+      delete SITE.widths[sel]; node.style.width = ''; node.style.maxWidth = ''; placeHandle();
       dirty = true; updateBar();
     });
     const col = t.querySelector('[data-k=color]');

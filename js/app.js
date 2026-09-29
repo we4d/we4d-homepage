@@ -411,14 +411,25 @@ route();
 })();
 
 /* ============================================================
-   11. 글자 하나하나의 크기 (SITE.sizes) — 현장 편집에서 조절한 값
-       키 = 그 글의 위치(선택자), 값 = % (100 = 원래 크기)
-       화면 폭에 따라 달라지는 원래 크기를 기준으로 곱해 주므로
-       휴대폰에서도 비율이 그대로 유지됩니다.
+   11. 글자 하나하나의 꾸밈 — 현장 편집에서 조절한 값
+       SITE.sizes  : 크기 %  (100 = 원래 크기, 화면 폭에 맞춘 원래 크기에 곱함)
+       SITE.widths : 글상자 가로 폭 px (모서리를 끌어서 조절 · 좁은 화면에선 자동으로 줄어듦)
+       SITE.fonts  : 글씨체 이름
+       키는 모두 그 글의 위치(선택자). 구조가 바뀌면 자동으로 무시됩니다.
    ============================================================ */
+const FONT_STACKS = {
+  gothic: '"Noto Sans KR","Apple SD Gothic Neo",sans-serif',
+  dodum: '"Gowun Dodum","Noto Sans KR",sans-serif',
+  myeongjo: '"Nanum Myeongjo",serif',
+  black: '"Black Han Sans","Noto Sans KR",sans-serif',
+  pen: '"Nanum Pen Script",cursive',
+  archivo: '"Archivo","Arial Black",sans-serif',
+  mono: '"JetBrains Mono",monospace'
+};
+window.FONT_STACKS = FONT_STACKS;
 (function () {
-  const applySizes = () => {
-    const S = SITE.sizes || {};
+  const applyStyles = () => {
+    const S = SITE.sizes || {}, W = SITE.widths || {}, F = SITE.fonts || {};
     Object.keys(S).forEach(sel => {
       try {
         const el = document.querySelector(sel); if (!el) return;
@@ -428,10 +439,16 @@ route();
         if (pct !== 100) el.style.fontSize = (base * pct / 100).toFixed(1) + 'px';
       } catch (_) {}
     });
+    Object.keys(W).forEach(sel => {
+      try { const el = document.querySelector(sel); if (el) el.style.maxWidth = Number(W[sel]) + 'px'; } catch (_) {}
+    });
+    Object.keys(F).forEach(sel => {
+      try { const el = document.querySelector(sel); if (el && FONT_STACKS[F[sel]]) el.style.fontFamily = FONT_STACKS[F[sel]]; } catch (_) {}
+    });
   };
-  window.__applySizes = applySizes;
-  applySizes();
-  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(applySizes, 200); });
+  window.__applySizes = applyStyles;
+  applyStyles();
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(applyStyles, 200); });
 })();
 
 /* 현장 편집 모드 — 주소 뒤에 ?edit=1 이 붙었을 때만 편집 도구를 불러옴 */
