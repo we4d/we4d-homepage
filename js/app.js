@@ -220,6 +220,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest('[data-sub]'); if (!b) return;
   const wrap = b.closest('.tabpane'); $$('[data-sub]', wrap).forEach(x => x.classList.toggle('on', x === b));
   $('[data-subpane]', wrap).innerHTML = lessonCards(LESSONS[wrap.dataset.pane].sub[b.dataset.sub], ['LESSONS', wrap.dataset.pane, 'sub', b.dataset.sub]);
+  if (window.__applySizes) window.__applySizes();
 });
 
 /* ============================================================
@@ -407,6 +408,30 @@ route();
   Object.keys(T).forEach(sel => {
     try { const el = document.querySelector(sel); if (el && T[sel] != null) el.innerHTML = T[sel]; } catch (_) {}
   });
+})();
+
+/* ============================================================
+   11. 글자 하나하나의 크기 (SITE.sizes) — 현장 편집에서 조절한 값
+       키 = 그 글의 위치(선택자), 값 = % (100 = 원래 크기)
+       화면 폭에 따라 달라지는 원래 크기를 기준으로 곱해 주므로
+       휴대폰에서도 비율이 그대로 유지됩니다.
+   ============================================================ */
+(function () {
+  const applySizes = () => {
+    const S = SITE.sizes || {};
+    Object.keys(S).forEach(sel => {
+      try {
+        const el = document.querySelector(sel); if (!el) return;
+        el.style.fontSize = '';                                        // 원래 크기부터 확인
+        const base = parseFloat(getComputedStyle(el).fontSize) || 16;
+        const pct = Number(S[sel]) || 100;
+        if (pct !== 100) el.style.fontSize = (base * pct / 100).toFixed(1) + 'px';
+      } catch (_) {}
+    });
+  };
+  window.__applySizes = applySizes;
+  applySizes();
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(applySizes, 200); });
 })();
 
 /* 현장 편집 모드 — 주소 뒤에 ?edit=1 이 붙었을 때만 편집 도구를 불러옴 */

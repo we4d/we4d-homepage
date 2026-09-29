@@ -14,6 +14,7 @@
   const DATA = { SITE, DIRECTOR, STEPS, SYSTEM_BANNER, INST_CATS, INSTRUCTORS, LESSONS, NOTICES, EVENTS, HOLIDAYS, FAQ, AGENCIES };
   if (typeof POPUPS !== 'undefined') DATA.POPUPS = POPUPS;
   if (!SITE.texts) SITE.texts = {};
+  if (!SITE.sizes) SITE.sizes = {};
   if (!SITE.colors) SITE.colors = {};
   if (!SITE.design) SITE.design = {};
 
@@ -116,7 +117,7 @@
   }
 
   // 페이지 배너: 제목 크기 · 배너 높이 · 어둡게
-  const BN = [['ts', '제목 크기', 50, 200, 5, 100, '%'], ['bh', '배너 높이', 20, 90, 2, 46, 'vh'], ['dim', '어둡게', 0, 90, 5, 60, '%']];
+  const BN = [['bh', '배너 높이', 20, 90, 2, 46, 'vh'], ['dim', '어둡게', 0, 90, 5, 60, '%']];
   function bannerRows(key) {
     const b = (SITE.banners && SITE.banners[key]) || {};
     return BN.map(([k, label, min, max, step, def, unit]) =>
@@ -134,17 +135,26 @@
     }));
   }
 
+  // 클릭한 글자 하나의 크기 (SITE.sizes) — 원래 크기의 몇 % 인지로 저장
+  function baseFontSize(node) {
+    const keep = node.style.fontSize; node.style.fontSize = '';
+    const b = parseFloat(getComputedStyle(node).fontSize) || 16;
+    node.style.fontSize = keep; return b;
+  }
+
   function openTool(node) {
     const info = styleInfoFor(node);
+    const sel = selectorOf(node);
+    const pct = Number(SITE.sizes[sel]) || 100;
+    const base = baseFontSize(node);
     const t = el('div', 'ed-tool');
-    const sizeVal = info.size ? (info.size === 'taglineSize' ? SITE.taglineSize : SITE.design[info.size]) : null;
     const colorVal = info.color ? (SITE.colors[info.color] || '') : '';
     t.innerHTML =
       `<h6>${info.name}</h6>` +
-      (info.size != null ? `<div class="row"><span>크기</span><input type="range" min="${info.size === 'taglineSize' ? 8 : 50}" max="${info.size === 'taglineSize' ? 40 : 200}" step="${info.size === 'taglineSize' ? 1 : 5}" value="${sizeVal == null ? (info.size === 'taglineSize' ? 10 : 100) : sizeVal}" data-k="size"><b data-out>${sizeVal == null ? '' : sizeVal}${info.size === 'taglineSize' ? 'px' : '%'}</b></div>` : '') +
+      `<div class="row"><span>크기</span><input type="range" min="50" max="250" step="5" value="${pct}" data-k="size"><b data-out>${pct}%</b></div>` +
       (info.color ? `<div class="row"><span>색</span><input type="color" value="${/^#[0-9a-f]{6}$/i.test(colorVal) ? colorVal : '#ffffff'}" data-k="color"><button class="mini" data-k="colorReset">기본색</button></div>` : '') +
       (info.banner ? bannerRows(info.banner) : '') +
-      `<div class="note">글을 직접 고치려면 클릭해서 타이핑하세요. 같은 종류의 글은 크기·색이 함께 바뀝니다.</div>`;
+      `<div class="note">크기는 <b>클릭한 글자만</b> 바뀝니다. 색은 같은 종류의 글이 함께 바뀝니다.</div>`;
     document.body.appendChild(t);
     const r = node.getBoundingClientRect();
     t.style.top = (window.scrollY + r.bottom + 10) + 'px';
@@ -153,9 +163,9 @@
     const range = t.querySelector('[data-k=size]');
     if (range) range.addEventListener('input', () => {
       const v = Number(range.value);
-      if (info.size === 'taglineSize') { SITE.taglineSize = v; document.documentElement.style.setProperty('--tagline-fs', v + 'px'); }
-      else { SITE.design[info.size] = v; document.documentElement.style.setProperty('--sc-' + scVar(info.size), String(v / 100)); }
-      t.querySelector('[data-out]').textContent = v + (info.size === 'taglineSize' ? 'px' : '%');
+      if (v === 100) { delete SITE.sizes[sel]; node.style.fontSize = ''; }
+      else { SITE.sizes[sel] = v; node.style.fontSize = (base * v / 100).toFixed(1) + 'px'; }
+      t.querySelector('[data-out]').textContent = v + '%';
       dirty = true; updateBar();
     });
     const col = t.querySelector('[data-k=color]');
@@ -165,8 +175,6 @@
     if (info.banner) { if (!SITE.banners[info.banner]) SITE.banners[info.banner] = {}; wireBanner(t, info.banner, info.bnNode); }
     tool = t;
   }
-  const SC = { heroTitle: 'hero', heroAccent: 'hero-accent', heroEyebrow: 'hero-eyebrow', sectionTitle: 'h2', sectionLabel: 'label', pillarTitle: 'pillar', cardTitle: 'card', lead: 'lead', body: 'body' };
-  const scVar = k => SC[k] || k;
   function applyColor(key, val) {
     SITE.colors[key] = val;
     if (val) { document.documentElement.style.setProperty('--c-' + key, val); document.documentElement.setAttribute('data-c-' + key, '1'); }
