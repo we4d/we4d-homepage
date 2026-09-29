@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 9. 29. 오후 3:29:34 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 9. 29. 오후 3:37:22 저장)
    ============================================================ */
 
 const SITE = {
@@ -137,7 +137,8 @@ const SITE = {
     "note": "상담에서 목표와 포지션에 맞는 담당 트레이너를 배정해 드립니다."
   },
   "texts": {
-    "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > p": "목표가 다르면 훈련도 달라야 합니다.&nbsp;<div>세 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.</div>"
+    "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > p": "목표가 다르면 훈련도 달라야 합니다.&nbsp;<div>세 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.</div>",
+    "#page-instructors > section:nth-of-type(1) > div > p": "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다.&nbsp;<div>프로필을 클릭하면 상세 경력을 볼 수 있습니다.</div>"
   },
   "banners": {
     "about": {
@@ -183,7 +184,7 @@ const SITE = {
     "heroEyebrow": "#FFFFFF",
     "tagline": "#adea53",
     "sectionTitle": "",
-    "sectionLabel": "",
+    "sectionLabel": "#6d6969",
     "pillarTitle": "",
     "cardTitle": "",
     "lead": "",
@@ -206,7 +207,12 @@ const SITE = {
   "sizes": {
     "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > h2": 80,
     "#parents > div > div:nth-of-type(1) > div > h2": 80,
-    "#page-home > section:nth-of-type(3) > div > div:nth-of-type(1) > div > h2": 80
+    "#page-home > section:nth-of-type(3) > div > div:nth-of-type(1) > div > h2": 80,
+    "#page-about > section:nth-of-type(1) > div > h1": 70,
+    "#fourd > div > div:nth-of-type(1) > div > h2": 130,
+    "#page-about > section:nth-of-type(1) > div > span": 125,
+    "#page-instructors > section:nth-of-type(1) > div > h1": 80,
+    "#page-lessons > section:nth-of-type(1) > div > h1": 80
   }
 };
 
