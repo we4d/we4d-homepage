@@ -1,28 +1,6 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (관리 페이지 admin.html 에서 2026. 9. 28. 오후 4:07:59 저장)
-   ------------------------------------------------------------
-   ■ 이 파일은 admin.html 에서 편집하는 것을 권장합니다. 직접 고칠 때는 따옴표와 쉼표를 지키세요.
-   ■ 사진/영상은 assets/ 폴더에 넣고 경로를 적어 주세요.
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 9. 29. 오후 3:29:34 저장)
    ============================================================ */
-
-const POPUPS = [
-  {
-    "on": false,
-    "title": "10월 기획사 방문 오디션",
-    "text": "STARSHIP · JYP · PLEDIS · WAKEONE<br>10월 방문 오디션 일정이 확정되었습니다.<br>참가 문의는 상담하기로 남겨 주세요.",
-    "image": "",
-    "layout": "card",
-    "textPos": "bottom",
-    "textAlign": "center",
-    "textColor": "#ffffff",
-    "bg": "#141218",
-    "link": "#events",
-    "linkText": "일정 보기",
-    "from": "",
-    "until": "",
-    "width": 460
-  }
-];
 
 const SITE = {
   "name": "WE4D",
@@ -158,14 +136,46 @@ const SITE = {
   "instructors": {
     "note": "상담에서 목표와 포지션에 맞는 담당 트레이너를 배정해 드립니다."
   },
-  "texts": {},
+  "texts": {
+    "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > p": "목표가 다르면 훈련도 달라야 합니다.&nbsp;<div>세 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.</div>"
+  },
   "banners": {
-    "about": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
-    "instructors": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
-    "lessons": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
-    "events": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
-    "location": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 },
-    "consult": { "banner": "", "bh": 46, "dim": 60 , "ts": 100 }
+    "about": {
+      "banner": "",
+      "bh": 46,
+      "dim": 60,
+      "ts": 100
+    },
+    "instructors": {
+      "banner": "",
+      "bh": 46,
+      "dim": 60,
+      "ts": 100
+    },
+    "lessons": {
+      "banner": "",
+      "bh": 46,
+      "dim": 60,
+      "ts": 100
+    },
+    "events": {
+      "banner": "",
+      "bh": 46,
+      "dim": 60,
+      "ts": 100
+    },
+    "location": {
+      "banner": "",
+      "bh": 46,
+      "dim": 60,
+      "ts": 100
+    },
+    "consult": {
+      "banner": "",
+      "bh": 46,
+      "dim": 60,
+      "ts": 100
+    }
   },
   "colors": {
     "hero": "",
@@ -192,7 +202,12 @@ const SITE = {
   },
   "floatBubble": "궁금한 게 있나요?",
   "floatBubbleSub": "평균 응답 10분 · 무료 레벨 테스트",
-  "demoToday": "2026-09-11"
+  "demoToday": "2026-09-11",
+  "sizes": {
+    "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > h2": 80,
+    "#parents > div > div:nth-of-type(1) > div > h2": 80,
+    "#page-home > section:nth-of-type(3) > div > div:nth-of-type(1) > div > h2": 80
+  }
 };
 
 const DIRECTOR = {
@@ -1116,5 +1131,24 @@ const AGENCIES = [
     "n": "Hi-Hat",
     "img": "assets/logos/hihat.png",
     "h": 34
+  }
+];
+
+const POPUPS = [
+  {
+    "on": false,
+    "title": "10월 기획사 방문 오디션",
+    "text": "STARSHIP · JYP · PLEDIS · WAKEONE<br>10월 방문 오디션 일정이 확정되었습니다.<br>참가 문의는 상담하기로 남겨 주세요.",
+    "image": "",
+    "layout": "card",
+    "textPos": "bottom",
+    "textAlign": "center",
+    "textColor": "#ffffff",
+    "bg": "#141218",
+    "link": "#events",
+    "linkText": "일정 보기",
+    "from": "",
+    "until": "",
+    "width": 460
   }
 ];
