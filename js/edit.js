@@ -150,6 +150,16 @@
     const disp = getComputedStyle(node).display;
     if (/^(block|flex|grid|list-item|table-cell)$/.test(disp)) { node.classList.add('ed-resize'); showHandle(node); }
     node.focus();
+    // 엔터는 줄바꿈(<br>) 으로, 붙여넣기는 글자만 — 지저분한 태그가 안 생기게
+    node.addEventListener('keydown', function onKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.execCommand('insertLineBreak'); }
+      if (e.key === 'Escape') { e.preventDefault(); node.blur(); closeTool(); }
+    });
+    node.addEventListener('paste', function onPaste(e) {
+      e.preventDefault();
+      const txt = (e.clipboardData || window.clipboardData).getData('text');
+      document.execCommand('insertText', false, txt);
+    });
     const before = node.innerHTML;
     node.addEventListener('blur', function onBlur() {
       node.removeEventListener('blur', onBlur);
@@ -159,7 +169,23 @@
     openTool(node);
   }
 
+  // 브라우저가 엔터·붙여넣기 때 넣는 <div> · &nbsp; · style 을 깔끔한 <br> 로 정리
+  function cleanHTML(h) {
+    return h
+      .replace(/<div><br\s*\/?><\/div>/gi, '<br>')
+      .replace(/<\/div>\s*<div>/gi, '<br>')
+      .replace(/<div>/gi, '<br>').replace(/<\/div>/gi, '')
+      .replace(/<span[^>]*>/gi, '').replace(/<\/span>/gi, '')
+      .replace(/ style="[^"]*"/gi, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/(<br\s*\/?>\s*)+$/i, '')
+      .replace(/[ \t]+/g, ' ')
+      .trim();
+  }
+
   function saveText(node, html) {
+    html = cleanHTML(html);
+    if (node.innerHTML !== html) node.innerHTML = html;
     const p = node.dataset.p ? JSON.parse(node.dataset.p) : null;
     if (node.dataset.prefix) html = (node.dataset.prefix + ' ' + html).trim();   // 연도 등 앞부분을 붙여서 저장
     if (p) setAt(p, html);

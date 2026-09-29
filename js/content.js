@@ -137,8 +137,8 @@ const SITE = {
     "note": "상담에서 목표와 포지션에 맞는 담당 트레이너를 배정해 드립니다."
   },
   "texts": {
-    "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > p": "목표가 다르면 훈련도 달라야 합니다.&nbsp;<div>세 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.</div>",
-    "#page-instructors > section:nth-of-type(1) > div > p": "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다.&nbsp;<div>프로필을 클릭하면 상세 경력을 볼 수 있습니다.</div>"
+    "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > p": "목표가 다르면 훈련도 달라야 합니다.<br>세 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.",
+    "#page-instructors > section:nth-of-type(1) > div > p": "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다.<br>프로필을 클릭하면 상세 경력을 볼 수 있습니다."
   },
   "banners": {
     "about": {
