@@ -700,6 +700,7 @@ function renderHome(){
   +     '<span class="dim" style="font-size:12.5px">'+reports.length+'건</span></div>'
   +   (list ? '<div class="rowlist">'+list+'</div>' : '<div class="empty">아직 작성한 리포트가 없습니다.</div>')
   +   '<button type="button" class="btn btn-primary btn-block" style="margin-top:12px;padding:11px" data-act="new">＋ 새 리포트 만들기</button>'
+  +   '<button type="button" class="btn btn-block" style="margin-top:8px" data-act="officeatt">관리 페이지 출석 가져오기 (이름으로 한 번에)</button>'
   + '</div>'
   + '<div class="section">'
   +   '<div class="section-head"><h2>학원 정보</h2></div>'
@@ -757,6 +758,60 @@ function renderStudent(){
   + footnote();
 }
 
+/* ===== 관리 페이지(학원 PC) 출석 연동: 학생 이름으로 맞춰 넣기 ===== */
+var LS_ATT = "weford.officeatt.v1";
+function officeAtt(){ try{ return JSON.parse(localStorage.getItem(LS_ATT)||"{}"); }catch(e){ return {}; } }
+function attFor(name, y, m){
+  var o = officeAtt()[y+"-"+("0"+m).slice(-2)], d = o && o[String(name||"").trim()];
+  return d ? Object.assign({}, d) : null;
+}
+function importOfficeAtt(only){
+  function ask(){ return prompt("관리 페이지에서 [리포트용 복사]한 내용을 붙여넣으세요 (Ctrl+V)"); }
+  function go(txt){
+    var mm = /^WE4D출석\|(\d{4})-(\d{2})\|([\s\S]+)$/.exec(String(txt||"").trim());
+    if(!mm) return toast("관리 페이지에서 [리포트용 복사]를 먼저 눌러 주세요");
+    var data; try{ data = JSON.parse(mm[3]); }catch(e){ return toast("복사한 내용이 올바르지 않습니다"); }
+    // 값: {"일":"p/l/a", "_k":"수강과정"} → 출석만 남기고 수강과정은 따로
+    var klass = {};
+    Object.keys(data).forEach(function(nm){ klass[nm] = data[nm]._k || ""; delete data[nm]._k; });
+    var ym = mm[1]+"-"+mm[2], y = +mm[1], m = +mm[2], n = 0, all = officeAtt();
+    all[ym] = Object.assign(all[ym]||{}, data);
+    try{ localStorage.setItem(LS_ATT, JSON.stringify(all)); }catch(e){}
+    reports.forEach(function(r){
+      if((only && r !== only) || +r.y !== y || +r.m !== m) return;
+      var d = data[String(r.student.name||"").trim()]; if(!d) return;
+      r.att = Object.assign({}, d); delete r.sample; markR(r.id); n++;
+    });
+    // 학생 명단에 없는 학생은 등록하고, 출석이 있는데 그 달 리포트가 없으면 리포트를 만들어 출석을 넣음
+    var byName = function(nm){ return students.filter(function(x){ return String(x.name||"").trim() === nm; })[0]; };
+    var has = {}; reports.forEach(function(r){ if(+r.y === y && +r.m === m) has[String(r.student.name||"").trim()] = 1; });
+    var newS = only ? [] : Object.keys(data).filter(function(nm){ return !byName(nm); });
+    var newR = only ? [] : Object.keys(data).filter(function(nm){ return !has[nm] && Object.keys(data[nm]).length; });
+    var madeS = 0, madeR = 0;
+    if((newS.length || newR.length) && confirm(
+        (newS.length ? "학생 명단에 없는 학생 "+newS.length+"명을 등록합니다.\n"+newS.join(", ")+"\n\n" : "")
+      + (newR.length ? "출석 기록이 있는데 "+m+"월 리포트가 없는 학생 "+newR.length+"명의 리포트를 만들어 출석을 넣습니다.\n" : "")
+      + "\n진행할까요?")){
+      newS.forEach(function(nm){
+        var s = {id:uid(), name:nm, klass:klass[nm]||"", subjects:(academy.subjects||[]).slice()};
+        students.push(s); markS(s.id); madeS++;
+      });
+      newR.forEach(function(nm){
+        var s = byName(nm);
+        var r = {id:uid(), sid:s.id, student:{name:nm, klass:s.klass||""}, teacher: sbName || academy.teacher || "", y:y, m:m,
+          greeting:"안녕하세요, "+nm+" 학생 담당 트레이너입니다.\n이번 달 레슨 내용을 정리해 보내드립니다.",
+          att:Object.assign({}, data[nm]), skills:[], blocks:[{id:uid(), type:"overall", title:"담당 트레이너 총평", text:""}]};
+        reports.unshift(r); markR(r.id); madeR++;
+      });
+    }
+    saveLocal(); render();
+    if(only) toast(n ? "출석을 가져왔습니다" : (only.student.name||"이 학생")+" 학생의 "+only.m+"월 출석이 복사한 내용에 없습니다");
+    else toast(m+"월 리포트 "+n+"건에 출석을 넣었습니다"+(madeS ? " · 학생 "+madeS+"명 등록" : "")+(madeR ? " · 새 리포트 "+madeR+"건" : ""));
+  }
+  if(navigator.clipboard && navigator.clipboard.readText) navigator.clipboard.readText().then(function(t){ go(/^WE4D출석/.test(String(t).trim()) ? t : ask()); }, function(){ go(ask()); });
+  else go(ask());
+}
+
 function createReportFor(s){
   var now = new Date();
   var subs = (s && s.subjects) ? s.subjects.slice() : [];
@@ -767,7 +822,7 @@ function createReportFor(s){
     teacher: sbName || academy.teacher || "",
     y:now.getFullYear(), m:now.getMonth()+1,
     greeting:"안녕하세요, "+(s&&s.name ? esc0(s.name)+" 학생 " : "")+"담당 트레이너입니다.\n이번 달 레슨 내용을 정리해 보내드립니다.",
-    att:{},
+    att: attFor(s && s.name, now.getFullYear(), now.getMonth()+1) || {},
     skills: subs.map(function(n){ return {id:uid(), name:n, level:3}; }),
     blocks: subs.map(function(n){ return {id:uid(), type:"lesson", title:n, text:""}; })
       .concat([{id:uid(), type:"overall", title:"담당 트레이너 총평", text:""}])
@@ -818,7 +873,7 @@ function renderEdit(){
   +     '<textarea class="input" data-greet="1" style="min-height:74px" placeholder="학부모님께 드리는 짧은 인사를 적어 주세요.">'+esc(r.greeting)+'</textarea></div>'
   +   '</div></div>'
   + '<div class="section">'
-  +   '<div class="section-head"><h2>출석 기록</h2></div>'
+  +   '<div class="section-head"><h2>출석 기록</h2><span class="spacer"></span><button type="button" class="btn btn-sm" data-act="officeatt1">관리 페이지 출석 가져오기</button></div>'
   +   '<div class="card">'+attendanceInner(r,true)+'</div>'
   + '</div>'
   + '<div class="section">'
@@ -1315,6 +1370,8 @@ document.addEventListener("click", function(ev){
 
   switch(t.dataset.act){
     case "new": createReportFor(null); break;
+    case "officeatt": importOfficeAtt(null); break;
+    case "officeatt1": if(r) importOfficeAtt(r); break;
     case "newstudent": {
       var ns = {id:uid(), name:"", klass:"", subjects:(academy.subjects||[]).slice()};
       students.push(ns); saveLocal(); markS(ns.id);
