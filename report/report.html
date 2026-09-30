@@ -1089,6 +1089,7 @@ function initCloud(){
   if(!window.supabase || !SB_URL) return Promise.resolve();
   try{
     SB = window.supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, autoRefreshToken:true}});
+    SB.auth.onAuthStateChange(function(ev){ if(ev === "PASSWORD_RECOVERY") setTimeout(askNewPassword, 300); });
   }catch(e){ SB = null; return Promise.resolve(); }
   return SB.auth.getSession().then(function(res){
     var s = (res && res.data) ? res.data.session : null;
@@ -1203,6 +1204,7 @@ function renderLogin(){
   +     '<div style="text-align:center;margin-top:13px;font-size:13px;color:var(--ink-2)">'
   +       (signup ? "이미 계정이 있으신가요? " : "계정이 없으신가요? ")
   +       '<button type="button" class="linkbtn" data-act="authswap">'+(signup?"로그인":"계정 만들기")+'</button>'
+  +       (signup ? "" : '<br><button type="button" class="linkbtn" style="margin-top:8px" data-act="forgot">비밀번호를 잊으셨나요?</button>')
   +     '</div>'
   +   '</div>'
   +   '<div style="text-align:center;margin-top:16px">'
@@ -1217,6 +1219,28 @@ function readAuth(){
   state.auEmail = e ? e.value.trim() : "";
   state.auName  = n ? n.value.trim() : (state.auName||"");
   return {email:state.auEmail, pass:p ? p.value : ""};
+}
+// 비밀번호 찾기: 메일로 재설정 링크 → 링크를 누르면 이 페이지로 돌아와 새 비밀번호 입력
+function sendReset(){
+  var v = readAuth();
+  var email = v.email || (prompt("가입한 이메일을 입력해 주세요.") || "").trim();
+  if(!email) return;
+  if(!SB) return authFail("서버에 연결할 수 없습니다.");
+  state.authMsg = "메일을 보내는 중…"; state.authOk = true; render();
+  SB.auth.resetPasswordForEmail(email, {redirectTo: location.origin + location.pathname}).then(function(res){
+    if(res.error) return authFail(res.error.message || "메일을 보내지 못했습니다.");
+    state.authMsg = email+" 로 비밀번호 재설정 메일을 보냈습니다. 메일의 링크를 누르면 새 비밀번호를 정할 수 있습니다."; state.authOk = true; render();
+  });
+}
+function askNewPassword(){
+  var p1 = prompt("새 비밀번호를 입력해 주세요 (6자 이상)"); if(p1 == null) return;
+  if(p1.length < 6){ alert("6자 이상으로 정해 주세요."); return askNewPassword(); }
+  if(prompt("한 번 더 입력해 주세요") !== p1){ alert("두 번 입력한 비밀번호가 다릅니다."); return askNewPassword(); }
+  SB.auth.updateUser({password:p1}).then(function(res){
+    if(res.error) return alert("바꾸지 못했습니다: "+(res.error.message||""));
+    history.replaceState(null, "", location.pathname);
+    toast("비밀번호를 바꿨습니다");
+  });
 }
 function authFail(msg){ state.authMsg = msg; state.authOk = false; render(); }
 
@@ -1417,6 +1441,7 @@ document.addEventListener("click", function(ev){
         state.screen="home"; render();
       } break;
     case "dologin": doLogin(); break;
+    case "forgot": sendReset(); break;
     case "dosignup": doSignup(); break;
     case "authswap":
       readAuth();
