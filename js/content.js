@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 9. 29. 오후 3:37:22 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 1. 오후 9:21:55 저장)
    ============================================================ */
 
 const SITE = {
@@ -58,8 +58,8 @@ const SITE = {
         "아이돌 연습생을 위한 연구를 하는 박사과정 연구자가 함께합니다. 연습 시간 · 계약 · 건강처럼 아이를 지키는 문제를 학생과 학부모님과 함께 고민합니다."
       ],
       [
-        "다음 길까지 함께 설계합니다",
-        "오디션 · 입시 · 실용음악 · 실용무용 예고 · 예대 진학까지, 아이의 포지션에 맞는 다음 길을 끝까지 함께 찾습니다."
+        "아이의 진로를 함께 설계합니다",
+        "오디션 · 입시 · 실용음악 · 실용무용 예고 · 예대 진학까지, 아이의 포지션에 맞는 진로를 끝까지 함께 찾습니다."
       ]
     ]
   },
@@ -138,7 +138,8 @@ const SITE = {
   },
   "texts": {
     "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > p": "목표가 다르면 훈련도 달라야 합니다.<br>세 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.",
-    "#page-instructors > section:nth-of-type(1) > div > p": "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다.<br>프로필을 클릭하면 상세 경력을 볼 수 있습니다."
+    "#page-instructors > section:nth-of-type(1) > div > p": "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다.<br>프로필을 클릭하면 상세 경력을 볼 수 있습니다.",
+    "#page-home > section:nth-of-type(4) > div > div > div > p": ""
   },
   "banners": {
     "about": {
@@ -213,7 +214,11 @@ const SITE = {
     "#page-about > section:nth-of-type(1) > div > span": 125,
     "#page-instructors > section:nth-of-type(1) > div > h1": 80,
     "#page-lessons > section:nth-of-type(1) > div > h1": 80
-  }
+  },
+  "widths": {
+    "#page-home > section:nth-of-type(4) > div > div > div > p": 91
+  },
+  "fonts": {}
 };
 
 const DIRECTOR = {
