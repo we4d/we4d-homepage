@@ -686,7 +686,12 @@ footer{background:var(--ink);color:var(--paper);border-top:1px solid var(--line-
 .foot-sns a{display:inline-flex;align-items:center;gap:12px;font-size:17px;font-weight:700;color:#fff;background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:999px;padding:18px 34px;text-decoration:none;transition:background .2s,border-color .2s,color .2s,transform .2s}
 .foot-sns a svg{width:26px;height:26px;flex:none}
 @media (max-width:420px){.foot-sns a{font-size:15px;padding:15px 24px;gap:10px}.foot-sns a svg{width:22px;height:22px}}
-.foot-sns a:hover{background:var(--lilac);border-color:var(--lilac);color:var(--ink);transform:translateY(-2px)}
+.foot-sns a:hover{transform:translateY(-2px)}
+/* 각 SNS 고유 색 */
+.foot-sns a.ig{background:linear-gradient(45deg,#F9CE34 0%,#EE2A7B 48%,#6228D7 100%);border-color:transparent;color:#fff}
+.foot-sns a.yt{background:#FF0000;border-color:transparent;color:#fff}
+.foot-sns a.ig:hover{box-shadow:0 10px 26px -8px rgba(238,42,123,.7)}
+.foot-sns a.yt:hover{box-shadow:0 10px 26px -8px rgba(255,0,0,.6)}
 .foot .logo .d{font-size:34px}
 .foot p{font-size:13px;color:var(--mute-d);margin-top:14px;max-width:32em}
 .foot h5{margin:0 0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--lilac)}
