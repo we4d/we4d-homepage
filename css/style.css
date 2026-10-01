@@ -676,22 +676,24 @@ ul{margin:0;padding:0;list-style:none}
    ============================================================ */
 footer{background:var(--ink);color:var(--paper);border-top:1px solid var(--line-d);padding:64px 0 28px}
 /* 푸터: 한쪽에 로고+주소·전화, 다른 쪽에 인스타·유튜브 (메뉴 목록은 상단과 중복이라 뺌) */
-.foot{display:grid;grid-template-columns:1fr auto;gap:32px 56px;align-items:center}
+.foot{display:grid;grid-template-columns:auto 1fr;gap:32px 56px;align-items:center}
 @media (max-width:760px){.foot{grid-template-columns:1fr;gap:26px}}
-.foot-addr{font-size:14px;color:rgba(255,255,255,.8);line-height:1.9;margin-top:14px;max-width:none}
+.foot-id{text-align:right}
+.foot-id .logo{display:flex;justify-content:flex-end;align-items:flex-end}
+@media (max-width:760px){.foot-id{text-align:left}.foot-id .logo{justify-content:flex-start}}
+.foot p.foot-addr{font-size:14px;color:rgba(255,255,255,.8);line-height:1.9;margin-top:14px;max-width:none}
 .foot-addr a{color:inherit;text-decoration:none}
 .foot-addr a:hover{color:var(--lilac)}
-.foot-sns{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
-@media (max-width:760px){.foot-sns{justify-content:flex-start}}
+.foot-sns{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-start}
 .foot-sns a{display:inline-flex;align-items:center;gap:12px;font-size:17px;font-weight:700;color:#fff;background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:999px;padding:18px 34px;text-decoration:none;transition:background .2s,border-color .2s,color .2s,transform .2s}
 .foot-sns a svg{width:26px;height:26px;flex:none}
 @media (max-width:420px){.foot-sns a{font-size:15px;padding:15px 24px;gap:10px}.foot-sns a svg{width:22px;height:22px}}
-.foot-sns a:hover{transform:translateY(-2px)}
-/* 각 SNS 고유 색 */
-.foot-sns a.ig{background:linear-gradient(45deg,#F9CE34 0%,#EE2A7B 48%,#6228D7 100%);border-color:transparent;color:#fff}
-.foot-sns a.yt{background:#FF0000;border-color:transparent;color:#fff}
-.foot-sns a.ig:hover{box-shadow:0 10px 26px -8px rgba(238,42,123,.7)}
-.foot-sns a.yt:hover{box-shadow:0 10px 26px -8px rgba(255,0,0,.6)}
+.foot-sns a:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)}
+/* 바탕은 그대로 두고 아이콘·글씨에만 각 SNS 고유 색 */
+.foot-sns a.ig span{background:linear-gradient(45deg,#F9CE34 0%,#EE2A7B 48%,#6228D7 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.foot-sns a.yt span{color:#FF0000}
+.foot-sns a.ig:hover{border-color:#EE2A7B}
+.foot-sns a.yt:hover{border-color:#FF0000}
 .foot .logo .d{font-size:34px}
 .foot p{font-size:13px;color:var(--mute-d);margin-top:14px;max-width:32em}
 .foot h5{margin:0 0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--lilac)}
