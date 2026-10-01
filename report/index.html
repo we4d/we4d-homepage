@@ -277,6 +277,7 @@ button.pip:hover{filter:brightness(.94)}
 }
 .chip:hover{border-color:var(--lilac); background:var(--lilac-soft); color:var(--violet)}
 .chip.on,.chip.on:hover{background:var(--violet); border-color:var(--violet); color:var(--on-violet)}
+.chip-x{background:transparent; border:none; color:var(--rose); font-size:13px; padding:2px 6px 2px 0; margin-left:-4px; cursor:pointer}
 .metabtn{background:transparent; border:none; text-align:left; flex:1; min-width:0; padding:0; font:inherit}
 .addrow{display:flex; gap:8px; margin-top:11px}
 .addrow .input{flex:1}
@@ -728,7 +729,8 @@ function renderStudent(){
   (s.subjects||[]).forEach(function(x){ if(all.indexOf(x)<0) all.push(x); });
   var chips = all.map(function(name){
     var on = (s.subjects||[]).indexOf(name) >= 0;
-    return '<button type="button" class="chip'+(on?" on":"")+'" data-togglesub="'+esc(name)+'">'+esc(name)+'</button>';
+    return '<button type="button" class="chip'+(on?" on":"")+'" data-togglesub="'+esc(name)+'">'+esc(name)+'</button>'
+      + '<button type="button" class="chip-x" data-delsub="'+esc(name)+'" aria-label="'+esc(name)+' 과목 삭제">✕</button>';
   }).join("");
   var mine = (s.subjects||[]).length;
 
@@ -1322,7 +1324,7 @@ function touch(){ var r=findReport(); if(r) delete r.sample; saveLocal(); markR(
 function touchS(){ var s=pick(students, state.sid); if(s) delete s.sample; saveLocal(); markS(state.sid); }
 
 document.addEventListener("click", function(ev){
-  var t = ev.target.closest("[data-act],[data-open],[data-day],[data-skill],[data-skilldel],[data-addtype],[data-bup],[data-bdown],[data-bdel],[data-qty],[data-addskillname],[data-addlesson],[data-student],[data-newfor],[data-togglesub]");
+  var t = ev.target.closest("[data-act],[data-open],[data-day],[data-skill],[data-skilldel],[data-addtype],[data-bup],[data-bdown],[data-bdel],[data-qty],[data-addskillname],[data-addlesson],[data-student],[data-newfor],[data-togglesub],[data-delsub]");
   if(!t) return;
   var r = findReport(), i;
 
@@ -1332,6 +1334,18 @@ document.addEventListener("click", function(ev){
   if(t.dataset.newfor){
     var st = pick(students, t.dataset.newfor);
     if(st) createReportFor(st);
+    return;
+  }
+  if(t.dataset.delsub){
+    var dn = t.dataset.delsub;
+    if(!confirm("'"+dn+"' 과목을 목록에서 삭제할까요?\n모든 학생의 수강 과목에서도 빠집니다. (이미 만든 리포트는 그대로)")) return;
+    var ai = (academy.subjects||[]).indexOf(dn);
+    if(ai>=0){ academy.subjects.splice(ai,1); markA(); }
+    students.forEach(function(x){
+      var xi = (x.subjects||[]).indexOf(dn);
+      if(xi>=0){ x.subjects.splice(xi,1); markS(x.id); }
+    });
+    saveLocal(); render();
     return;
   }
   if(t.dataset.togglesub){
