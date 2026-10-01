@@ -441,15 +441,25 @@
 <!-- ================================================== 푸터 -->
 <footer>
   <div class="wrap">
+    <!-- 푸터: 메뉴 목록 없이 로고 · 소개 · 주소/연락처만 (상단 메뉴와 중복이라 2026-10 정리) -->
     <div class="foot">
-      <div>
+      <div class="foot-id">
         <a href="#home" class="logo"><img src="assets/logo.png" alt="WE4D" style="height:44px"></a>
         <p>아이돌들의 선생님이 만든 진짜 KPOP 트레이닝. 오디션 · 실용음악 · 실용무용 · 취미 전문 아카데미.</p>
-        <p class="mono" style="font-size:11px;letter-spacing:.06em"><span data-site="address"></span> · <span data-site="tel"></span></p>
+        <div class="foot-sns">
+          <a href="#" data-site-href="instagram" target="_blank" rel="noopener">Instagram</a>
+          <a href="#" data-site-href="youtube" target="_blank" rel="noopener">YouTube</a>
+          <a href="#consult">상담하기</a>
+        </div>
       </div>
-      <div><h5>Menu</h5><ul><li><a href="#about">위포드</a></li><li><a href="#instructors">강사진</a></li><li><a href="#lessons">레슨 안내</a></li><li><a href="#events">행사 안내</a></li><li><a href="#location">오시는 길</a></li></ul></div>
-      <div><h5>Lessons</h5><ul><li><a href="#lessons/audition">오디션</a></li><li><a href="#lessons/entrance">입시</a></li><li><a href="#lessons/hobby">취미 · 보컬/댄스</a></li><li><a href="#lessons/hobby">미디 · 피아노 · 작곡</a></li></ul></div>
-      <div><h5>Contact</h5><ul><li><a href="#consult">상담하기</a></li><li><a href="#events">오디션 일정</a></li><li><a href="#" data-site-href="instagram" target="_blank" rel="noopener">Instagram</a></li><li><a href="#" data-site-href="youtube" target="_blank" rel="noopener">YouTube</a></li></ul></div>
+      <div class="foot-info">
+        <dl>
+          <dt>주소</dt><dd><a data-site-href="mapLink" href="#" target="_blank" rel="noopener"><span data-site="address"></span></a></dd>
+          <dt>전화</dt><dd><a id="footTel" href="#"><span data-site="tel"></span></a></dd>
+          <dt>이메일</dt><dd><span data-site="email"></span></dd>
+          <dt>운영</dt><dd id="footHours"></dd>
+        </dl>
+      </div>
     </div>
     <div class="foot-mark" aria-hidden="true">WE4D</div>
     <div class="foot-bot"><span>© 2026 WE4D ACADEMY. ALL RIGHTS RESERVED.</span><span data-site="bizNo"></span><a href="admin.html" class="adm" rel="nofollow">관리자</a></div>

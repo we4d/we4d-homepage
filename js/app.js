@@ -260,6 +260,10 @@ renderCal();
    ============================================================ */
 $('#transit').innerHTML = SITE.transit.map((t, i) => `<li data-item='["SITE","transit",${i}]'><span class="ln" style="background:${t[0]}" data-p='["SITE","transit",${i},1]'>${t[1]}</span><span data-p='["SITE","transit",${i},2]'>${t[2]}</span></li>`).join('');
 $('#hours').innerHTML = SITE.hours.map((h, i) => `<span data-p='["SITE","hours",${i},0]'>${h[0]}</span><div data-p='["SITE","hours",${i},1]'>${h[1]}</div>`).join('') + `<span>TEL</span><div><a href="tel:${SITE.telLink}" style="font-weight:700" data-site="tel">${SITE.tel}</a></div>`;
+/* 푸터 — 전화 걸기 링크 · 운영시간 */
+if ($('#footTel')) $('#footTel').href = 'tel:' + SITE.telLink;
+if ($('#footHours')) $('#footHours').innerHTML = SITE.hours.map((h, i) => `<span data-p='["SITE","hours",${i},0]'>${h[0]}</span> <span data-p='["SITE","hours",${i},1]'>${h[1]}</span>`).join('<br>');
+
 $('#faq').innerHTML = FAQ.map((f, i) => `<details data-item='["FAQ",${i}]'><summary data-p='["FAQ",${i},0]'>${f[0]}</summary><p data-p='["FAQ",${i},1]'>${f[1]}</p></details>`).join('');
 
 /* ============================================================

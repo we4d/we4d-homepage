@@ -431,7 +431,13 @@
   /* ---------- 저장 (GitHub) ---------- */
   async function gh(path, opt = {}) {
     const r = await fetch(API + path, { ...opt, headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', ...(opt.headers || {}) } });
-    if (!r.ok) throw new Error('GitHub ' + r.status + (r.status === 401 ? ' (토큰 확인 필요)' : ''));
+    if (!r.ok) {
+      let why = '';
+      try { const j = await r.json(); why = [j.message, ...(j.errors || []).map(e => e.message || `${e.field} ${e.code}`)].filter(Boolean).join(' / '); } catch (_) {}
+      const e = new Error('GitHub ' + r.status + (why ? ': ' + why : '') + (r.status === 401 ? ' (토큰 확인 필요)' : ''));
+      e.status = r.status; e.why = why;
+      throw e;
+    }
     return r.status === 204 ? null : r.json();
   }
   const b64 = blob => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result.split(',')[1]); fr.onerror = rej; fr.readAsDataURL(blob); });
@@ -444,23 +450,36 @@
     const src = buildContent();
     try { new Function(src)(); } catch (err) { toast('내용에 오류가 있어 저장할 수 없습니다: ' + err.message, true); return; }
     btn.disabled = true;
-    try {
-      const changes = new Map(pending); changes.set('js/content.js', new Blob([src], { type: 'text/javascript' }));
-      btn.textContent = '올리는 중…';
-      const ref = await gh(`/repos/${GH_REPO}/git/ref/heads/${GH_BRANCH}`);
-      const head = await gh(`/repos/${GH_REPO}/git/commits/${ref.object.sha}`);
-      const tree = []; let n = 0;
-      for (const [p, b] of changes) {
-        btn.textContent = `올리는 중 ${++n}/${changes.size}`;
-        const blob = await gh(`/repos/${GH_REPO}/git/blobs`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: await b64(b), encoding: 'base64' }) });
-        tree.push({ path: p, mode: '100644', type: 'blob', sha: blob.sha });
+    const changes = new Map(pending); changes.set('js/content.js', new Blob([src], { type: 'text/javascript' }));
+    const blobs = new Map();   // 올린 파일은 다시 올리지 않게 기억
+    // 올리는 도중 다른 사람이 먼저 저장하면(앞 저장과 부딪히면) 최신 내용 위에 한 번 더 시도
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        btn.textContent = attempt > 1 ? '다시 올리는 중…' : '올리는 중…';
+        const ref = await gh(`/repos/${GH_REPO}/git/ref/heads/${GH_BRANCH}`);
+        const head = await gh(`/repos/${GH_REPO}/git/commits/${ref.object.sha}`);
+        const tree = []; let n = 0;
+        for (const [p, b] of changes) {
+          btn.textContent = `올리는 중 ${++n}/${changes.size}`;
+          if (!blobs.has(p)) {
+            const blob = await gh(`/repos/${GH_REPO}/git/blobs`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: await b64(b), encoding: 'base64' }) });
+            blobs.set(p, blob.sha);
+          }
+          tree.push({ path: p, mode: '100644', type: 'blob', sha: blobs.get(p) });
+        }
+        const nt = await gh(`/repos/${GH_REPO}/git/trees`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ base_tree: head.tree.sha, tree }) });
+        const commit = await gh(`/repos/${GH_REPO}/git/commits`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: '현장 편집 (' + new Date().toLocaleString('ko-KR') + ')', tree: nt.sha, parents: [head.sha] }) });
+        await gh(`/repos/${GH_REPO}/git/refs/heads/${GH_BRANCH}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sha: commit.sha }) });
+        pending.clear(); dirty = false; updateBar();
+        toast('저장했습니다 — 약 1분 뒤 홈페이지에 반영됩니다');
+        break;
+      } catch (err) {
+        const retryable = err.status === 422 || err.status === 409;
+        if (retryable && attempt < 3) { await new Promise(r => setTimeout(r, 1200 * attempt)); continue; }
+        toast('저장 실패: ' + err.message + (retryable ? ' — 잠시 뒤 [저장]을 다시 눌러 주세요' : ''), true);
+        break;
       }
-      const nt = await gh(`/repos/${GH_REPO}/git/trees`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ base_tree: head.tree.sha, tree }) });
-      const commit = await gh(`/repos/${GH_REPO}/git/commits`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: '현장 편집 (' + new Date().toLocaleString('ko-KR') + ')', tree: nt.sha, parents: [head.sha] }) });
-      await gh(`/repos/${GH_REPO}/git/refs/heads/${GH_BRANCH}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sha: commit.sha }) });
-      pending.clear(); dirty = false; updateBar();
-      toast('저장했습니다 — 약 1분 뒤 홈페이지에 반영됩니다');
-    } catch (err) { toast('저장 실패: ' + err.message, true); }
+    }
     btn.disabled = false; btn.textContent = '저장';
   }
 

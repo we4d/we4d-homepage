@@ -675,9 +675,18 @@ ul{margin:0;padding:0;list-style:none}
    푸터
    ============================================================ */
 footer{background:var(--ink);color:var(--paper);border-top:1px solid var(--line-d);padding:64px 0 28px}
-.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
-@media (max-width:860px){.foot{grid-template-columns:1fr 1fr}}
-@media (max-width:520px){.foot{grid-template-columns:1fr}}
+/* 푸터: 왼쪽 로고·소개, 오른쪽 주소·연락처 (메뉴 목록은 상단과 중복이라 뺌) */
+.foot{display:grid;grid-template-columns:1.3fr 1fr;gap:40px 56px;align-items:start}
+@media (max-width:760px){.foot{grid-template-columns:1fr;gap:28px}}
+.foot-sns{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.foot-sns a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);border:1px solid var(--line-d);border-radius:999px;padding:7px 14px;text-decoration:none;transition:border-color .2s,color .2s}
+.foot-sns a:hover{color:var(--lilac);border-color:var(--lilac)}
+.foot-info dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;margin:0;align-items:baseline}
+.foot-info dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--lilac);white-space:nowrap}
+.foot-info dd{margin:0;font-size:13.5px;color:rgba(255,255,255,.8);line-height:1.6}
+.foot-info dd a{color:inherit;text-decoration:none}
+.foot-info dd a:hover{color:var(--lilac)}
+.foot-info #footHours span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--mute-d);margin-right:6px}
 .foot .logo .d{font-size:34px}
 .foot p{font-size:13px;color:var(--mute-d);margin-top:14px;max-width:32em}
 .foot h5{margin:0 0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--lilac)}
