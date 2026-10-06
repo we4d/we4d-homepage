@@ -56,3 +56,7 @@ body.ed-on [data-ed].ed-resize{min-width:90px}
 .ed-wh:hover{opacity:1}
 .ed-tool select{width:100%;padding:5px 6px;border:1px solid #e3dcf1;border-radius:8px;font:inherit;background:#fff}
 .ed-tool .row small.note{font-size:11px}
+
+/* 편집 바가 홈페이지 상단 메뉴를 가리지 않게 54px 아래로 밀어 줌 */
+body.ed-on .gnb{top:54px}
+body.ed-on .mnav{top:calc(var(--nav-h) + 54px)}
