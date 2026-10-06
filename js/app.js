@@ -260,6 +260,17 @@ renderCal();
    ============================================================ */
 $('#transit').innerHTML = SITE.transit.map((t, i) => `<li data-item='["SITE","transit",${i}]'><span class="ln" style="background:${t[0]}" data-p='["SITE","transit",${i},1]'>${t[1]}</span><span data-p='["SITE","transit",${i},2]'>${t[2]}</span></li>`).join('');
 $('#hours').innerHTML = SITE.hours.map((h, i) => `<span data-p='["SITE","hours",${i},0]'>${h[0]}</span><div data-p='["SITE","hours",${i},1]'>${h[1]}</div>`).join('') + `<span>TEL</span><div><a href="tel:${SITE.telLink}" style="font-weight:700" data-site="tel">${SITE.tel}</a></div>`;
+/* 오시는 길 지도 — SITE.mapImage 에 사진이 있으면 사진, 없으면 실제 위치 지도 */
+if ($('#mapBox')) {
+  if (SITE.mapImage) {
+    $('#mapBox').innerHTML = `<a href="${SITE.mapLink || '#'}" target="_blank" rel="noopener" class="map-img"><img src="${SITE.mapImage}" alt="WE4D 위치 — ${SITE.address}" data-p='["SITE","mapImage"]'></a>`;
+  } else {
+    const [lat, lon] = (SITE.mapCoord || '37.5485,127.14384').split(',').map(Number);
+    const bb = [lon - 0.0036, lat - 0.0020, lon + 0.0036, lat + 0.0020].map(n => n.toFixed(5)).join('%2C');
+    $('#mapBox').innerHTML = `<iframe title="WE4D 위치 지도" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=${bb}&amp;layer=mapnik&amp;marker=${lat}%2C${lon}"></iframe>`;
+  }
+}
+
 /* 푸터 — 전화 걸기 링크 */
 if ($('#footTel')) $('#footTel').href = 'tel:' + SITE.telLink;
 

@@ -177,6 +177,7 @@
       .replace(/<div>/gi, '<br>').replace(/<\/div>/gi, '')
       .replace(/<span[^>]*>/gi, '').replace(/<\/span>/gi, '')
       .replace(/ style="[^"]*"/gi, '')
+      .replace(/ (data-ed|data-ed-img|data-p|data-item|data-bg|data-prefix|contenteditable)="[^"]*"/gi, '')   // 편집용 표시가 글에 섞이지 않게
       .replace(/&nbsp;/g, ' ')
       .replace(/(<br\s*\/?>\s*)+$/i, '')
       .replace(/[ \t]+/g, ' ')

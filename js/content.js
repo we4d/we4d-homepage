@@ -74,11 +74,13 @@ const SITE = {
   "instagram": "https://instagram.com/",
   "instagramName": "@we4d_official",
   "youtube": "https://youtube.com/",
-  "address": "서울특별시 강동구 명일동 335-1. 3층",
-  "addressSub": "지번: 강동구 명일동 335-1 · 우편번호 05306<br><b data-ed=\"1\">※ 2026년 11월 확장 이전 예정 주소입니다. 이전 전 방문 상담은 문의 후 안내드립니다.</b>",
-  "mapQuery": "서울특별시 강동구 양재대로 1603",
-  "mapLink": "https://map.naver.com/p/search/서울특별시 강동구 양재대로 1603",
-  "mapLinkKakao": "https://map.kakao.com/link/search/서울특별시 강동구 양재대로 1603",
+  "address": "서울특별시 강동구 양재대로 1602, 3층",
+  "addressSub": "지번: 강동구 명일동 335-1 · 우편번호 05295<br><b>※ 2026년 11월 확장 이전 예정 주소입니다. 이전 전 방문 상담은 문의 후 안내드립니다.</b>",
+  "mapQuery": "서울특별시 강동구 양재대로 1602",
+  "mapLink": "https://map.naver.com/p/search/서울특별시 강동구 양재대로 1602",
+  "mapImage": "",
+  "mapCoord": "37.5485,127.14384",
+  "mapLinkKakao": "https://map.kakao.com/link/search/서울특별시 강동구 양재대로 1602",
   "hours": [
     [
       "MON—FRI",
