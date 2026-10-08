@@ -459,6 +459,16 @@ window.FONT_STACKS = FONT_STACKS;
     Object.keys(F).forEach(sel => {
       try { const el = document.querySelector(sel); if (el && FONT_STACKS[F[sel]]) el.style.fontFamily = FONT_STACKS[F[sel]]; } catch (_) {}
     });
+    const M = SITE.moves || {};   // 끌어서 옮긴 위치 (원래 자리 기준 이동량)
+    Object.keys(M).forEach(sel => {
+      try {
+        const el = document.querySelector(sel); if (!el) return;
+        const [x, y] = M[sel];
+        if (!x && !y) return;
+        if (getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
+        el.style.transform = `translate(${x}px, ${y}px)`;
+      } catch (_) {}
+    });
   };
   window.__applySizes = applyStyles;
   applyStyles();

@@ -17,6 +17,7 @@
   if (!SITE.sizes) SITE.sizes = {};
   if (!SITE.widths) SITE.widths = {};
   if (!SITE.fonts) SITE.fonts = {};
+  if (!SITE.moves) SITE.moves = {};
   if (!SITE.colors) SITE.colors = {};
   if (!SITE.design) SITE.design = {};
 
@@ -91,24 +92,67 @@
 
   /* ---------- 글 편집 ---------- */
   let active = null, tool = null;
-  /* ---------- 글상자 폭 손잡이 (오른쪽 세로 막대를 끌면 폭이 바뀜) ---------- */
-  let wh = null, whTarget = null;
+  /* ---------- 위치 옮기기 (원래 자리에서 얼마나 옮겼는지를 저장) ---------- */
+  const moveOf = sel => SITE.moves[sel] || [0, 0];
+  function applyMove(node, x, y) {
+    if (!x && !y) { node.style.transform = ''; return; }
+    if (getComputedStyle(node).display === 'inline') node.style.display = 'inline-block';   // 인라인 글자는 옮길 수 없어서
+    node.style.transform = `translate(${x}px, ${y}px)`;
+  }
+  // 손잡이·사진을 끌어서 옮기기 (끝나면 저장)
+  function dragMove(node, e, after) {
+    const sel = selectorOf(node), [sx, sy] = moveOf(sel);
+    const x0 = e.clientX, y0 = e.clientY;
+    let moved = false;
+    const mv = ev => {
+      const dx = ev.clientX - x0, dy = ev.clientY - y0;
+      if (!moved && Math.abs(dx) + Math.abs(dy) < 4) return;   // 살짝 흔들린 건 클릭으로 취급
+      moved = true;
+      applyMove(node, Math.round(sx + dx), Math.round(sy + dy));
+      placeHandle();
+    };
+    const up = ev => {
+      document.removeEventListener('pointermove', mv); document.removeEventListener('pointerup', up);
+      if (moved) {
+        const x = Math.round(sx + ev.clientX - x0), y = Math.round(sy + ev.clientY - y0);
+        if (!x && !y) delete SITE.moves[sel]; else SITE.moves[sel] = [x, y];
+        dirty = true; updateBar();
+      }
+      if (after) after(moved);
+    };
+    document.addEventListener('pointermove', mv); document.addEventListener('pointerup', up);
+  }
+
+  /* ---------- 글상자 손잡이 (오른쪽=폭, 왼쪽 위=위치) ---------- */
+  let wh = null, mh = null, whTarget = null;
   const placeHandle = () => {
-    if (!wh || !whTarget) return;
+    if (!whTarget) return;
     const r = whTarget.getBoundingClientRect();
-    wh.style.top = (window.scrollY + r.top) + 'px';
-    wh.style.left = (window.scrollX + r.right - 6) + 'px';
-    wh.style.height = Math.max(24, r.height) + 'px';
+    if (wh) {
+      wh.style.top = (window.scrollY + r.top) + 'px';
+      wh.style.left = (window.scrollX + r.right - 6) + 'px';
+      wh.style.height = Math.max(24, r.height) + 'px';
+    }
+    if (mh) {
+      mh.style.top = (window.scrollY + r.top - 13) + 'px';
+      mh.style.left = (window.scrollX + r.left - 13) + 'px';
+    }
   };
   function hideHandle() {
     if (wh) { wh.remove(); wh = null; }
+    if (mh) { mh.remove(); mh = null; }
     whTarget = null;
     removeEventListener('scroll', placeHandle, true); removeEventListener('resize', placeHandle);
   }
-  function showHandle(node) {
+  function showHandle(node, widthToo) {
     hideHandle();
+    whTarget = node;
+    mh = el('div', 'ed-mv', '✥'); mh.title = '끌어서 위치 옮기기';
+    document.body.appendChild(mh);
+    mh.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); dragMove(node, e); });
+    if (!widthToo) { placeHandle(); addEventListener('scroll', placeHandle, true); addEventListener('resize', placeHandle); return; }
     wh = el('div', 'ed-wh'); wh.title = '끌어서 글상자 폭 조절';
-    document.body.appendChild(wh); whTarget = node; placeHandle();
+    document.body.appendChild(wh); placeHandle();
     addEventListener('scroll', placeHandle, true); addEventListener('resize', placeHandle);
     wh.addEventListener('pointerdown', e => {
       e.preventDefault(); e.stopPropagation();
@@ -146,9 +190,11 @@
     closeTool();
     active = node; node.classList.add('ed-active');
     node.setAttribute('contenteditable', 'true');
-    // 덩어리(문단·제목)면 오른쪽에 손잡이를 달아 글상자 폭을 끌어서 조절
+    // 손잡이: 왼쪽 위 = 위치 옮기기, 오른쪽 세로 막대 = 글상자 폭 (덩어리 글에만)
     const disp = getComputedStyle(node).display;
-    if (/^(block|flex|grid|list-item|table-cell)$/.test(disp)) { node.classList.add('ed-resize'); showHandle(node); }
+    const block = /^(block|flex|grid|list-item|table-cell)$/.test(disp);
+    if (block) node.classList.add('ed-resize');
+    showHandle(node, block);
     node.focus();
     // 엔터는 줄바꿈(<br>) 으로, 붙여넣기는 글자만 — 지저분한 태그가 안 생기게
     node.addEventListener('keydown', function onKey(e) {
@@ -239,6 +285,7 @@
       (info.color ? `<div class="row"><span>색</span><input type="color" value="${/^#[0-9a-f]{6}$/i.test(colorVal) ? colorVal : '#ffffff'}" data-k="color"><button class="mini" data-k="colorReset">기본색</button></div>` : '') +
       `<div class="row"><span>글씨체</span><select data-k="font">${FONTS.map(([k, label]) => `<option value="${k}"${(SITE.fonts[sel] || '') === k ? ' selected' : ''}>${label}</option>`).join('')}</select><span></span></div>` +
       (canWide ? `<div class="row"><span>글상자</span><small class="note" style="margin:0">오른쪽 보라색 막대를 끌어 폭 조절</small><button class="mini" data-k="wreset">원래대로</button></div>` : '') +
+      `<div class="row"><span>위치</span><small class="note" style="margin:0">왼쪽 위 ✥ 를 끌어 옮기기</small><button class="mini" data-k="mreset">원래대로</button></div>` +
       (info.banner ? bannerRows(info.banner) : '') +
       `<div class="note">크기 · 글씨체 · 글상자 폭은 <b>클릭한 글자만</b> 바뀝니다. 색은 같은 종류의 글이 함께 바뀝니다.</div>`;
     document.body.appendChild(t);
@@ -260,6 +307,11 @@
       const k = fsel.value;
       if (k) { SITE.fonts[sel] = k; node.style.fontFamily = (window.FONT_STACKS || {})[k] || ''; }
       else { delete SITE.fonts[sel]; node.style.fontFamily = ''; }
+      dirty = true; updateBar();
+    });
+    const mr = t.querySelector('[data-k=mreset]');
+    if (mr) mr.addEventListener('click', () => {
+      delete SITE.moves[sel]; node.style.transform = ''; placeHandle();
       dirty = true; updateBar();
     });
     const wr = t.querySelector('[data-k=wreset]');
@@ -387,8 +439,19 @@
   }
 
   /* ---------- 클릭 처리 ---------- */
+  // 사진·로고는 바로 끌어서 옮기기 (살짝 누르면 평소처럼 교체)
+  let dragged = false;
+  document.addEventListener('pointerdown', e => {
+    if (e.target.closest('.ed-bar,.ed-tool,.ed-menu,.ed-gate,.ed-wh,.ed-mv')) return;
+    const img = e.target.closest('[data-ed-img]');
+    if (!img || img.dataset.edImg === 'banner' || img.dataset.edImg === 'video') return;   // 배너·첫화면 영상은 화면 전체라 옮기지 않음
+    e.preventDefault();
+    dragMove(img, e, m => { dragged = m; if (m) setTimeout(() => { dragged = false; }, 50); });
+  }, true);
+
   document.addEventListener('click', e => {
     if (e.target.closest('.ed-bar,.ed-tool,.ed-menu,.ed-gate')) return;
+    if (dragged) { e.preventDefault(); e.stopPropagation(); return; }   // 방금 끌어서 옮긴 것이면 교체창을 열지 않음
     closeMenu();
     const img = e.target.closest('[data-ed-img]');
     const txt = e.target.closest('[data-ed]');
