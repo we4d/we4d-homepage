@@ -207,10 +207,25 @@ function lessonCards(d, base) {
     ${perks.length ? `<div class="lcard"><div class="head"><h3>수강 혜택</h3><span class="d">Benefits</span></div><ul>${perks.map((p, i) => `<li ${IT('perks', i)} ${P('perks', i)}>${p}</li>`).join('')}</ul></div>` : ''}
   </div>`;
 }
+/* 클래스 카드 — 사진 자리 · 구성 · 소개글 (content.js → LESSONS.<과정>.classes) */
+function classCards(list, k) {
+  if (!list || !list.length) return '';
+  return `<div class="lcl">${list.map((c, i) => {
+    const P = (...p) => `data-p='${JSON.stringify(['LESSONS', k, 'classes', i].concat(p))}'`;
+    return `<div class="lcl-card" data-item='["LESSONS","${k}","classes",${i}]'>
+      <div class="lcl-head"><h3 ${P('name')}>${c.name}</h3><span class="lcl-en" ${P('en')}>${c.en || ''}</span></div>
+      <p class="lcl-items" ${P('items')}>${c.items}</p>
+      <p class="lcl-desc" ${P('desc')}>${c.desc}</p>
+    </div>`;
+  }).join('')}</div>`;
+}
+
 $('#lessonPanes').innerHTML = Object.entries(LESSONS).map(([k, d], idx) => {
   const subKeys = d.sub ? Object.keys(d.sub) : null;
   return `<div class="tabpane${idx === 0 ? ' on' : ''}" data-pane="${k}">
     <div class="lesson-intro"><div><span class="eyebrow" data-p='["LESSONS","${k}","en"]'>${d.en}</span><h2 class="kr-title" data-p='["LESSONS","${k}","kr"]'>${d.kr}</h2><p class="lead" data-p='["LESSONS","${k}","lead"]'>${d.lead}</p></div><div class="facts">${d.facts.map((f, i) => `<div class="fact" data-item='["LESSONS","${k}","facts",${i}]'><b data-p='["LESSONS","${k}","facts",${i},0]'>${f[0]}</b><span data-p='["LESSONS","${k}","facts",${i},1]'>${f[1]}</span></div>`).join('')}</div></div>
+    <div class="lesson-photo${d.photo ? ' has-photo' : ''}"${d.photo ? ` style="background-image:url('${d.photo}')"` : ''} data-bg='["LESSONS","${k}","photo"]'><span>${d.en}</span></div>
+    ${classCards(d.classes, k)}
     ${subKeys ? `<div class="chips" data-chips>${subKeys.map((s, i) => `<button class="${i ? '' : 'on'}" data-sub="${s}">${s}</button>`).join('')}</div><div data-subpane>${lessonCards(d.sub[subKeys[0]], ['LESSONS', k, 'sub', subKeys[0]])}</div>` : lessonCards(d, ['LESSONS', k])}
   </div>`;
 }).join('');

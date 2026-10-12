@@ -745,3 +745,19 @@ html[data-c-heroEyebrow] .hero-inner .hero-sub{color:var(--c-heroEyebrow)}
 /* [위포드] 페이지 맨 아래 상담 상자 — 위/아래 여백 같게 (가운데 정렬) */
 #page-about .big-cta{margin-top:0}
 .page-hero .d-xl{font-size:calc(clamp(40px,7.2vw,104px) * var(--sc-h2,1) * var(--bn-ts,1))}   /* 페이지 제목 크기 (관리 페이지에서 페이지별 조절) */
+
+/* 레슨 — 과정 사진 1장 + 클래스별 커리큘럼 카드 (content.js → LESSONS.<과정>.photo / .classes) */
+.lesson-photo{margin-top:26px;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:21/8;background:linear-gradient(135deg,#2B2338,#0F0D14);background-size:cover;background-position:center;display:grid;place-items:center;border:1px solid var(--line)}
+.lesson-photo span{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(28px,5vw,60px);letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.lesson-photo.has-photo span{display:none}
+@media (max-width:640px){.lesson-photo{aspect-ratio:16/9}}
+.lcl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:26px 0 6px}
+.lcl-card{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);padding:22px;display:grid;gap:10px;align-content:start;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .3s}
+.lcl-card:hover{transform:translateY(-4px);border-color:var(--violet);box-shadow:0 22px 44px -26px rgba(76,29,149,.45)}
+.lcl-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.lcl-head h3{font-size:18px;font-weight:900;line-height:1.3}
+.lcl-en{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--violet);white-space:nowrap}
+.sec.dark .lcl-en{color:var(--lilac)}
+.lcl-items{font-size:13.5px;font-weight:700;line-height:1.7;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.lcl-desc{font-size:14px;line-height:1.75;color:var(--mute)}
+@media (max-width:520px){.lcl{grid-template-columns:1fr;gap:12px}}
