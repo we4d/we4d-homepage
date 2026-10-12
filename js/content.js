@@ -421,6 +421,7 @@ const LESSONS = {
       {
         "name": "프라이빗 클래스",
         "en": "PRIVATE",
+        "vip": true,
         "items": "",
         "desc": "트레이너 추천으로 운영되는 과정입니다."
       }

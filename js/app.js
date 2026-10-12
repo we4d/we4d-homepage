@@ -211,7 +211,7 @@ function classCards(list, k) {
   if (!list || !list.length) return '';
   return `<div class="lcl">${list.map((c, i) => {
     const P = (...p) => `data-p='${JSON.stringify(['LESSONS', k, 'classes', i].concat(p))}'`;
-    return `<div class="lcl-card" data-item='["LESSONS","${k}","classes",${i}]'>
+    return `<div class="lcl-card${c.vip ? ' lcl-vip' : ''}" data-item='["LESSONS","${k}","classes",${i}]'>
       <div class="lcl-head"><h3 ${P('name')}>${c.name}</h3><span class="lcl-en" ${P('en')}>${c.en || ''}</span></div>
       ${c.items ? `<p class="lcl-items" ${P('items')}>${c.items}</p>` : ''}
       <p class="lcl-desc" ${P('desc')}>${c.desc}</p>
