@@ -199,10 +199,9 @@ document.addEventListener('click', e => {
    ============================================================ */
 function lessonCards(d, base) {
   const P = (...k) => `data-p='${JSON.stringify(base.concat(k))}'`, IT = (...k) => `data-item='${JSON.stringify(base.concat(k))}'`;
-  const steps = d.steps || [], weeks = d.weeks || [], perks = d.perks || [];
+  const weeks = d.weeks || [], perks = d.perks || [];
   // 내용이 없는 카드는 아예 보이지 않게
   return `<div class="lcards">
-    ${steps.length ? `<div class="lcard"><div class="head"><h3>레슨 단계</h3><span class="d">Steps</span></div><ol>${steps.map((s, i) => `<li ${IT('steps', i)}><i>${i + 1}</i><div><b ${P('steps', i, 0)}>${s[0]}</b><span ${P('steps', i, 1)}>${s[1] || ''}</span></div></li>`).join('')}</ol></div>` : ''}
     ${weeks.length ? `<div class="lcard"><div class="head"><h3>주차별 교육 과정</h3><span class="d">Timeline</span></div><div class="weeks">${weeks.map((w, i) => `<div class="week" ${IT('weeks', i)}><i ${P('weeks', i, 0)}>${w[0]}</i><div class="bar" style="--w:${w[2]}%"><span ${P('weeks', i, 1)}>${w[1]}</span></div></div>`).join('')}</div></div>` : ''}
     ${perks.length ? `<div class="lcard"><div class="head"><h3>수강 혜택</h3><span class="d">Benefits</span></div><ul>${perks.map((p, i) => `<li ${IT('perks', i)} ${P('perks', i)}>${p}</li>`).join('')}</ul></div>` : ''}
   </div>`;
@@ -214,7 +213,7 @@ function classCards(list, k) {
     const P = (...p) => `data-p='${JSON.stringify(['LESSONS', k, 'classes', i].concat(p))}'`;
     return `<div class="lcl-card" data-item='["LESSONS","${k}","classes",${i}]'>
       <div class="lcl-head"><h3 ${P('name')}>${c.name}</h3><span class="lcl-en" ${P('en')}>${c.en || ''}</span></div>
-      <p class="lcl-items" ${P('items')}>${c.items}</p>
+      ${c.items ? `<p class="lcl-items" ${P('items')}>${c.items}</p>` : ''}
       <p class="lcl-desc" ${P('desc')}>${c.desc}</p>
     </div>`;
   }).join('')}</div>`;
