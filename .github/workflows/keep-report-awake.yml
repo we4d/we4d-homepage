@@ -1,0 +1,14 @@
+# 리포트 로그인 서버(Supabase 무료)는 일주일 동안 안 쓰면 멈춥니다.
+# 3일마다 데이터 없이 "살아 있니?"만 물어봐서 멈추지 않게 합니다.
+name: 리포트 서버 깨우기
+on:
+  schedule:
+    - cron: "0 0 */3 * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -fsS -m 30 "https://zpcksmdjcxcptdlxslwz.supabase.co/rest/v1/shares?select=id&limit=1" \
+            -H "apikey: sb_publishable_P8tAXBwa3jNNbLduZ8LRhA_LrK4Gt8-" -o /dev/null
