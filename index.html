@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<script>/* 홈페이지 주소로 잘못 보내진 리포트 링크(?s=… 또는 #z=…)를 리포트로 넘김 */
+if(/[?&]s=/.test(location.search) || /^#[a-z]=/.test(location.hash)) location.replace("/report/" + location.search + location.hash);</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WE4D Academy — 아이돌들의 선생님이 만든 진짜 KPOP 트레이닝</title>
 <meta name="description" content="강동구 명일동 KPOP 학원 WE4D(위포드). 아이돌들의 선생님이 만든 진짜 KPOP 트레이닝 — 오디션 · 실용음악 입시 · 실용무용 · 보컬 · 댄스 개인 레슨. 명일역 · 굽은다리역 도보.">

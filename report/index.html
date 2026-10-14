@@ -715,7 +715,7 @@ function renderHome(){
   +     '<div class="field"><label for="f4">담당 트레이너</label><input id="f4" class="input" value="'+esc(academy.teacher)+'" data-ac="teacher" placeholder="김수진"></div>'
   +     '<div class="field"><label for="f5">연락처</label><input id="f5" class="input" value="'+esc(academy.contact)+'" data-ac="contact" placeholder="02-000-0000"></div>'
   +     '<div class="field" style="grid-column:1/-1"><label for="f7">학부모 링크 주소</label>'
-  +       '<input id="f7" class="input" value="'+esc(academy.site||"")+'" data-ac="site" placeholder="https://we4d.co.kr">'
+  +       '<input id="f7" class="input" value="'+esc(academy.site||"")+'" data-ac="site" placeholder="https://we4d.co.kr/report">'
   +       '<span class="dim" style="font-size:11.5px">학부모님께 보내는 링크가 이 주소로 만들어집니다. 비워 두면 지금 열려 있는 주소를 씁니다.</span></div>'
   +   '</div></div>'
   + '</div>'
@@ -987,6 +987,8 @@ function siteBase(){
   var b = String(academy.site||"").trim().replace(/[#?].*$/,"").replace(/\/+$/,"");
   if(b && !/^https?:\/\//i.test(b)) b = "https://" + b;
   if(!b) b = location.origin + location.pathname.replace(/\/+$/,"");
+  // 리포트를 /report 로 옮기기 전에 저장된 "https://we4d.co.kr" 이면 홈페이지로 가므로 /report 를 붙임
+  if(/^https?:\/\/(www\.)?we4d\.co\.kr$/i.test(b)) b += "/report";
   return b;
 }
 function shortId(r){
