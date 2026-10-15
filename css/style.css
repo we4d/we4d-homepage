@@ -769,3 +769,9 @@ html[data-c-heroEyebrow] .hero-inner .hero-sub{color:var(--c-heroEyebrow)}
 .lcl-vip .lcl-en{color:var(--lilac);letter-spacing:.34em;font-size:10px;order:-1}
 .lcl-vip .lcl-en::before,.lcl-vip .lcl-en::after{content:"—";opacity:.45;margin:0 8px}
 .lcl-vip .lcl-desc{color:rgba(255,255,255,.72);max-width:20em}
+/* 수강 혜택 — 카드 하나만 남을 때 가로 전체를 쓰고 항목을 세 개씩 (2026-10 커리큘럼 개편) */
+.lcards{grid-template-columns:1fr}
+.lcard ul{display:grid;grid-template-columns:repeat(3,1fr);gap:0 28px}
+.lcard ul li{border-bottom:1px dashed var(--line)}
+@media (max-width:860px){.lcard ul{grid-template-columns:repeat(2,1fr);gap:0 22px}}
+@media (max-width:560px){.lcard ul{grid-template-columns:1fr}}
