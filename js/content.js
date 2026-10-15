@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 15. 오후 8:42:31 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 15. 오후 8:51:04 저장)
    ============================================================ */
 
 const SITE = {
@@ -220,7 +220,8 @@ const SITE = {
   },
   "widths": {
     "#page-home > section:nth-of-type(4) > div > div > div > p": 91,
-    "#lessonPanes > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > p": 901
+    "#lessonPanes > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > p": 901,
+    "#lessonPanes > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > p": 889
   },
   "fonts": {},
   "moves": {}
