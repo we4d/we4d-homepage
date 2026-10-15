@@ -199,11 +199,11 @@ document.addEventListener('click', e => {
    ============================================================ */
 function lessonCards(d, base) {
   const P = (...k) => `data-p='${JSON.stringify(base.concat(k))}'`, IT = (...k) => `data-item='${JSON.stringify(base.concat(k))}'`;
-  const weeks = d.weeks || [], perks = d.perks || [];
-  // 내용이 없는 카드는 아예 보이지 않게
+  const perks = d.perks || [];
+  // 내용이 없으면 아예 보이지 않게
+  if (!perks.length) return '';
   return `<div class="lcards">
-    ${weeks.length ? `<div class="lcard"><div class="head"><h3>주차별 교육 과정</h3><span class="d">Timeline</span></div><div class="weeks">${weeks.map((w, i) => `<div class="week" ${IT('weeks', i)}><i ${P('weeks', i, 0)}>${w[0]}</i><div class="bar" style="--w:${w[2]}%"><span ${P('weeks', i, 1)}>${w[1]}</span></div></div>`).join('')}</div></div>` : ''}
-    ${perks.length ? `<div class="lcard"><div class="head"><h3>수강 혜택</h3><span class="d">Benefits</span></div><ul>${perks.map((p, i) => `<li ${IT('perks', i)} ${P('perks', i)}>${p}</li>`).join('')}</ul></div>` : ''}
+    <div class="lcard"><div class="head"><h3>수강 혜택</h3><span class="d">Benefits</span></div><ul>${perks.map((p, i) => `<li ${IT('perks', i)} ${P('perks', i)}>${p}</li>`).join('')}</ul></div>
   </div>`;
 }
 /* 클래스 카드 — 사진 자리 · 구성 · 소개글 (content.js → LESSONS.<과정>.classes) */
