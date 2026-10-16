@@ -4,6 +4,23 @@
 <meta charset="utf-8">
 <script>/* 홈페이지 주소로 잘못 보내진 리포트 링크(?s=… 또는 #z=…)를 리포트로 넘김 */
 if(/[?&]s=/.test(location.search) || /^#[a-z]=/.test(location.hash)) location.replace("/report/" + location.search + location.hash);</script>
+<script>/* ============================================================
+   오픈 준비중 화면 — 방문자에게는 '준비 중' 안내만, 우리에게는 홈페이지 그대로
+   · 정식 오픈할 때: 아래 SOON 값을 false 로 바꾸면 끝
+   · 내 기기에서 홈페이지를 보려면 주소 뒤에 ?preview=1 을 한 번 붙여 열기 (그 뒤로는 계속 보임)
+   · 관리 화면(?edit=1)은 언제나 그대로 열립니다
+   ============================================================ */
+(function () {
+  var SOON = true;
+  try {
+    if (/[?&](edit=1|preview=1)/.test(location.search)) {
+      if (/[?&]preview=1/.test(location.search)) localStorage.setItem('we4d_pv', '1');
+      SOON = false;
+    } else if (localStorage.getItem('we4d_pv') === '1') SOON = false;
+    if (/[?&]preview=0/.test(location.search)) { localStorage.removeItem('we4d_pv'); SOON = true; }
+  } catch (e) {}
+  if (SOON) document.documentElement.className += ' soon';
+})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WE4D Academy — 아이돌들의 선생님이 만든 진짜 KPOP 트레이닝</title>
 <meta name="description" content="강동구 명일동 KPOP 학원 WE4D(위포드). 아이돌들의 선생님이 만든 진짜 KPOP 트레이닝 — 오디션 · 실용음악 입시 · 실용무용 · 보컬 · 댄스 개인 레슨. 명일역 · 굽은다리역 도보.">

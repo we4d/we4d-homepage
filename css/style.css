@@ -775,3 +775,17 @@ html[data-c-heroEyebrow] .hero-inner .hero-sub{color:var(--c-heroEyebrow)}
 .lcard ul li{border-bottom:1px dashed var(--line)}
 @media (max-width:860px){.lcard ul{grid-template-columns:repeat(2,1fr);gap:0 22px}}
 @media (max-width:560px){.lcard ul{grid-template-columns:1fr}}
+/* 오픈 준비중 화면 (index.html 머리말의 SOON 값으로 켜고 끔) */
+html.soon body > *:not(#soonScreen){display:none !important}
+html.soon body{overflow:hidden}
+#soonScreen{position:fixed;inset:0;z-index:9999;background:radial-gradient(120% 90% at 50% 0%,#241B33 0%,#0A0A0A 60%);color:#fff;display:grid;place-items:center;text-align:center;padding:28px;font-family:var(--body)}
+#soonScreen .in{display:grid;gap:22px;justify-items:center;max-width:520px}
+#soonScreen img{height:58px;filter:brightness(0) invert(1)}
+#soonScreen .tag{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--lilac);text-transform:uppercase}
+#soonScreen h1{font-size:clamp(26px,5vw,40px);font-weight:900;line-height:1.3;letter-spacing:-.01em}
+#soonScreen p{font-size:15px;line-height:1.85;color:rgba(255,255,255,.72)}
+#soonScreen .btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:4px}
+#soonScreen a{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;border:1px solid rgba(255,255,255,.22);color:#fff}
+#soonScreen a.call{background:var(--lilac);border-color:var(--lilac);color:#141018}
+#soonScreen a:hover{border-color:var(--lilac)}
+#soonScreen .addr{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:rgba(255,255,255,.45);line-height:1.9}

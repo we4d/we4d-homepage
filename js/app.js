@@ -493,6 +493,24 @@ window.FONT_STACKS = FONT_STACKS;
   let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(applyStyles, 200); });
 })();
 
+/* 오픈 준비중 화면 그리기 (index.html 머리말에서 html.soon 이 붙었을 때만) */
+if (document.documentElement.classList.contains('soon')) {
+  const s = document.createElement('div');
+  s.id = 'soonScreen';
+  s.innerHTML = `<div class="in">
+    <img src="assets/logo.png" alt="WE4D">
+    <span class="tag">Opening Soon</span>
+    <h1>홈페이지를 준비하고 있습니다</h1>
+    <p>위포드 아카데미 홈페이지는 곧 문을 엽니다.<br>수업 · 오디션 문의는 전화로 편하게 연락 주세요.</p>
+    <div class="btns">
+      <a class="call" href="tel:${SITE.telLink}">전화 문의 ${SITE.tel}</a>
+      <a href="${SITE.instagram}" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div class="addr">${SITE.address}</div>
+  </div>`;
+  document.body.appendChild(s);
+}
+
 /* 현장 편집 모드 — 주소 뒤에 ?edit=1 이 붙었을 때만 편집 도구를 불러옴 */
 if (/[?&]edit=1/.test(location.search)) {
   const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'css/edit.css?v=' + Date.now(); document.head.appendChild(l);
