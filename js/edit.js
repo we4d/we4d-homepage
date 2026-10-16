@@ -168,11 +168,13 @@
   }
   // 바뀐 폭을 저장 (max-width 로 두어 좁은 화면에서는 자동으로 줄어들게)
   function keepWidth(node) {
-    if (!node || !node.style.maxWidth) return;
-    const w = Math.round(parseFloat(node.style.maxWidth));
+    if (!node || !node.style.width) return;
+    const w = Math.round(parseFloat(node.style.width));
     if (!w) return;
     SITE.widths[selectorOf(node)] = w;
-    node.style.width = '';
+    // 실제 폭을 그대로 두어야 담긴 상자보다 넓게도 늘어남. 좁은 화면에서는 화면 폭까지만
+    node.style.width = w + 'px';
+    node.style.maxWidth = 'calc(100vw - 32px)';
     dirty = true; updateBar();
   }
   function closeTool() {
@@ -180,7 +182,6 @@
     if (active) {
       keepWidth(active); hideHandle();
       active.classList.remove('ed-active', 'ed-resize');
-      active.style.width = '';
       active.removeAttribute('contenteditable'); active = null;
     }
   }

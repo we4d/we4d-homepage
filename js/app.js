@@ -468,7 +468,11 @@ window.FONT_STACKS = FONT_STACKS;
       } catch (_) {}
     });
     Object.keys(W).forEach(sel => {
-      try { const el = document.querySelector(sel); if (el) el.style.maxWidth = Number(W[sel]) + 'px'; } catch (_) {}
+      try {
+        const el = document.querySelector(sel); if (!el) return;
+        el.style.width = Number(W[sel]) + 'px';          // 담긴 상자보다 넓게도 늘어나도록
+        el.style.maxWidth = 'calc(100vw - 32px)';        // 좁은 화면에서는 화면 폭까지만
+      } catch (_) {}
     });
     Object.keys(F).forEach(sel => {
       try { const el = document.querySelector(sel); if (el && FONT_STACKS[F[sel]]) el.style.fontFamily = FONT_STACKS[F[sel]]; } catch (_) {}

@@ -142,7 +142,6 @@ const I18N = {
   "소개 준비 중입니다.": ["Profile coming soon.", "简介准备中。", "紹介文は準備中です。"],
 
   /* 레슨 안내 */
-  "오디션 · 입시 · 취미 세 포지션. 각 포지션은 레슨 단계, 주차별 과정, 수강 혜택으로 구성됩니다.": ["Three positions: Audition, Entrance Exam, Hobby. Each includes lesson steps, a weekly curriculum and enrollment benefits.", "试镜、艺考、兴趣三个方向。每个方向包含课程阶段、周计划和学员福利。", "オーディション · 受験 · 趣味の3ポジション。各ポジションはレッスン段階、週別カリキュラム、受講特典で構成されます。"],
   "월 4회 이상 기획사 방문 오디션, 월말 평가, 기획사 추천으로 이어지는 포지션입니다. 보컬+댄스 병행이 기본입니다.": ["4+ agency on-site auditions a month, monthly evaluations, then agency recommendation. Vocal + dance together is the default.", "每月4次以上经纪公司到校试镜、月末评估，并衔接经纪公司推荐。默认声乐+舞蹈同步进行。", "月4回以上の事務所来校オーディション、月末評価、事務所推薦へつながるポジションです。ボーカル+ダンスの併行が基本です。"],
   "월 방문 오디션": ["On-site auditions / month", "每月到校试镜", "月間来校オーディション"],
   "개인 레슨": ["One-on-one lessons", "一对一课程", "個人レッスン"],
@@ -160,7 +159,6 @@ const I18N = {
   "기획사 캐스팅팀 오디션 참가": ["Audition with agency casting teams", "参加经纪公司选角团队试镜", "事務所キャスティングチームのオーディション参加"],
   "기획사 추천": ["Agency recommendation", "经纪公司推荐", "事務所推薦"],
   "직접 선발한 우수 학생을 검증된 기획사에 추천": ["Hand-picked top students recommended to verified agencies", "将亲自选拔的优秀学生推荐给经过验证的经纪公司", "直接選抜した優秀な生徒を信頼できる事務所に推薦"],
-  "주차별 교육 과정": ["Weekly curriculum", "周计划", "週別カリキュラム"],
   "기초 진단 · 발성/베이직": ["Assessment · Vocal basics", "基础测评 · 发声/基本", "基礎診断 · 発声/ベーシック"],
   "기본기 · 리듬 · 아이솔레이션": ["Fundamentals · Rhythm · Isolation", "基本功 · 节奏 · 身体分离", "基礎 · リズム · アイソレーション"],
   "레퍼토리 완성 · 카메라 트레이닝": ["Repertoire · Camera training", "完成曲目 · 镜头训练", "レパートリー完成 · カメラトレーニング"],
