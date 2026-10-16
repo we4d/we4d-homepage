@@ -73,7 +73,7 @@
   }
 
   /* ---------- 편집 가능한 요소 표시 ---------- */
-  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast';
+  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast,.ed-add';
   function markEditable() {
     document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,span,b,small,time,summary,div,a,button').forEach(n => {
       if (n.closest(SKIP) || n.dataset.ed) return;
@@ -615,12 +615,40 @@
   }
 
   /* ---------- 시작 ---------- */
+  /* ---------- 강사진 — 분류마다 [+ 선생님 추가] 버튼 ---------- */
+  function addInstructor(grid) {
+    const cards = [...grid.querySelectorAll('[data-item]')];
+    const last = cards[cards.length - 1];
+    if (!last) { toast('이 분류에 선생님이 없어 추가할 수 없습니다 — 표 형식 편집에서 넣어 주세요', true); return; }
+    const idx = JSON.parse(last.dataset.item)[1], src = INSTRUCTORS[idx];
+    const n = JSON.parse(JSON.stringify(src));
+    n.en = 'NEW TRAINER'; n.kr = '새 선생님'; n.title = ''; n.q = ''; n.focus = ''; n.career = [];
+    INSTRUCTORS.splice(idx + 1, 0, n);
+    const clone = last.cloneNode(true);
+    const put = (sel, v) => { const e = clone.querySelector(sel); if (e) e.textContent = v; };
+    put('.meta .d', n.en); put('.meta b', n.kr); put('.meta span:last-child', n.role || '');
+    last.after(clone);
+    reindexList(['INSTRUCTORS']);
+    dirty = true; updateBar();
+    toast('선생님을 추가했습니다 — 이름 · 사진을 눌러 고쳐 주세요');
+    clone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function addButtons() {
+    document.querySelectorAll('.iset .igrid').forEach(grid => {
+      if (grid.parentElement.querySelector('.ed-add')) return;
+      const b = el('button', 'ed-add', '+ 선생님 추가');
+      b.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); addInstructor(grid); });
+      grid.parentElement.appendChild(b);
+    });
+  }
+
   function start() {
     buildBar();
     markEditable();
+    addButtons();
     // 화면이 다시 그려지면(탭 전환 등) 편집 표시도 다시 — 타이핑 중에는 건너뜀
     let mt = 0;
-    new MutationObserver(() => { clearTimeout(mt); mt = setTimeout(() => { if (!active) markEditable(); }, 200); })
+    new MutationObserver(() => { clearTimeout(mt); mt = setTimeout(() => { if (!active) { markEditable(); addButtons(); } }, 200); })
       .observe(document.body, { childList: true, subtree: true });
     window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
     toast('글을 클릭하면 바로 고칩니다 · 메뉴·버튼 글씨는 두 번 클릭 · 사진은 클릭해서 교체 · 카드에서 오른쪽 클릭 → 추가/삭제');
