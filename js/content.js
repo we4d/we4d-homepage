@@ -219,7 +219,6 @@ const SITE = {
     "#page-lessons > section:nth-of-type(1) > div > h1": 80
   },
   "widths": {
-    "#page-home > section:nth-of-type(4) > div > div > div > p": 91,
     "#lessonPanes > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > p": 817,
     "#lessonPanes > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > p": 889
   },
