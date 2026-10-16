@@ -474,8 +474,11 @@
       return;
     }
     const t = e.target.closest('[data-ed]');
-    // 메뉴·버튼(링크)은 눌러서 이동할 수 있어야 하므로 두 번 클릭해야 글이 고쳐집니다
-    if (t && e.target.closest('a[href],button')) { closeTool(); return; }
+    // 메뉴·버튼(링크)은 눌러서 이동할 수 있어야 하므로 두 번 클릭해야 글이 고쳐집니다.
+    // 단, 새 창으로 나가는 링크(지도·인스타 등)는 편집 중에 열 일이 없으므로 바로 고쳐집니다.
+    const link = t && e.target.closest('a[href],button');
+    if (link && !(link.target === '_blank')) { closeTool(); return; }
+    if (link) e.preventDefault();
     if (t) { e.preventDefault(); e.stopPropagation(); startEdit(t, e); return; }
     closeTool();
   }, true);
