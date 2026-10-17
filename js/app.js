@@ -500,8 +500,8 @@ if (document.documentElement.classList.contains('soon')) {
   s.innerHTML = `<div class="in">
     <img src="assets/logo.png" alt="WE4D">
     <span class="tag">Opening Soon</span>
-    <h1>홈페이지를 준비하고 있습니다</h1>
-    <p>위포드 아카데미 홈페이지는 곧 문을 엽니다.<br>수업 · 오디션 문의는 전화로 편하게 연락 주세요.</p>
+    <h1>위포드 아카데미<br>홈페이지를 준비하고 있습니다</h1>
+    <p>위포드(WE4D) 아카데미 — 강동구 명일동 KPOP · 실용음악 학원.<br>홈페이지는 곧 문을 엽니다.<br>수업 · 오디션 문의는 전화로 편하게 연락 주세요.</p>
     <div class="btns">
       <a class="call" href="tel:${SITE.telLink}">전화 문의 ${SITE.tel}</a>
       <a href="${SITE.instagram}" target="_blank" rel="noopener">Instagram</a>
