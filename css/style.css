@@ -252,7 +252,8 @@ ul{margin:0;padding:0;list-style:none}
 /* ============================================================
    [홈] 학부모님께 — 세 가지 약속
    ============================================================ */
-.promise{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.promise{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media (max-width:620px){.promise{grid-template-columns:1fr}}
 @media (max-width:860px){.promise{grid-template-columns:1fr}}
 .pr{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:30px 28px 28px;position:relative;overflow:hidden;transition:transform .45s var(--ease),border-color .3s}
 .pr:hover{transform:translateY(-6px);border-color:var(--violet)}
