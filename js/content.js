@@ -16,7 +16,7 @@ const SITE = {
     "sat": 110,
     "shade": 55,
     "accent": "- MUSIC · DANCE · K-POP TRAINING · AUDITION -",
-    "eyebrow": "",
+    "eyebrow": "아이돌의 꿈을 현실로 · 소수 정예 수업",
     "bigText": "Real KPOP Training",
     "cta": "상담하기 / 맞춤 수업 추천받기",
     "ctaColor": "#6D28D9",
