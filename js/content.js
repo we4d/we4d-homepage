@@ -211,7 +211,7 @@ const SITE = {
   },
   "floatBubble": "궁금한 게 있나요?",
   "floatBubbleSub": "평균 응답 10분 · 무료 레벨 테스트",
-  "demoToday": "2026-09-11",
+  "demoToday": "",
   "sizes": {
     "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > h2": 80,
     "#parents > div > div:nth-of-type(1) > div > h2": 80,
@@ -845,11 +845,29 @@ const EVENTS = [
   {
     "y": 2026,
     "m": 10,
+    "d": 23,
+    "t": "젬스톤 이앤엠 내방오디션",
+    "type": "agency",
+    "time": "14:00",
+    "note": "젬스톤 이앤엠 방문 오디션"
+  },
+  {
+    "y": 2026,
+    "m": 10,
     "d": 27,
     "t": "WAKEONE 내방오디션",
     "type": "agency",
     "time": "14:00",
     "note": "웨이크원 방문 오디션 · 보컬/댄스"
+  },
+  {
+    "y": 2026,
+    "m": 10,
+    "d": 30,
+    "t": "플레디스 내방오디션",
+    "type": "agency",
+    "time": "14:00",
+    "note": "플레디스 방문 오디션"
   },
   {
     "y": 2026,
@@ -872,11 +890,56 @@ const EVENTS = [
   {
     "y": 2026,
     "m": 11,
+    "d": 6,
+    "t": "더라이브레이블 내방오디션",
+    "type": "agency",
+    "time": "14:00",
+    "note": "더라이브레이블 방문 오디션"
+  },
+  {
+    "y": 2026,
+    "m": 11,
+    "d": 13,
+    "t": "SM 내방오디션",
+    "type": "agency",
+    "time": "14:00",
+    "note": "SM 방문 오디션"
+  },
+  {
+    "y": 2026,
+    "m": 11,
     "d": 19,
     "t": "RBW 내방오디션",
     "type": "agency",
     "time": "14:00",
     "note": "RBW 방문 오디션"
+  },
+  {
+    "y": 2026,
+    "m": 11,
+    "d": 20,
+    "t": "큐브 내방오디션",
+    "type": "agency",
+    "time": "14:00",
+    "note": "큐브 방문 오디션"
+  },
+  {
+    "y": 2026,
+    "m": 11,
+    "d": 27,
+    "t": "KOZ 내방오디션",
+    "type": "agency",
+    "time": "14:00",
+    "note": "KOZ 방문 오디션"
+  },
+  {
+    "y": 2026,
+    "m": 12,
+    "d": 4,
+    "t": "쏘스 내방오디션",
+    "type": "agency",
+    "time": "14:00",
+    "note": "쏘스 방문 오디션"
   }
 ];
 
