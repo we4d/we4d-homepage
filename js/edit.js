@@ -73,7 +73,7 @@
   }
 
   /* ---------- 편집 가능한 요소 표시 ---------- */
-  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast,.ed-add';
+  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast,.ed-add,.ed-evform';
   function markEditable() {
     document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,span,b,small,time,summary,div,a,button').forEach(n => {
       if (n.closest(SKIP) || n.dataset.ed) return;
@@ -424,6 +424,17 @@
     m.addEventListener('click', e => {
       const a = e.target.dataset.a; if (!a) return;
       const arr = getAt(listPath); if (!Array.isArray(arr)) return;
+      // 일정처럼 화면 순서와 자료 순서가 다른 목록은, 고친 뒤 화면을 통째로 다시 그린다
+      const redraw = listPath.length === 1 && listPath[0] === 'EVENTS' && window.__renderEvents;
+      if (redraw) {
+        if (a === 'dup') arr.splice(idx + 1, 0, JSON.parse(JSON.stringify(arr[idx])));
+        if (a === 'del') { if (!confirm('이 일정을 삭제할까요?')) { closeMenu(); return; } arr.splice(idx, 1); }
+        if (a === 'up' && idx > 0) arr.splice(idx - 1, 0, arr.splice(idx, 1)[0]);
+        if (a === 'down' && idx < arr.length - 1) arr.splice(idx + 1, 0, arr.splice(idx, 1)[0]);
+        window.__renderEvents();
+        closeMenu(); dirty = true; updateBar();
+        return;
+      }
       const prev = item.previousElementSibling, next = item.nextElementSibling;
       if (a === 'dup') { arr.splice(idx + 1, 0, JSON.parse(JSON.stringify(arr[idx]))); item.after(item.cloneNode(true)); }
       if (a === 'del') {
@@ -633,7 +644,34 @@
     toast('선생님을 추가했습니다 — 이름 · 사진을 눌러 고쳐 주세요');
     clone.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+  /* ---------- 일정 추가 폼 (행사 안내 달력 아래) ---------- */
+  function eventForm() {
+    const cal = document.querySelector('#calDays');
+    if (!cal || document.querySelector('.ed-evform')) return;
+    const f = el('form', 'ed-evform');
+    const today = new Date().toISOString().slice(0, 10);
+    f.innerHTML = `<b>일정 추가</b>
+      <input type="date" name="date" value="${today}" required>
+      <input type="text" name="title" placeholder="예) 플레디스 내방오디션" required>
+      <input type="time" name="time" value="14:00" required>
+      <select name="type"><option value="agency">기획사 방문</option><option value="we4d">학원 행사</option><option value="online">온라인 마감</option><option value="show">공연 · 쇼케이스</option></select>
+      <button type="submit">추가</button>`;
+    cal.parentElement.appendChild(f);
+    f.addEventListener('submit', ev => {
+      ev.preventDefault();
+      const d = f.date.value.split('-').map(Number), t = f.title.value.trim();
+      if (!t || d.length !== 3) return;
+      EVENTS.push({ y: d[0], m: d[1], d: d[2], t, type: f.type.value, time: f.time.value, note: t });
+      EVENTS.sort((a, b) => (a.y - b.y) || (a.m - b.m) || (a.d - b.d));
+      if (window.__renderEvents) window.__renderEvents();
+      f.title.value = '';
+      dirty = true; updateBar();
+      toast(`${d[1]}월 ${d[2]}일 "${t}" 추가 — 지우려면 달력에서 오른쪽 클릭`);
+    });
+  }
+
   function addButtons() {
+    eventForm();
     document.querySelectorAll('.iset .igrid').forEach(grid => {
       if (grid.parentElement.querySelector('.ed-add')) return;
       const b = el('button', 'ed-add', '+ 선생님 추가');

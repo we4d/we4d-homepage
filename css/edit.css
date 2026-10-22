@@ -69,3 +69,11 @@ body.ed-on [data-ed-img]{cursor:move}
 /* 강사진 — 선생님 추가 버튼 */
 .ed-add{display:block;margin:16px auto 0;border:1.5px dashed #7C3AED;background:rgba(124,58,237,.08);color:#7C3AED;border-radius:999px;padding:11px 26px;font:inherit;font-weight:800;font-size:13.5px;cursor:pointer}
 .ed-add:hover{background:#7C3AED;color:#fff}
+
+/* 일정 추가 폼 (행사 안내 달력 아래) */
+.ed-evform{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;padding:14px 16px;border:1.5px dashed #7C3AED;border-radius:14px;background:rgba(124,58,237,.06);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;font-size:13px}
+.ed-evform b{color:#7C3AED;font-size:12.5px;margin-right:4px}
+.ed-evform input,.ed-evform select{padding:8px 10px;border:1px solid #d9d0ef;border-radius:9px;font:inherit;background:#fff;color:#141018}
+.ed-evform input[name=title]{flex:1;min-width:150px}
+.ed-evform button{border:0;border-radius:999px;background:#7C3AED;color:#fff;padding:9px 20px;font:inherit;font-weight:800;cursor:pointer}
+.ed-evform button:hover{background:#6D28D9}

@@ -133,10 +133,11 @@ hero.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') 
    2. 홈 — 로고 티커 · 다가오는 오디션
    ============================================================ */
 $('#ticker').innerHTML = [...AGENCIES, ...AGENCIES].map((a, i) => { const j = i % AGENCIES.length; return a.img ? `<span class="lg" title="${a.n}"><img src="${a.img}" alt="${a.n}" style="height:${a.h || 36}px" loading="lazy" data-p='["AGENCIES",${j},"img"]'></span>` : `<span class="lg ${a.s || ''}" data-p='["AGENCIES",${j},"n"]'>${a.n}</span>`; }).join('');
-(function () {
+function renderUpList() {
   const up = EVENTS.map((e, i) => [e, i]).filter(([e]) => e.type === 'agency' && dateOf(e) >= TODAY).sort((a, b) => dateOf(a[0]) - dateOf(b[0])).slice(0, 4);
   $('#upList').innerHTML = up.map(([e, i]) => `<div class="up" data-item='["EVENTS",${i}]'><div class="date"><b>${String(e.d).padStart(2, '0')}</b>${MONTHS[e.m - 1].slice(0, 3).toUpperCase()} ${e.y}</div><div><h4 data-p='["EVENTS",${i},"t"]'>${e.t}</h4><p data-p='["EVENTS",${i},"note"]'>${e.note}</p></div></div>`).join('');
-})();
+}
+renderUpList();
 
 /* ============================================================
    3. WE4D — 원장 사진 · 약력 · SYSTEM 6단계
@@ -252,8 +253,8 @@ function renderCal() {
   $('#calDays').innerHTML = cells.map((c, i) => {
     const dow = i % 7, isT = !c.pad && calY === TODAY.getFullYear() && calM === TODAY.getMonth() && c.d === TODAY.getDate();
     const hol = c.pad ? null : HOLIDAYS[`${calY}-${calM + 1}-${c.d}`];
-    const evs = c.pad ? [] : EVENTS.filter(e => e.y === calY && e.m === calM + 1 && e.d === c.d);
-    return `<div class="day${c.pad ? ' pad' : ''}${dow === 0 ? ' sun' : ''}${dow === 6 ? ' sat' : ''}${isT ? ' today' : ''}${hol ? ' hol' : ''}"><div class="num">${isT ? `<em>${c.d}</em>` : c.d}</div>${hol ? `<div class="holname">${hol}</div>` : ''}${evs.map(e => `<button class="ev ${evClass[e.type]}" data-evkey="${e.y}-${e.m}-${e.d}-${e.t}">${e.t}<small>${e.time} · ${evLabel[e.type]}</small></button>`).join('')}</div>`;
+    const evs = c.pad ? [] : EVENTS.map((e, ei) => [e, ei]).filter(([e]) => e.y === calY && e.m === calM + 1 && e.d === c.d);
+    return `<div class="day${c.pad ? ' pad' : ''}${dow === 0 ? ' sun' : ''}${dow === 6 ? ' sat' : ''}${isT ? ' today' : ''}${hol ? ' hol' : ''}"><div class="num">${isT ? `<em>${c.d}</em>` : c.d}</div>${hol ? `<div class="holname">${hol}</div>` : ''}${evs.map(([e, ei]) => `<button class="ev ${evClass[e.type]}" data-evkey="${e.y}-${e.m}-${e.d}-${e.t}" data-item='["EVENTS",${ei}]'>${e.t}<small>${e.time} · ${evLabel[e.type]}</small></button>`).join('')}</div>`;
   }).join('');
   $('#evDetail').classList.remove('on');
 }
@@ -268,6 +269,8 @@ document.addEventListener('click', e => {
   $('#evDetail').classList.add('on'); $('#evDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 renderCal();
+/* 현장 편집에서 일정을 더하거나 지운 뒤 다시 그리기 */
+window.__renderEvents = () => { renderUpList(); renderCal(); };
 
 /* ============================================================
    7. 오시는 길 · 상담 사이드 (content.js 값)
