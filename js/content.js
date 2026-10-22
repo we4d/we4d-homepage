@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 22. 오후 6:55:03 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 22. 오후 6:56:15 저장)
    ============================================================ */
 
 const SITE = {
@@ -79,7 +79,7 @@ const SITE = {
   "instagramName": "@we4d_Academy",
   "youtube": "https://youtube.com/",
   "address": "강동구 양재대로 1602. 3층",
-  "addressSub": "지번: 강동구 명일동 335-1 · 우편번호 05295<br><b>※ 2026년 11월 확장 이전 예정 주소입니다. 이전 전 방문 상담은 문의 후 안내드립니다.</b>",
+  "addressSub": "지번: 강동구 명일동 335-1. 3층 · 우편번호 05295<br><b class=\"\">※ 2026년 11월 확장 이전 예정 주소입니다. <br>이전 전 방문 상담은 문의 후 안내드립니다.</b>",
   "mapQuery": "서울특별시 강동구 양재대로 1602",
   "mapLink": "https://map.naver.com/p/search/서울특별시 강동구 양재대로 1602",
   "mapImage": "",
@@ -147,7 +147,8 @@ const SITE = {
     "#page-instructors > section:nth-of-type(1) > div > p": "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다.<br>프로필을 클릭하면 상세 경력을 볼 수 있습니다.",
     "#page-home > section:nth-of-type(4) > div > div > div > p": "",
     "#page-lessons > section:nth-of-type(1) > div > p": "오디션 · 예고/예대 입시 · 프로듀싱 · 취미 네 포지션. <br>포지션마다 클래스를 나눠 목표와 속도에 맞게 수업합니다.",
-    "#page-location > section:nth-of-type(2) > div > div:nth-of-type(2) > p": "방문 상담은 예약제로 운영됩니다. <br>아래 버튼으로 상담을 신청하면 24시간 내 연락드려요."
+    "#page-location > section:nth-of-type(2) > div > div:nth-of-type(2) > p": "방문 상담은 예약제로 운영됩니다. <br>아래 버튼으로 상담을 신청하면 24시간 내 연락드려요.",
+    "#page-location > section:nth-of-type(2) > div > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > p > small > b": "※ 2026년 11월 확장 이전 예정 주소입니다. <br>이전 전 방문 상담은 문의 후 안내드립니다."
   },
   "banners": {
     "about": {
