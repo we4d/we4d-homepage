@@ -73,7 +73,7 @@
   }
 
   /* ---------- 편집 가능한 요소 표시 ---------- */
-  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast,.ed-add,.ed-evform';
+  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast,.ed-add,.ed-evform,.ed-detail';
   function markEditable() {
     document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,span,b,small,time,summary,div,a,button').forEach(n => {
       if (n.closest(SKIP) || n.dataset.ed) return;
@@ -404,7 +404,11 @@
   // 항목을 더하거나 지운 뒤 화면의 번호(주소)를 다시 매김
   function reindexList(listPath) {
     const pre = JSON.stringify(listPath).slice(0, -1) + ',';
-    [...document.querySelectorAll('[data-item]')].filter(n => n.dataset.item.startsWith(pre)).forEach((n, i) => {
+    // 그 목록의 '바로 아래 항목'만 (예: 강사 카드만, 상세창의 약력 줄은 제외)
+    [...document.querySelectorAll('[data-item]')].filter(n => {
+      if (!n.dataset.item.startsWith(pre)) return false;
+      try { return JSON.parse(n.dataset.item).length === listPath.length + 1; } catch (_) { return false; }
+    }).forEach((n, i) => {
       const oldPre = JSON.stringify(JSON.parse(n.dataset.item));
       const nw = listPath.concat(i);
       n.dataset.item = JSON.stringify(nw);
@@ -463,6 +467,7 @@
 
   document.addEventListener('click', e => {
     if (e.target.closest('.ed-bar,.ed-tool,.ed-menu,.ed-gate')) return;
+    if (e.target.closest('.ed-detail')) { closeTool(); return; }
     if (dragged) { e.preventDefault(); e.stopPropagation(); return; }   // 방금 끌어서 옮긴 것이면 교체창을 열지 않음
     closeMenu();
     const img = e.target.closest('[data-ed-img]');
@@ -487,7 +492,7 @@
     const t = e.target.closest('[data-ed]');
     // 메뉴·버튼(링크)은 눌러서 이동할 수 있어야 하므로 두 번 클릭해야 글이 고쳐집니다.
     // 단, 새 창으로 나가는 링크(지도·인스타 등)는 편집 중에 열 일이 없으므로 바로 고쳐집니다.
-    const link = t && e.target.closest('a[href],button');
+    const link = t && e.target.closest('a[href]');
     if (link && !(link.target === '_blank')) { closeTool(); return; }
     if (link) e.preventDefault();
     if (t) { e.preventDefault(); e.stopPropagation(); startEdit(t, e); return; }
@@ -495,7 +500,7 @@
   }, true);
 
   document.addEventListener('dblclick', e => {
-    const t = e.target.closest('a[href],button');
+    const t = e.target.closest('a[href]');
     if (!t || t.closest('.ed-bar,.ed-tool,.ed-menu,.ed-gate')) return;
     const n = t.matches('[data-ed]') ? t : t.querySelector('[data-ed]') || e.target.closest('[data-ed]');
     if (n) { e.preventDefault(); e.stopPropagation(); startEdit(n, e); }
@@ -672,6 +677,12 @@
 
   function addButtons() {
     eventForm();
+    // 강사 카드마다 [약력] — 상세창을 열어 경력 · 한 줄 소개 · Focus 를 고칠 수 있게
+    document.querySelectorAll('.prof[data-inst]').forEach(card => {
+      if (card.querySelector('.ed-detail')) return;
+      const d = el('span', 'ed-detail', '약력 ▸'); d.title = '상세창 열기 (경력 · 소개 · Focus 수정)';
+      card.appendChild(d);
+    });
     document.querySelectorAll('.iset .igrid').forEach(grid => {
       if (grid.parentElement.querySelector('.ed-add')) return;
       const b = el('button', 'ed-add', '+ 선생님 추가');
