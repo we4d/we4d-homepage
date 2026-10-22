@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 16. 오후 6:46:06 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 22. 오후 6:55:03 저장)
    ============================================================ */
 
 const SITE = {
@@ -146,7 +146,8 @@ const SITE = {
     "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > p": "목표가 다르면 훈련도 달라야 합니다.<br>네 가지 포지션 중 어디에서 시작할지 모르겠다면, 상담에서 함께 찾아 드려요.",
     "#page-instructors > section:nth-of-type(1) > div > p": "분야별 최고의 전문가들이 여러분의 꿈을 가이드합니다.<br>프로필을 클릭하면 상세 경력을 볼 수 있습니다.",
     "#page-home > section:nth-of-type(4) > div > div > div > p": "",
-    "#page-lessons > section:nth-of-type(1) > div > p": "오디션 · 예고/예대 입시 · 프로듀싱 · 취미 네 포지션. <br>포지션마다 클래스를 나눠 목표와 속도에 맞게 수업합니다."
+    "#page-lessons > section:nth-of-type(1) > div > p": "오디션 · 예고/예대 입시 · 프로듀싱 · 취미 네 포지션. <br>포지션마다 클래스를 나눠 목표와 속도에 맞게 수업합니다.",
+    "#page-location > section:nth-of-type(2) > div > div:nth-of-type(2) > p": "방문 상담은 예약제로 운영됩니다. <br>아래 버튼으로 상담을 신청하면 24시간 내 연락드려요."
   },
   "banners": {
     "about": {
@@ -346,6 +347,18 @@ const INSTRUCTORS = [
     "q": "",
     "career": [],
     "focus": "보컬",
+    "portfolio": []
+  },
+  {
+    "cat": "vocal",
+    "en": "NEW TRAINER",
+    "kr": "우시은",
+    "role": "TRAINER",
+    "title": "",
+    "photo": "assets/inst/kakaotalk_20261022_183512338.jpg",
+    "q": "",
+    "career": [],
+    "focus": "",
     "portfolio": []
   },
   {
@@ -700,12 +713,6 @@ const NOTICES = [
     "공지",
     "[외부학생 오디션 참가 안내] 재원생이 아니어도 신청 가능 · <b>사전 영상 심사 후 참가 확정</b>",
     "2026-09-01"
-  ],
-  [
-    "lilac",
-    "일정",
-    "9월 방문 오디션 참가 문의는 <b>각 일정 3일 전</b>까지 받습니다. 10월 JYP · STARSHIP 일정이 추가되었습니다.",
-    "2026-09-08"
   ],
   [
     "blue",
