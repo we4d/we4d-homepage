@@ -235,8 +235,8 @@ const SITE = {
   },
   "fonts": {},
   "moves": {},
-  "blog": "https://blog.naver.com/we4d01",
-  "blogName": "blog.naver.com/we4d01"
+  "blog": "https://blog.naver.com/we4d_academy_",
+  "blogName": "blog.naver.com/we4d_academy_"
 };
 
 const DIRECTOR = {
