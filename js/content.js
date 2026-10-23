@@ -234,7 +234,9 @@ const SITE = {
     "#lessonPanes > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > p": 911
   },
   "fonts": {},
-  "moves": {}
+  "moves": {},
+  "blog": "https://blog.naver.com/we4d01",
+  "blogName": "blog.naver.com/we4d01"
 };
 
 const DIRECTOR = {
