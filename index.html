@@ -75,7 +75,9 @@ if(/[?&]s=/.test(location.search) || /^#[a-z]=/.test(location.hash)) location.re
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- 글씨체: 기본(Noto Sans KR) 외에 관리자가 고를 수 있는 명조 · 굵은제목 · 손글씨. 쓰지 않으면 내려받지 않습니다 -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Nanum+Myeongjo:wght@400;700;800&family=Black+Han+Sans&family=Nanum+Pen+Script&family=Gowun+Dodum&display=swap">
-<link rel="stylesheet" href="css/style.css">
+<!-- 디자인 파일도 고치면 바로 보이도록 1분 단위 새로고침 -->
+<script>document.write('<li' + 'nk rel="stylesheet" href="css/style.css?v=' + Math.floor(Date.now() / 60000) + '">');</script>
+<noscript><link rel="stylesheet" href="css/style.css"></noscript>
 </head>
 <body>
 
@@ -544,7 +546,7 @@ if(/[?&]s=/.test(location.search) || /^#[a-z]=/.test(location.hash)) location.re
 
 <!-- 내용 파일은 고치면 바로 보이도록 1분 단위 새로고침 (브라우저가 옛 내용을 기억하지 않게) -->
 <script>document.write('<scr' + 'ipt src="js/content.js?v=' + Math.floor(Date.now() / 60000) + '"></scr' + 'ipt>');</script>
-<script src="js/app.js"></script>
+<script>document.write('<scr' + 'ipt src="js/app.js?v=' + Math.floor(Date.now() / 60000) + '"></scr' + 'ipt>');</script>
 <script src="js/i18n-data.js"></script>
 <script src="js/i18n.js"></script>
 </body>
