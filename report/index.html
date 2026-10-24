@@ -777,6 +777,9 @@ function renderHome(){
   +       '<input id="f6" class="input" value="'+esc((academy.subjects||[]).join(", "))+'" data-ac="subjects" placeholder="보컬, 댄스, 랩">'
   +       '<span class="dim" style="font-size:11.5px">쉼표로 구분해 적으면 작성 화면에 빠른 추가 버튼으로 나타납니다.</span></div>'
   +     '<div class="field"><label for="f5">연락처</label><input id="f5" class="input" value="'+esc(academy.contact)+'" data-ac="contact" placeholder="02-000-0000"></div>'
+  +     '<div class="field" style="grid-column:1/-1"><label for="f8">학생 가져오기에서 뺄 이름</label>'
+  +       '<input id="f8" class="input" value="'+esc(excludedNames().join(", "))+'" data-exclude="1" placeholder="예: 홍길동, 김성인">'
+  +       '<span class="dim" style="font-size:11.5px">성인 회원처럼 리포트가 필요 없는 이름을 쉼표로 적습니다. 학생을 삭제하면 그 이름이 자동으로 추가됩니다.</span></div>'
   +     '<div class="field" style="grid-column:1/-1"><label for="f7">학부모 링크 주소</label>'
   +       '<input id="f7" class="input" value="'+esc(academy.site||"")+'" data-ac="site" placeholder="https://we4d.co.kr/report">'
   +       '<span class="dim" style="font-size:11.5px">학부모님께 보내는 링크가 이 주소로 만들어집니다. 비워 두면 지금 열려 있는 주소를 씁니다.</span></div>'
@@ -853,7 +856,8 @@ function importOfficeAtt(only, attOnly){   // attOnly: 출석만 덮어쓰기(�
     });
     // 학생 명단에 없는 학생만 등록함 (이미 있는 학생의 과목·클래스는 그대로 둠, 새 학생은 과목을 비워 두고 학생별로 정함)
     var byName = function(nm){ return students.filter(function(x){ return String(x.name||"").trim() === nm; })[0]; };
-    var newS = (only || attOnly) ? [] : Object.keys(data).filter(function(nm){ return !byName(nm); });
+    var skip = excludedNames();
+    var newS = (only || attOnly) ? [] : Object.keys(data).filter(function(nm){ return !byName(nm) && skip.indexOf(nm) < 0; });
     var madeS = 0;
     if(newS.length && confirm("학생 명단에 없는 학생 "+newS.length+"명을 등록합니다.\n"+newS.join(", ")
       + "\n\n등록한 뒤 학생마다 수강 과목(보컬·댄스 등)을 정해 주세요.\n진행할까요?")){
@@ -905,6 +909,15 @@ function createReportFor(s){
   var f = document.querySelector('[data-st="name"]'); if(f && !r.student.name) f.focus();
 }
 function esc0(s){ return String(s||""); }
+// 학생 가져오기에서 뺄 이름(성인 회원 등). 서버 academy 행의 안 쓰게 된 teacher 칸에 "제외:이름,이름"으로 저장해 모든 PC가 같이 씀
+function excludedNames(){
+  var t = String(academy.teacher||"");
+  return t.indexOf("제외:") === 0 ? t.slice(3).split(",").map(function(x){ return x.trim(); }).filter(Boolean) : [];
+}
+function setExcluded(list){
+  var u = []; list.forEach(function(x){ x = String(x||"").trim(); if(x && u.indexOf(x) < 0) u.push(x); });
+  academy.teacher = "제외:" + u.join(","); saveLocal(); markA();
+}
 function greetingFor(name){
   return "안녕하세요, 위포드입니다.\n"+(name ? esc0(name)+" 학생의 " : "")+"이번 달 레슨 내용을 과목별 담당 트레이너가 정리해 보내드립니다.";
 }
@@ -1620,7 +1633,8 @@ document.addEventListener("click", function(ev){
     }
     case "delstudent": {
       var s4 = pick(students, state.sid);
-      if(s4 && confirm((s4.name||"이 학생")+" 님을 명단에서 지울까요? 작성한 리포트는 그대로 남습니다.")){
+      if(s4 && confirm((s4.name||"이 학생")+" 님을 명단에서 지울까요? 작성한 리포트는 그대로 남습니다.\n지운 이름은 다음 '학생 가져오기'에서도 빠집니다.")){
+        if(String(s4.name||"").trim()) setExcluded(excludedNames().concat([s4.name]));
         students = students.filter(function(x){ return x.id !== s4.id; });
         delete dirty.s[s4.id];
         saveLocal(); cloudDelete("students", s4.id);
@@ -1698,6 +1712,7 @@ document.addEventListener("input", function(ev){
     academy.subjects = el.value.split(",").map(function(s){ return s.trim(); }).filter(Boolean);
     saveLocal(); markA(); return;
   }
+  if(el.dataset.exclude){ setExcluded(el.value.split(",")); return; }
   if(el.dataset.ac){ academy[el.dataset.ac]=el.value; saveLocal(); markA(); renderTop(); return; }
   if(el.dataset.sf){
     var s = pick(students, state.sid);
