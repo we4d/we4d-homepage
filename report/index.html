@@ -421,7 +421,7 @@ var BLOCK_TYPES = {
   link:    {label:"연습 영상 · 자료", kind:"Link", desc:"영상·악보 등 참고 링크", titleLabel:"자료명", ph:"이번 달 레슨 영상", textPh:""},
   notice:  {label:"학원 안내",   kind:"Notice", desc:"휴원일·특강 등 공지사항", titleLabel:"제목", ph:"12월 일정 안내", textPh:"휴원일, 특강 일정 등을 적어 주세요."}
 };
-var TYPE_ORDER = ["lesson","overall","practice","eval","link","notice"];
+var TYPE_ORDER = ["lesson","practice","eval","link","notice"];   // 총평(overall)은 원장 지시로 뺌 — 예전 리포트 표시용으로 BLOCK_TYPES에는 남김
 
 var LS_A = "weford.academy.v2", LS_R = "weford.reports.v2", LS_S = "weford.students.v2";
 var state = {screen:"home", id:null, sid:null, shared:null, addOpen:false, qty:3};
@@ -774,12 +774,13 @@ function renderHome(){
 function renderStudent(){
   var s = pick(students, state.sid);
   if(!s){ state.screen="home"; return render(); }
-  var all = (academy.subjects||[]).slice();
-  (s.subjects||[]).forEach(function(x){ if(all.indexOf(x)<0) all.push(x); });
-  var chips = all.map(function(name){
-    var on = (s.subjects||[]).indexOf(name) >= 0;
-    return '<button type="button" class="chip'+(on?" on":"")+'" data-togglesub="'+esc(name)+'">'+esc(name)+'</button>'
-      + '<button type="button" class="chip-x" data-delsub="'+esc(name)+'" aria-label="'+esc(name)+' 과목 삭제">✕</button>';
+  // 이 학생 과목: 누르면 이 학생에서만 빠짐 / 빠른 추가: 누르면 이 학생에 추가 (✕는 과목 목록 자체에서 지움)
+  var chips = (s.subjects||[]).map(function(name){
+    return '<button type="button" class="chip on" data-togglesub="'+esc(name)+'" aria-label="'+esc(name)+' 빼기">'+esc(name)+' ✕</button>';
+  }).join("");
+  var quick = (academy.subjects||[]).filter(function(x){ return (s.subjects||[]).indexOf(x) < 0; }).map(function(name){
+    return '<button type="button" class="chip" data-togglesub="'+esc(name)+'">＋ '+esc(name)+'</button>'
+      + '<button type="button" class="chip-x" data-delsub="'+esc(name)+'" aria-label="'+esc(name)+' 과목을 목록에서 삭제">✕</button>';
   }).join("");
   var mine = (s.subjects||[]).length;
 
@@ -796,9 +797,11 @@ function renderStudent(){
   +   '<div class="section-head"><h2>수강 과목</h2><span class="spacer"></span>'
   +     '<span class="dim" style="font-size:12.5px">'+mine+'개 선택</span></div>'
   +   '<div class="card">'
-  +     '<p style="font-size:13px;color:var(--ink-2);margin-bottom:2px">여기서 고른 과목이 리포트를 만들 때 실력 평가 차트와 레슨 코멘트 블록으로 미리 만들어집니다.</p>'
-  +     '<div class="chips" style="margin-top:12px">'+chips+'</div>'
-  +     '<div class="addrow"><input class="input" id="subnew" placeholder="다른 과목 직접 추가">'
+  +     '<div class="cl" style="font-size:12.5px;font-weight:700;color:var(--ink-2)">이 학생 과목 <span class="dim" style="font-weight:400">· 누르면 빠집니다</span></div>'
+  +     '<div class="chips" style="margin-top:8px">'+(chips || '<span class="dim" style="font-size:13px">아직 없습니다. 아래에서 눌러 추가하세요.</span>')+'</div>'
+  +     '<div class="cl" style="font-size:12.5px;font-weight:700;color:var(--ink-2);margin-top:16px">빠른 추가 <span class="dim" style="font-weight:400">· 누르면 추가 · 옆 ✕는 목록에서 삭제</span></div>'
+  +     '<div class="chips" style="margin-top:8px">'+(quick || '<span class="dim" style="font-size:13px">목록의 과목을 모두 골랐습니다.</span>')+'</div>'
+  +     '<div class="addrow"><input class="input" id="subnew" placeholder="목록에 없는 과목 (예: 랩)">'
   +       '<button type="button" class="btn" data-act="addsub">추가</button></div>'
   +   '</div>'
   + '</div>'
@@ -865,7 +868,6 @@ function createReportFor(s){
     att: attFor(s && s.name, now.getFullYear(), now.getMonth()+1) || {},
     skills: subs.map(function(n){ return {id:uid(), name:n, level:3}; }),
     blocks: subs.map(function(n){ return {id:uid(), type:"lesson", title:n, text:""}; })
-      .concat([{id:uid(), type:"overall", title:"담당 트레이너 총평", text:""}])
   };
   reports.unshift(r); saveLocal(); markR(r.id);
   state.id = r.id; state.screen = "edit"; state.addOpen = !subs.length;
@@ -1692,6 +1694,9 @@ document.addEventListener("change", function(ev){
 });
 
 document.addEventListener("keydown", function(ev){
+  if(ev.key === "Enter" && ev.target && ev.target.id === "subnew"){
+    ev.preventDefault(); var ab = document.querySelector('[data-act="addsub"]'); if(ab) ab.click(); return;
+  }
   if(ev.key !== "Enter" || state.screen !== "login") return;
   if(!ev.target || ev.target.tagName !== "INPUT") return;
   ev.preventDefault();
