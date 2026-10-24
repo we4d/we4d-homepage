@@ -688,8 +688,7 @@ function renderHome(){
   var slist = students.map(function(s){
     var subs = (s.subjects||[]).length, cur = thisMonthReport(s);
     var btn = !subs ? '<button type="button" class="btn btn-sm" data-student="'+s.id+'">과목 정하기</button>'
-      : cur && (isDone(cur) || started(cur)) ? '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(isDone(cur) ? "완료 ✓" : "이어서 작성")+'</button>'
-      : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+monthLabel()+' 작성</button>';
+      : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(cur && isDone(cur) ? "완료 ✓" : "작성")+'</button>';
     // 과목 버튼: 누르면 이번 달 리포트의 그 과목 칸으로 바로 감. 색 = 작성 완료(보라) / 쓰는 중(연보라) / 아직(흰색)
     var chips = (s.subjects||[]).map(function(n){
       var b = cur && lessonsOf(cur).filter(function(x){ return x.title===n; })[0];
@@ -723,9 +722,30 @@ function renderHome(){
       + (right ? '' : '<span class="statusline">'+progressText(r)+'</span>')+'</span>'
       + (right ? '<span class="pct">'+right+'</span>' : '')+'</button>';
   }
-  var doneR = reports.filter(isDone), wipR = reports.filter(function(r){ return !isDone(r) && (started(r) || !pick(students, r.sid)); });
+  // 작성 중 = 과목을 정한 학생 중 이번 달 리포트가 아직 다 안 끝난 학생 전부 (리포트가 아직 없어도 들어감)
+  //          + 학생과 연결 안 된, 또는 지난달에 끝내지 못한 리포트
+  var doneR = reports.filter(isDone);
+  var curIds = {};
+  var wipS = students.filter(function(s){
+    if(!(s.subjects||[]).length) return false;
+    var cur = thisMonthReport(s); if(cur) curIds[cur.id] = 1;
+    return !(cur && isDone(cur));
+  });
+  var wipR = reports.filter(function(r){ return !isDone(r) && !curIds[r.id] && (started(r) || !pick(students, r.sid)); });
   var list = doneR.map(function(r){ return rowFor(r, attStats(r).rate+'%'); }).join("");
-  var wip = wipR.map(function(r){ return rowFor(r, ""); }).join("");
+  var wip = wipS.map(function(s){
+    var cur = thisMonthReport(s);
+    var prog = (s.subjects||[]).map(function(n){
+      var b = cur && lessonsOf(cur).filter(function(x){ return x.title===n; })[0];
+      return esc(n)+(b && b.done ? " ✓" : "");
+    }).join(" · ");
+    return '<button type="button" class="rowcard" data-newfor="'+s.id+'">'
+      + '<span class="avatar">'+esc((s.name||"?").slice(0,1))+'</span>'
+      + '<span class="meta"><strong>'+esc(s.name||"이름 없음")+(s.sample?'<span class="samplebadge">예시</span>':'')+'</strong>'
+      + '<span>'+monthLabel()+' · '+esc(s.klass||"반 미지정")+(cur && trainerNames(cur) ? ' · '+esc(trainerNames(cur))+' 트레이너' : '')+'</span>'
+      + '<span class="statusline">'+prog+'</span></span></button>';
+  }).join("") + wipR.map(function(r){ return rowFor(r, ""); }).join("");
+  var wipCount = wipS.length + wipR.length;
 
   document.getElementById("app").innerHTML =
     '<div class="hero">'+lockup(academy,52)
@@ -742,7 +762,7 @@ function renderHome(){
   + '</div>'
   + '<div class="section">'
   +   '<div class="section-head"><h2>작성 중</h2><span class="spacer"></span>'
-  +     '<span class="dim" style="font-size:12.5px">'+wipR.length+'건 · 과목마다 "작성 완료"를 눌러야 넘어갑니다</span></div>'
+  +     '<span class="dim" style="font-size:12.5px">'+wipCount+'명 · 과목마다 "작성 완료"를 눌러야 넘어갑니다</span></div>'
   +   (wip ? '<div class="rowlist">'+wip+'</div>' : '<div class="empty">작성 중인 리포트가 없습니다.</div>')
   + '</div>'
   + '<div class="section">'
