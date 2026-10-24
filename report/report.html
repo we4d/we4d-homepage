@@ -688,7 +688,7 @@ function renderHome(){
   var slist = students.map(function(s){
     var subs = (s.subjects||[]).length, cur = thisMonthReport(s);
     var btn = !subs ? '<button type="button" class="btn btn-sm" data-student="'+s.id+'">과목 정하기</button>'
-      : cur ? '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(isDone(cur) ? "완료 ✓" : "이어서 작성")+'</button>'
+      : cur && (isDone(cur) || started(cur)) ? '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(isDone(cur) ? "완료 ✓" : "이어서 작성")+'</button>'
       : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+monthLabel()+' 작성</button>';
     // 과목 버튼: 누르면 이번 달 리포트의 그 과목 칸으로 바로 감. 색 = 작성 완료(보라) / 쓰는 중(연보라) / 아직(흰색)
     var chips = (s.subjects||[]).map(function(n){
@@ -723,7 +723,7 @@ function renderHome(){
       + (right ? '' : '<span class="statusline">'+progressText(r)+'</span>')+'</span>'
       + (right ? '<span class="pct">'+right+'</span>' : '')+'</button>';
   }
-  var doneR = reports.filter(isDone), wipR = reports.filter(function(r){ return !isDone(r); });
+  var doneR = reports.filter(isDone), wipR = reports.filter(function(r){ return !isDone(r) && (started(r) || !pick(students, r.sid)); });
   var list = doneR.map(function(r){ return rowFor(r, attStats(r).rate+'%'); }).join("");
   var wip = wipR.map(function(r){ return rowFor(r, ""); }).join("");
 
@@ -904,6 +904,8 @@ function trainerNames(r){
 }
 // 레슨(과목) 블록이 하나 이상 있고 모두 "작성 완료"여야 작성한 리포트로 넘어감
 function isDone(r){ var l = lessonsOf(r); return l.length > 0 && l.every(function(b){ return b.done; }); }
+// 트레이너가 한 과목이라도 쓰기 시작했는지 (출석 가져오기로 미리 만든 빈 리포트는 아직 "작성 중"이 아님)
+function started(r){ return lessonsOf(r).some(function(b){ return b.done || String(b.text||"").trim(); }); }
 function progressText(r){
   var l = lessonsOf(r);
   if(!l.length) return "수강 과목 없음";
