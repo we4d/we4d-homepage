@@ -1230,6 +1230,8 @@ function afterLogin(){
   return SB.from("profiles").select("name").eq("id", sbUser.id).maybeSingle()
     .then(function(p){ sbName = (p && p.data && p.data.name) ? p.data.name : ""; })
     .catch(function(){})
+    // 프로필이 없어도 가입할 때 적은 이름으로 (트레이너 이름이 비지 않게)
+    .then(function(){ if(!sbName) sbName = ((sbUser.user_metadata||{}).name || "").trim(); })
     .then(pullAll);
 }
 
