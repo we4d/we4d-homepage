@@ -688,7 +688,7 @@ function renderHome(){
   function sRow(s){   // 학생 한 줄: 이름 · 과목 버튼(색으로 진행 상황) · 작성/완료 버튼
     var subs = (s.subjects||[]).length, cur = thisMonthReport(s);
     var btn = !subs ? '<button type="button" class="btn btn-sm" data-student="'+s.id+'">과목 정하기</button>'
-      : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(cur && isDone(cur) ? "완료 ✓" : "작성")+'</button>';
+      : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(cur && isDone(cur) ? "완료 ✓" : cur && started(cur) ? "작성 중" : "작성")+'</button>';
     // 과목 버튼: 누르면 이번 달 리포트의 그 과목 칸으로 바로 감. 색 = 작성 완료(보라) / 쓰는 중(연보라) / 아직(흰색)
     var chips = (s.subjects||[]).map(function(n){
       var b = cur && lessonsOf(cur).filter(function(x){ return x.title===n; })[0];
