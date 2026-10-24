@@ -686,7 +686,7 @@ function monthLabel(){ var n=new Date(); return (n.getMonth()+1)+"월"; }
 
 function renderHome(){
   var slist = students.map(function(s){
-    var subs = (s.subjects||[]).length, cur = thisMonthReport(s.id);
+    var subs = (s.subjects||[]).length, cur = thisMonthReport(s);
     var btn = !subs ? '<button type="button" class="btn btn-sm" data-student="'+s.id+'">과목 정하기</button>'
       : cur ? '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(isDone(cur) ? "완료 ✓" : "이어서 작성")+'</button>'
       : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+monthLabel()+' 작성</button>';
@@ -910,10 +910,16 @@ function progressText(r){
   return l.map(function(b){ return esc(b.title||"과목")+(b.done?" ✓":""); }).join(" · ");
 }
 function stamp(o){ if(o) o.t = Date.now(); return o; }
-function thisMonthReport(sid){
-  var n = new Date(), y = n.getFullYear(), m = n.getMonth()+1;
-  for(var i=0;i<reports.length;i++){ var r = reports[i]; if(r.sid===sid && +r.y===y && +r.m===m) return r; }
-  return null;
+// 이번 달 리포트: 학생 id로 찾고, 없으면 이름으로 (지웠다 다시 가져온 학생도 같은 리포트로 이어지게 → 중복 리포트 방지)
+function thisMonthReport(s){
+  var n = new Date(), y = n.getFullYear(), m = n.getMonth()+1, nm = String(s.name||"").trim(), byName = null;
+  for(var i=0;i<reports.length;i++){
+    var r = reports[i]; if(+r.y!==y || +r.m!==m) continue;
+    if(r.sid===s.id) return r;
+    if(!byName && nm && String(r.student.name||"").trim()===nm) byName = r;
+  }
+  if(byName){ byName.sid = s.id; markR(byName.id); }
+  return byName;
 }
 // 같은 리포트를 다른 PC에서 고친 내용과 합침: 블록·평가는 id별로 더 나중에 고친 쪽을 남김
 function mergeById(mine, theirs, del){
@@ -934,7 +940,7 @@ function refreshReport(r){
 }
 // 학생의 수강 과목을 바꾸면 이번 달 작성 중인 리포트에도 과목 블록을 맞춤 (이미 쓴 과목은 지우지 않음)
 function syncSubjects(s){
-  var r = thisMonthReport(s.id); if(!r || isDone(r)) return;
+  var r = thisMonthReport(s); if(!r || isDone(r)) return;
   var subs = s.subjects || [];
   subs.forEach(function(n){
     if(!lessonsOf(r).some(function(b){ return b.title===n; }))
@@ -952,7 +958,7 @@ function syncSubjects(s){
 function openOrCreate(s, subj){
   var open = function(r){ state.id = r.id; state.screen = "edit"; state.addOpen = false; render(); window.scrollTo(0,0); focusSubject(subj); };
   var make = function(){ createReportFor(s); focusSubject(subj); };
-  var mine = thisMonthReport(s.id);
+  var mine = thisMonthReport(s);
   if(mine) return refreshReport(mine).then(function(){ open(mine); });
   if(!cloudOn || !SB) return make();
   var n = new Date();
