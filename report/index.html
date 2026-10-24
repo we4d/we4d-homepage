@@ -685,7 +685,7 @@ function renderDoc(ac, r){
 function monthLabel(){ var n=new Date(); return (n.getMonth()+1)+"월"; }
 
 function renderHome(){
-  var slist = students.map(function(s){
+  function sRow(s){   // 학생 한 줄: 이름 · 과목 버튼(색으로 진행 상황) · 작성/완료 버튼
     var subs = (s.subjects||[]).length, cur = thisMonthReport(s);
     var btn = !subs ? '<button type="button" class="btn btn-sm" data-student="'+s.id+'">과목 정하기</button>'
       : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(cur && isDone(cur) ? "완료 ✓" : "작성")+'</button>';
@@ -710,7 +710,7 @@ function renderHome(){
       + '</div>'
       + btn
       + '</div>';
-  }).join("");
+  }
 
   function rowFor(r, right){
     return '<button type="button" class="rowcard" data-open="'+r.id+'">'
@@ -733,19 +733,11 @@ function renderHome(){
   });
   var wipR = reports.filter(function(r){ return !isDone(r) && !curIds[r.id] && (started(r) || !pick(students, r.sid)); });
   var list = doneR.map(function(r){ return rowFor(r, attStats(r).rate+'%'); }).join("");
-  var wip = wipS.map(function(s){
-    var cur = thisMonthReport(s);
-    var prog = (s.subjects||[]).map(function(n){
-      var b = cur && lessonsOf(cur).filter(function(x){ return x.title===n; })[0];
-      return esc(n)+(b && b.done ? " ✓" : "");
-    }).join(" · ");
-    return '<button type="button" class="rowcard" data-newfor="'+s.id+'">'
-      + '<span class="avatar">'+esc((s.name||"?").slice(0,1))+'</span>'
-      + '<span class="meta"><strong>'+esc(s.name||"이름 없음")+(s.sample?'<span class="samplebadge">예시</span>':'')+'</strong>'
-      + '<span>'+monthLabel()+' · '+esc(s.klass||"반 미지정")+(cur && trainerNames(cur) ? ' · '+esc(trainerNames(cur))+' 트레이너' : '')+'</span>'
-      + '<span class="statusline">'+prog+'</span></span></button>';
-  }).join("") + wipR.map(function(r){ return rowFor(r, ""); }).join("");
+  // 한 목록으로: 작성 중(과목 있는 학생 중 이번 달 미완료) / 과목 정하기 필요 / 작성한 리포트
+  var wip = wipS.map(sRow).join("") + wipR.map(function(r){ return rowFor(r, ""); }).join("");
   var wipCount = wipS.length + wipR.length;
+  var noSub = students.filter(function(s){ return !(s.subjects||[]).length; });
+  var noSubHtml = noSub.map(sRow).join("");
 
   document.getElementById("app").innerHTML =
     '<div class="hero">'+lockup(academy,52)
@@ -754,17 +746,17 @@ function renderHome(){
   +   accountStrip()
   + '</div>'
   + '<div class="section">'
-  +   '<div class="section-head"><h2>학생 명단</h2><span class="spacer"></span>'
-  +     '<span class="dim" style="font-size:12.5px">'+students.length+'명</span></div>'
-  +   (slist ? '<div class="rowlist">'+slist+'</div>'
-          : '<div class="empty">학생을 등록해 두면 매달 리포트를 한 번에 만들 수 있습니다.</div>')
-  +   '<button type="button" class="btn btn-block" style="margin-top:10px" data-act="newstudent">＋ 학생 등록</button>'
-  + '</div>'
-  + '<div class="section">'
   +   '<div class="section-head"><h2>작성 중</h2><span class="spacer"></span>'
   +     '<span class="dim" style="font-size:12.5px">'+wipCount+'명 · 과목마다 "작성 완료"를 눌러야 넘어갑니다</span></div>'
-  +   (wip ? '<div class="rowlist">'+wip+'</div>' : '<div class="empty">작성 중인 리포트가 없습니다.</div>')
+  +   (wip ? '<div class="rowlist">'+wip+'</div>'
+          : '<div class="empty">'+(students.length ? '이번 달 작성할 학생이 없습니다.' : '학생을 등록하거나 위포드 관리에서 학생을 가져오세요.')+'</div>')
+  +   '<button type="button" class="btn btn-block" style="margin-top:10px" data-act="newstudent">＋ 학생 등록</button>'
   + '</div>'
+  + (noSubHtml ? '<div class="section">'
+  +   '<div class="section-head"><h2>과목 정하기 필요</h2><span class="spacer"></span>'
+  +     '<span class="dim" style="font-size:12.5px">'+noSub.length+'명 · 과목을 정하면 작성 중으로 올라갑니다</span></div>'
+  +   '<div class="rowlist">'+noSubHtml+'</div>'
+  + '</div>' : '')
   + '<div class="section">'
   +   '<div class="section-head"><h2>작성한 리포트</h2><span class="spacer"></span>'
   +     '<span class="dim" style="font-size:12.5px">'+doneR.length+'건</span></div>'
