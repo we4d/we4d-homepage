@@ -270,6 +270,7 @@ button.pip:hover{filter:brightness(.94)}
 .subjchip.wip{background:var(--lilac-soft); border-color:var(--lilac); color:var(--violet)}
 .subjchip.done{background:var(--violet); border-color:var(--violet); color:var(--on-violet)}
 .blk-edit.flash{box-shadow:0 0 0 3px var(--lilac)}
+.blk-by{font-size:12.5px; font-weight:500; color:var(--ink-3); margin-left:4px; letter-spacing:0}
 /* 휴대폰: 아이폰은 16px보다 작은 입력칸을 누르면 화면을 확대하므로 16px로, 과목 버튼은 누르기 쉽게 크게 */
 @media (max-width:600px){
   input.input, textarea.input{font-size:16px!important}
@@ -636,7 +637,8 @@ function renderBlockView(b){
   var body = b.type==="link"
     ? (b.text ? '<a class="blk-link" href="'+esc(b.text)+'" target="_blank" rel="noopener noreferrer">'+esc(b.text)+'</a>' : '')
     : '<div class="blk-text">'+esc(b.text)+'</div>';
-  return '<div class="blk"><div class="blk-head"><h3>'+esc(b.title||t.label)+'</h3>'
+  return '<div class="blk"><div class="blk-head"><h3>'+esc(b.title||t.label)
+    + (b.type==="lesson" && b.by ? ' <span class="blk-by">'+esc(b.by)+' 트레이너</span>' : '')+'</h3>'
     + '<span class="blk-kind">'+t.kind+'</span></div>'+body+'</div>';
 }
 
@@ -659,7 +661,7 @@ function lockup(ac, size){
 function renderDoc(ac, r){
   var mm = String(r.m).padStart(2,"0");
   var days = new Date(r.y, r.m, 0).getDate();
-  var tn = r.teacher || ac.teacher || "";
+  var tn = trainerNames(r);
   return '<article class="doc">'
   + '<header class="doc-cover">'
   +   '<div class="cover-top">'+lockup(ac,20)
@@ -717,7 +719,7 @@ function renderHome(){
       + '<span class="meta"><strong>'+esc(r.student.name||"이름 없음")
       +   (r.sample?'<span class="samplebadge">예시</span>':'')+'</strong>'
       + '<span>'+r.y+'년 '+r.m+'월 · '+esc(r.student.klass||"반 미지정")
-      +   (r.teacher ? ' · '+esc(r.teacher)+' 트레이너' : '')+'</span>'
+      +   (trainerNames(r) ? ' · '+esc(trainerNames(r))+' 트레이너' : '')+'</span>'
       + (right ? '' : '<span class="statusline">'+progressText(r)+'</span>')+'</span>'
       + (right ? '<span class="pct">'+right+'</span>' : '')+'</button>';
   }
@@ -759,7 +761,6 @@ function renderHome(){
   +     '<div class="field" style="grid-column:1/-1"><label for="f6">레슨 과목 목록</label>'
   +       '<input id="f6" class="input" value="'+esc((academy.subjects||[]).join(", "))+'" data-ac="subjects" placeholder="보컬, 댄스, 랩">'
   +       '<span class="dim" style="font-size:11.5px">쉼표로 구분해 적으면 작성 화면에 빠른 추가 버튼으로 나타납니다.</span></div>'
-  +     '<div class="field"><label for="f4">담당 트레이너</label><input id="f4" class="input" value="'+esc(academy.teacher)+'" data-ac="teacher" placeholder="김수진"></div>'
   +     '<div class="field"><label for="f5">연락처</label><input id="f5" class="input" value="'+esc(academy.contact)+'" data-ac="contact" placeholder="02-000-0000"></div>'
   +     '<div class="field" style="grid-column:1/-1"><label for="f7">학부모 링크 주소</label>'
   +       '<input id="f7" class="input" value="'+esc(academy.site||"")+'" data-ac="site" placeholder="https://we4d.co.kr/report">'
@@ -858,9 +859,9 @@ function createReportFor(s){
     id:uid(),
     sid: s ? s.id : null,
     student:{name:s?(s.name||""):"", klass:s?(s.klass||""):""},
-    teacher: sbName || academy.teacher || "",
+    teacher: "",   // 담당 트레이너는 만든 사람이 아니라 과목을 쓴 트레이너들(trainerNames)
     y:now.getFullYear(), m:now.getMonth()+1,
-    greeting:"안녕하세요, "+(s&&s.name ? esc0(s.name)+" 학생 " : "")+"담당 트레이너입니다.\n이번 달 레슨 내용을 정리해 보내드립니다.",
+    greeting:"안녕하세요, 위포드입니다.\n"+(s&&s.name ? esc0(s.name)+" 학생의 " : "")+"이번 달 레슨 내용을 과목별 담당 트레이너가 정리해 보내드립니다.",
     att: attFor(s && s.name, now.getFullYear(), now.getMonth()+1) || {},
     skills: subs.map(function(n){ return {id:uid(), name:n, level:3}; }),
     blocks: subs.map(function(n){ return {id:uid(), type:"lesson", title:n, text:""}; })
@@ -875,6 +876,13 @@ function esc0(s){ return String(s||""); }
 
 /* --- 과목별 작성 완료 · 여러 트레이너 동시 작성 --- */
 function lessonsOf(r){ return (r.blocks||[]).filter(function(b){ return b.type==="lesson"; }); }
+// 담당 트레이너 = 직접 적은 이름(있으면) 아니면 과목을 쓴 트레이너들. 과목을 정하거나 리포트를 연 사람은 들어가지 않음
+function trainerNames(r){
+  if(String(r.teacher||"").trim()) return r.teacher.trim();
+  var seen = [];
+  lessonsOf(r).forEach(function(b){ if(b.by && seen.indexOf(b.by) < 0) seen.push(b.by); });
+  return seen.join(" · ");
+}
 // 레슨(과목) 블록이 하나 이상 있고 모두 "작성 완료"여야 작성한 리포트로 넘어감
 function isDone(r){ var l = lessonsOf(r); return l.length > 0 && l.every(function(b){ return b.done; }); }
 function progressText(r){
@@ -983,8 +991,8 @@ function renderEdit(){
   +     '<div class="field"><label>클래스</label><input class="input" value="'+esc(r.student.klass)+'" data-st="klass" placeholder="데뷔 준비반"></div>'
   +     '<div class="field"><label>연도</label><input class="input num" type="number" value="'+r.y+'" data-per="y"></div>'
   +     '<div class="field"><label>월</label><input class="input num" type="number" min="1" max="12" value="'+r.m+'" data-per="m"></div>'
-  +     '<div class="field" style="grid-column:1/-1"><label>담당 트레이너</label>'
-  +       '<input class="input" value="'+esc(r.teacher||"")+'" data-rt="1" placeholder="'+esc(academy.teacher||"김수진")+'"></div>'
+  +     '<div class="field" style="grid-column:1/-1"><label>담당 트레이너 <span class="dim" style="font-weight:400">(비워 두면 과목을 쓴 트레이너 이름이 자동으로 들어갑니다)</span></label>'
+  +       '<input class="input" value="'+esc(r.teacher||"")+'" data-rt="1" placeholder="'+esc(trainerNames({blocks:r.blocks})||"과목을 쓴 트레이너")+'"></div>'
   +   '</div>'
   +   '<div class="field" style="margin-top:12px"><label>표지 인사말</label>'
   +     '<textarea class="input" data-greet="1" style="min-height:74px" placeholder="학부모님께 드리는 짧은 인사를 적어 주세요.">'+esc(r.greeting)+'</textarea></div>'
@@ -1661,7 +1669,7 @@ document.addEventListener("input", function(ev){
   if(el.dataset.skillname){ o=pick(r.skills, el.dataset.skillname); if(o){ o.name=el.value; stamp(o); touch(); } return; }
   if(el.dataset.btitle){ o=pick(r.blocks, el.dataset.btitle); if(o){ o.title=el.value; stamp(o); touch(); } return; }
   if(el.dataset.btext){
-    o=pick(r.blocks, el.dataset.btext); if(o){ o.text=el.value; stamp(o); touch(); }
+    o=pick(r.blocks, el.dataset.btext); if(o){ o.text=el.value; if(o.type==="lesson" && sbName) o.by = sbName; stamp(o); touch(); }
     if(el.tagName==="TEXTAREA"){ el.style.height="auto"; el.style.height=(el.scrollHeight+2)+"px"; }
     return;
   }
@@ -1674,7 +1682,7 @@ document.addEventListener("change", function(ev){
     if(ev.target.checked && !String(b.text||"").trim()){
       ev.target.checked = false; return toast((b.title||"이 과목")+" 내용을 먼저 적어 주세요");
     }
-    b.done = ev.target.checked; b.by = b.done ? (sbName || "") : ""; stamp(b); touch(); render();
+    b.done = ev.target.checked; if(b.done && sbName) b.by = sbName; stamp(b); touch(); render();
     if(isDone(r)) toast("모든 과목 작성 완료 — 작성한 리포트로 옮겨졌습니다");
     return;
   }
