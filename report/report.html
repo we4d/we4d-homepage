@@ -770,7 +770,10 @@ function renderHome(){
   +     '<span class="dim" style="font-size:12.5px">'+doneR.length+'건</span></div>'
   +   (list ? '<div class="rowlist">'+list+'</div>' : '<div class="empty">아직 모든 과목을 끝낸 리포트가 없습니다.</div>')
   +   '<button type="button" class="btn btn-primary btn-block" style="margin-top:12px;padding:11px" data-act="new">＋ 새 리포트 만들기</button>'
-  +   '<button type="button" class="btn btn-block" style="margin-top:8px" data-act="officeatt">관리 페이지 출석 가져오기 (이름으로 한 번에)</button>'
+  +   '<div style="display:flex;gap:8px;margin-top:8px">'
+  +     '<button type="button" class="btn" style="flex:1" data-act="officeatt">학생 가져오기</button>'
+  +     '<button type="button" class="btn" style="flex:1" data-act="officeattall">출석 가져오기 (덮어쓰기)</button></div>'
+  +   '<p class="dim" style="font-size:12px;margin-top:6px">위포드 관리에서 [리포트용 복사]를 누른 뒤 누르세요. 출석은 매일 바뀌니 보내기 전에 <b>출석 가져오기</b>로 한 번 더 덮어쓰면 됩니다.</p>'
   + '</div>'
   + '<div class="section">'
   +   '<div class="section-head"><h2>학원 정보</h2></div>'
@@ -839,7 +842,7 @@ function attFor(name, y, m){
   var o = officeAtt()[y+"-"+("0"+m).slice(-2)], d = o && o[String(name||"").trim()];
   return d ? Object.assign({}, d) : null;
 }
-function importOfficeAtt(only){
+function importOfficeAtt(only, attOnly){   // attOnly: 출석만 덮어쓰기(학생 등록 안 함)
   function ask(){ return prompt("관리 페이지에서 [리포트용 복사]한 내용을 붙여넣으세요 (Ctrl+V)"); }
   function go(txt){
     var mm = /^WE4D출석\|(\d{4})-(\d{2})\|([\s\S]+)$/.exec(String(txt||"").trim());
@@ -858,7 +861,7 @@ function importOfficeAtt(only){
     });
     // 학생 명단에 없는 학생만 등록함 (이미 있는 학생의 과목·클래스는 그대로 둠, 새 학생은 과목을 비워 두고 학생별로 정함)
     var byName = function(nm){ return students.filter(function(x){ return String(x.name||"").trim() === nm; })[0]; };
-    var newS = only ? [] : Object.keys(data).filter(function(nm){ return !byName(nm); });
+    var newS = (only || attOnly) ? [] : Object.keys(data).filter(function(nm){ return !byName(nm); });
     var madeS = 0;
     if(newS.length && confirm("학생 명단에 없는 학생 "+newS.length+"명을 등록합니다.\n"+newS.join(", ")
       + "\n\n등록한 뒤 학생마다 수강 과목(보컬·댄스 등)을 정해 주세요.\n진행할까요?")){
@@ -882,7 +885,8 @@ function importOfficeAtt(only){
       reports.unshift(r); markR(r.id); madeR++;
     });
     saveLocal(); render();
-    if(only) toast(n ? "출석을 가져왔습니다" : (only.student.name||"이 학생")+" 학생의 "+only.m+"월 출석이 복사한 내용에 없습니다");
+    if(only) toast(n ? "출석을 최신으로 덮어썼습니다" : (only.student.name||"이 학생")+" 학생의 "+only.m+"월 출석이 복사한 내용에 없습니다");
+    else if(attOnly) toast(m+"월 출석을 최신으로 덮어썼습니다 · 리포트 "+(n+madeR)+"건");
     else toast(m+"월 출석을 가져왔습니다"+(n ? " · 리포트 "+n+"건에 반영" : "")+(madeR ? " · 리포트 "+madeR+"건 준비" : "")+(madeS ? " · 학생 "+madeS+"명 등록" : ""));
   }
   if(navigator.clipboard && navigator.clipboard.readText) navigator.clipboard.readText().then(function(t){ go(/^WE4D출석/.test(String(t).trim()) ? t : ask()); }, function(){ go(ask()); });
@@ -1082,6 +1086,7 @@ function renderPreview(){
   + '<div class="section" style="margin-top:12px">'
   +   '<div class="share-card">'
   +     '<div class="eyebrow" style="display:block;margin-bottom:9px">학부모님께 보내기</div>'
+  +     '<button type="button" class="btn btn-block" style="margin-bottom:10px" data-act="officeatt1">보내기 전에 출석 최신으로 덮어쓰기</button>'
   +     '<div class="linkbox" id="linkbox">링크를 만드는 중…</div>'
   +     '<div style="display:flex;gap:8px;margin-top:10px">'
   +       '<button type="button" class="btn btn-primary" style="flex:1" data-act="copy">링크 복사</button>'
@@ -1600,6 +1605,7 @@ document.addEventListener("click", function(ev){
   switch(t.dataset.act){
     case "new": createReportFor(null); break;
     case "officeatt": importOfficeAtt(null); break;
+    case "officeattall": importOfficeAtt(null, true); break;
     case "officeatt1": if(r) importOfficeAtt(r); break;
     case "newstudent": {
       var ns = {id:uid(), name:"", klass:"", subjects:[]};
