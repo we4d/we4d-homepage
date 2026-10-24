@@ -270,6 +270,11 @@ button.pip:hover{filter:brightness(.94)}
 .subjchip.wip{background:var(--lilac-soft); border-color:var(--lilac); color:var(--violet)}
 .subjchip.done{background:var(--violet); border-color:var(--violet); color:var(--on-violet)}
 .blk-edit.flash{box-shadow:0 0 0 3px var(--lilac)}
+/* 휴대폰: 아이폰은 16px보다 작은 입력칸을 누르면 화면을 확대하므로 16px로, 과목 버튼은 누르기 쉽게 크게 */
+@media (max-width:600px){
+  input.input, textarea.input{font-size:16px!important}
+  .subjchip{padding:7px 14px; font-size:13.5px}
+}
 .blk-edit-head{display:flex; align-items:center; gap:8px; margin-bottom:11px}
 .blk-edit-head .kind{
   font-family:var(--display); font-size:9.5px; font-weight:700; letter-spacing:.14em;
