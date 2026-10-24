@@ -7,6 +7,14 @@
 <meta name="theme-color" content="#B9A7EA">
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>위포드 월간 리포트</title>
+<meta name="description" content="이번 달 학생 성장 리포트가 도착했습니다. 출석 · 실력 평가 · 트레이너 코멘트를 확인해 보세요.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WE4D 위포드">
+<meta property="og:title" content="WE4D 월간 리포트">
+<meta property="og:description" content="이번 달 학생 성장 리포트가 도착했습니다. 출석 · 실력 평가 · 트레이너 코멘트를 확인해 보세요.">
+<meta property="og:image" content="https://we4d.co.kr/report/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Gothic+A1:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -252,6 +260,16 @@ button.pip:hover{filter:brightness(.94)}
 .card{background:var(--surface); border:1px solid var(--line-2); border-radius:14px; padding:16px}
 .blk-edit{background:var(--surface); border:1px solid var(--line-2); border-radius:14px; padding:14px}
 .blk-edit + .blk-edit{margin-top:10px}
+.donechk{display:flex; align-items:center; gap:8px; padding:9px 12px; border:1px solid var(--line); border-radius:10px; font-size:14px; font-weight:600; color:var(--ink-2); cursor:pointer}
+.donechk input{width:18px; height:18px; accent-color:var(--violet)}
+.donechk.on{border-color:var(--violet); background:var(--lilac-soft); color:var(--violet)}
+.statusline{display:block; font-size:12px; color:var(--violet); margin-top:2px}
+.subjchips{display:flex; flex-wrap:wrap; gap:6px; margin-top:7px}
+.subjchip{border:1px solid var(--line); background:var(--surface); color:var(--ink-2); border-radius:999px; padding:4px 12px; font-size:12.5px; font-weight:600}
+.subjchip:hover{border-color:var(--lilac)}
+.subjchip.wip{background:var(--lilac-soft); border-color:var(--lilac); color:var(--violet)}
+.subjchip.done{background:var(--violet); border-color:var(--violet); color:var(--on-violet)}
+.blk-edit.flash{box-shadow:0 0 0 3px var(--lilac)}
 .blk-edit-head{display:flex; align-items:center; gap:8px; margin-bottom:11px}
 .blk-edit-head .kind{
   font-family:var(--display); font-size:9.5px; font-weight:700; letter-spacing:.14em;
@@ -661,28 +679,46 @@ function monthLabel(){ var n=new Date(); return (n.getMonth()+1)+"월"; }
 
 function renderHome(){
   var slist = students.map(function(s){
-    var subs = (s.subjects||[]).length;
+    var subs = (s.subjects||[]).length, cur = thisMonthReport(s.id);
+    var btn = !subs ? '<button type="button" class="btn btn-sm" data-student="'+s.id+'">과목 정하기</button>'
+      : cur ? '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+(isDone(cur) ? "완료 ✓" : "이어서 작성")+'</button>'
+      : '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+monthLabel()+' 작성</button>';
+    // 과목 버튼: 누르면 이번 달 리포트의 그 과목 칸으로 바로 감. 색 = 작성 완료(보라) / 쓰는 중(연보라) / 아직(흰색)
+    var chips = (s.subjects||[]).map(function(n){
+      var b = cur && lessonsOf(cur).filter(function(x){ return x.title===n; })[0];
+      var st = b && b.done ? "done" : (b && String(b.text||"").trim() ? "wip" : "");
+      return '<button type="button" class="subjchip '+st+'" data-subj="'+s.id+'" data-sname="'+esc(n)+'"'
+        + ' title="'+esc(n)+(st==="done" ? " 작성 완료"+(b.by ? " · "+esc(b.by) : "") : st==="wip" ? " 작성 중" : " 아직 작성 전")+'">'
+        + (st==="done" ? "✓ " : "")+esc(n)+'</button>';
+    }).join("");
     return '<div class="rowcard">'
       + '<span class="avatar">'+esc((s.name||"?").slice(0,1))+'</span>'
-      + '<button type="button" class="metabtn" data-student="'+s.id+'">'
-      +   '<strong style="display:flex;align-items:center;gap:6px">'+esc(s.name||"이름 없음")
-      +     (s.sample?'<span class="samplebadge">예시</span>':'')+'</strong>'
-      +   '<span style="display:block;font-size:12.5px;color:var(--ink-3);margin-top:1px">'
-      +     esc(s.klass||"클래스 미지정")+' · 과목 '+subs+'개</span></button>'
-      + '<button type="button" class="btn btn-sm" data-newfor="'+s.id+'">'+monthLabel()+' 작성</button>'
+      + '<div style="flex:1;min-width:0">'
+      +   '<button type="button" class="metabtn" data-student="'+s.id+'">'
+      +     '<strong style="display:flex;align-items:center;gap:6px">'+esc(s.name||"이름 없음")
+      +       (s.sample?'<span class="samplebadge">예시</span>':'')+'</strong>'
+      +     '<span style="display:block;font-size:12.5px;color:var(--ink-3);margin-top:1px">'
+      +       esc(s.klass||"클래스 미지정")+(subs ? '' : ' · 수강 과목 미지정')+'</span>'
+      +   '</button>'
+      +   (chips ? '<div class="subjchips">'+chips+'</div>' : '')
+      + '</div>'
+      + btn
       + '</div>';
   }).join("");
 
-  var list = reports.map(function(r){
-    var s = attStats(r);
+  function rowFor(r, right){
     return '<button type="button" class="rowcard" data-open="'+r.id+'">'
       + '<span class="avatar">'+esc((r.student.name||"?").slice(0,1))+'</span>'
       + '<span class="meta"><strong>'+esc(r.student.name||"이름 없음")
       +   (r.sample?'<span class="samplebadge">예시</span>':'')+'</strong>'
       + '<span>'+r.y+'년 '+r.m+'월 · '+esc(r.student.klass||"반 미지정")
-      +   (r.teacher ? ' · '+esc(r.teacher)+' 트레이너' : '')+'</span></span>'
-      + '<span class="pct">'+s.rate+'%</span></button>';
-  }).join("");
+      +   (r.teacher ? ' · '+esc(r.teacher)+' 트레이너' : '')+'</span>'
+      + (right ? '' : '<span class="statusline">'+progressText(r)+'</span>')+'</span>'
+      + (right ? '<span class="pct">'+right+'</span>' : '')+'</button>';
+  }
+  var doneR = reports.filter(isDone), wipR = reports.filter(function(r){ return !isDone(r); });
+  var list = doneR.map(function(r){ return rowFor(r, attStats(r).rate+'%'); }).join("");
+  var wip = wipR.map(function(r){ return rowFor(r, ""); }).join("");
 
   document.getElementById("app").innerHTML =
     '<div class="hero">'+lockup(academy,52)
@@ -698,9 +734,14 @@ function renderHome(){
   +   '<button type="button" class="btn btn-block" style="margin-top:10px" data-act="newstudent">＋ 학생 등록</button>'
   + '</div>'
   + '<div class="section">'
+  +   '<div class="section-head"><h2>작성 중</h2><span class="spacer"></span>'
+  +     '<span class="dim" style="font-size:12.5px">'+wipR.length+'건 · 과목마다 "작성 완료"를 눌러야 넘어갑니다</span></div>'
+  +   (wip ? '<div class="rowlist">'+wip+'</div>' : '<div class="empty">작성 중인 리포트가 없습니다.</div>')
+  + '</div>'
+  + '<div class="section">'
   +   '<div class="section-head"><h2>작성한 리포트</h2><span class="spacer"></span>'
-  +     '<span class="dim" style="font-size:12.5px">'+reports.length+'건</span></div>'
-  +   (list ? '<div class="rowlist">'+list+'</div>' : '<div class="empty">아직 작성한 리포트가 없습니다.</div>')
+  +     '<span class="dim" style="font-size:12.5px">'+doneR.length+'건</span></div>'
+  +   (list ? '<div class="rowlist">'+list+'</div>' : '<div class="empty">아직 모든 과목을 끝낸 리포트가 없습니다.</div>')
   +   '<button type="button" class="btn btn-primary btn-block" style="margin-top:12px;padding:11px" data-act="new">＋ 새 리포트 만들기</button>'
   +   '<button type="button" class="btn btn-block" style="margin-top:8px" data-act="officeatt">관리 페이지 출석 가져오기 (이름으로 한 번에)</button>'
   + '</div>'
@@ -719,6 +760,7 @@ function renderHome(){
   +       '<input id="f7" class="input" value="'+esc(academy.site||"")+'" data-ac="site" placeholder="https://we4d.co.kr/report">'
   +       '<span class="dim" style="font-size:11.5px">학부모님께 보내는 링크가 이 주소로 만들어집니다. 비워 두면 지금 열려 있는 주소를 씁니다.</span></div>'
   +   '</div></div>'
+  +   '<button type="button" class="btn btn-danger btn-block" style="margin-top:12px" data-act="wipeall">학생 명단 · 리포트 모두 지우기</button>'
   + '</div>'
   + footnote();
 }
@@ -785,31 +827,20 @@ function importOfficeAtt(only){
       var d = data[String(r.student.name||"").trim()]; if(!d) return;
       r.att = Object.assign({}, d); delete r.sample; markR(r.id); n++;
     });
-    // 학생 명단에 없는 학생은 등록하고, 출석이 있는데 그 달 리포트가 없으면 리포트를 만들어 출석을 넣음
+    // 학생 명단에 없는 학생만 등록함 (수강 과목은 비워 두고 학생별로 정함 · 리포트는 만들지 않음 — 리포트를 만들 때 출석이 자동으로 들어감)
     var byName = function(nm){ return students.filter(function(x){ return String(x.name||"").trim() === nm; })[0]; };
-    var has = {}; reports.forEach(function(r){ if(+r.y === y && +r.m === m) has[String(r.student.name||"").trim()] = 1; });
     var newS = only ? [] : Object.keys(data).filter(function(nm){ return !byName(nm); });
-    var newR = only ? [] : Object.keys(data).filter(function(nm){ return !has[nm] && Object.keys(data[nm]).length; });
-    var madeS = 0, madeR = 0;
-    if((newS.length || newR.length) && confirm(
-        (newS.length ? "학생 명단에 없는 학생 "+newS.length+"명을 등록합니다.\n"+newS.join(", ")+"\n\n" : "")
-      + (newR.length ? "출석 기록이 있는데 "+m+"월 리포트가 없는 학생 "+newR.length+"명의 리포트를 만들어 출석을 넣습니다.\n" : "")
-      + "\n진행할까요?")){
+    var madeS = 0;
+    if(newS.length && confirm("학생 명단에 없는 학생 "+newS.length+"명을 등록합니다.\n"+newS.join(", ")
+      + "\n\n등록한 뒤 학생마다 수강 과목(보컬·댄스 등)을 정해 주세요.\n진행할까요?")){
       newS.forEach(function(nm){
-        var s = {id:uid(), name:nm, klass:klass[nm]||"", subjects:(academy.subjects||[]).slice()};
+        var s = {id:uid(), name:nm, klass:klass[nm]||"", subjects:[]};
         students.push(s); markS(s.id); madeS++;
-      });
-      newR.forEach(function(nm){
-        var s = byName(nm);
-        var r = {id:uid(), sid:s.id, student:{name:nm, klass:s.klass||""}, teacher: sbName || academy.teacher || "", y:y, m:m,
-          greeting:"안녕하세요, "+nm+" 학생 담당 트레이너입니다.\n이번 달 레슨 내용을 정리해 보내드립니다.",
-          att:Object.assign({}, data[nm]), skills:[], blocks:[{id:uid(), type:"overall", title:"담당 트레이너 총평", text:""}]};
-        reports.unshift(r); markR(r.id); madeR++;
       });
     }
     saveLocal(); render();
     if(only) toast(n ? "출석을 가져왔습니다" : (only.student.name||"이 학생")+" 학생의 "+only.m+"월 출석이 복사한 내용에 없습니다");
-    else toast(m+"월 리포트 "+n+"건에 출석을 넣었습니다"+(madeS ? " · 학생 "+madeS+"명 등록" : "")+(madeR ? " · 새 리포트 "+madeR+"건" : ""));
+    else toast(m+"월 출석을 가져왔습니다"+(n ? " · 리포트 "+n+"건에 반영" : "")+(madeS ? " · 학생 "+madeS+"명 등록" : ""));
   }
   if(navigator.clipboard && navigator.clipboard.readText) navigator.clipboard.readText().then(function(t){ go(/^WE4D출석/.test(String(t).trim()) ? t : ask()); }, function(){ go(ask()); });
   else go(ask());
@@ -837,6 +868,79 @@ function createReportFor(s){
 }
 function esc0(s){ return String(s||""); }
 
+/* --- 과목별 작성 완료 · 여러 트레이너 동시 작성 --- */
+function lessonsOf(r){ return (r.blocks||[]).filter(function(b){ return b.type==="lesson"; }); }
+// 레슨(과목) 블록이 하나 이상 있고 모두 "작성 완료"여야 작성한 리포트로 넘어감
+function isDone(r){ var l = lessonsOf(r); return l.length > 0 && l.every(function(b){ return b.done; }); }
+function progressText(r){
+  var l = lessonsOf(r);
+  if(!l.length) return "수강 과목 없음";
+  return l.map(function(b){ return esc(b.title||"과목")+(b.done?" ✓":""); }).join(" · ");
+}
+function stamp(o){ if(o) o.t = Date.now(); return o; }
+function thisMonthReport(sid){
+  var n = new Date(), y = n.getFullYear(), m = n.getMonth()+1;
+  for(var i=0;i<reports.length;i++){ var r = reports[i]; if(r.sid===sid && +r.y===y && +r.m===m) return r; }
+  return null;
+}
+// 같은 리포트를 다른 PC에서 고친 내용과 합침: 블록·평가는 id별로 더 나중에 고친 쪽을 남김
+function mergeById(mine, theirs, del){
+  mine = mine || []; theirs = theirs || []; del = del || [];
+  var out = mine.map(function(x){ var o = pick(theirs, x.id); return o && (o.t||0) > (x.t||0) ? o : x; });
+  theirs.forEach(function(y){ if(!pick(out, y.id) && del.indexOf(y.id) < 0) out.push(y); });
+  return out;
+}
+function mergeRemote(r, row){
+  if(!row) return;
+  r.blocks = mergeById(r.blocks, row.blocks, r._del);
+  r.skills = mergeById(r.skills, row.skills, r._del);
+}
+function refreshReport(r){
+  if(!cloudOn || !SB || !r) return Promise.resolve();
+  return SB.from("reports").select("blocks,skills").eq("id", r.id).maybeSingle()
+    .then(function(res){ if(res && res.data){ mergeRemote(r, res.data); saveLocal(); } }, function(){});
+}
+// 학생의 수강 과목을 바꾸면 이번 달 작성 중인 리포트에도 과목 블록을 맞춤 (이미 쓴 과목은 지우지 않음)
+function syncSubjects(s){
+  var r = thisMonthReport(s.id); if(!r || isDone(r)) return;
+  var subs = s.subjects || [];
+  subs.forEach(function(n){
+    if(!lessonsOf(r).some(function(b){ return b.title===n; }))
+      r.blocks.splice(lessonsOf(r).length, 0, stamp({id:uid(), type:"lesson", title:n, text:""}));
+    if(!r.skills.some(function(k){ return k.name===n; })) r.skills.push(stamp({id:uid(), name:n, level:3}));
+  });
+  r.blocks = r.blocks.filter(function(b){
+    var gone = b.type==="lesson" && subs.indexOf(b.title) < 0 && !b.done && !String(b.text||"").trim();
+    if(gone) (r._del = r._del || []).push(b.id);
+    return !gone;
+  });
+  saveLocal(); markR(r.id);
+}
+// "N월 작성": 이번 달 리포트가 이미 있으면(다른 트레이너가 만든 것 포함) 그걸 열고, 없을 때만 새로 만듦
+function openOrCreate(s, subj){
+  var open = function(r){ state.id = r.id; state.screen = "edit"; state.addOpen = false; render(); window.scrollTo(0,0); focusSubject(subj); };
+  var make = function(){ createReportFor(s); focusSubject(subj); };
+  var mine = thisMonthReport(s.id);
+  if(mine) return refreshReport(mine).then(function(){ open(mine); });
+  if(!cloudOn || !SB) return make();
+  var n = new Date();
+  SB.from("reports").select("*").eq("student_id", s.id).eq("year", n.getFullYear()).eq("month", n.getMonth()+1).limit(1)
+    .then(function(res){
+      var row = res && res.data && res.data[0];
+      if(row){ var r = rowToReport(row); reports.unshift(r); saveLocal(); open(r); }
+      else make();
+    }, make);
+}
+// 과목 버튼으로 들어오면 그 과목 칸으로 스크롤하고 내용 칸에 커서를 둠
+function focusSubject(n){
+  if(!n) return;
+  var t = [].filter.call(document.querySelectorAll("[data-btitle]"), function(x){ return x.value===n; })[0];
+  var box = t && t.closest(".blk-edit"); if(!box) return;
+  box.scrollIntoView({block:"center"}); box.classList.add("flash");
+  var ta = box.querySelector("textarea"); if(ta) ta.focus({preventScroll:true});
+  setTimeout(function(){ box.classList.remove("flash"); }, 1600);
+}
+
 function renderEdit(){
   var r = findReport();
   if(!r){ state.screen="home"; return render(); }
@@ -852,7 +956,12 @@ function renderEdit(){
       + '<button type="button" class="iconbtn" data-bdel="'+b.id+'" aria-label="삭제">✕</button></div>'
       + '<div style="display:flex;flex-direction:column;gap:10px">'
       +   '<div class="field"><label>'+t.titleLabel+'</label><input class="input" value="'+esc(b.title)+'" data-btitle="'+b.id+'" placeholder="'+esc(t.ph)+'"></div>'
-      +   body+'</div></div>';
+      +   body
+      +   (b.type==="lesson"
+            ? '<label class="donechk'+(b.done?" on":"")+'"><input type="checkbox" data-bdone="'+b.id+'"'+(b.done?" checked":"")+'> '
+              + esc(b.title||"이 과목")+' 작성 완료'+(b.done && b.by ? ' <span class="dim">· '+esc(b.by)+'</span>' : '')+'</label>'
+            : '')
+      + '</div></div>';
   }).join("");
 
   var menu = TYPE_ORDER.map(function(k){
@@ -1152,8 +1261,13 @@ function flush(){
     var r = null;
     for(var i=0;i<reports.length;i++) if(reports[i].id === id) r = reports[i];
     if(r){
-      jobs.push(SB.from("reports").upsert(reportRow(r)));
-      if(shortId(r)) jobs.push(SB.from("shares").upsert({id:shortId(r), payload:packPayload(r)}));
+      // 저장 직전에 서버 내용을 읽어 다른 트레이너가 쓴 과목을 합친 뒤 저장 (덮어쓰기 방지)
+      jobs.push(SB.from("reports").select("blocks,skills").eq("id", r.id).maybeSingle().then(function(cur){
+        if(cur && cur.data){ mergeRemote(r, cur.data); saveLocal(); }
+        var up = [SB.from("reports").upsert(reportRow(r))];
+        if(shortId(r)) up.push(SB.from("shares").upsert({id:shortId(r), payload:packPayload(r)}));
+        return Promise.all(up).then(function(a){ return a.filter(function(x){ return x && x.error; })[0] || a[0]; });
+      }));
     }
   });
   if(!jobs.length){ setSync("saved"); return; }
@@ -1327,16 +1441,26 @@ function touch(){ var r=findReport(); if(r) delete r.sample; saveLocal(); markR(
 function touchS(){ var s=pick(students, state.sid); if(s) delete s.sample; saveLocal(); markS(state.sid); }
 
 document.addEventListener("click", function(ev){
-  var t = ev.target.closest("[data-act],[data-open],[data-day],[data-skill],[data-skilldel],[data-addtype],[data-bup],[data-bdown],[data-bdel],[data-qty],[data-addskillname],[data-addlesson],[data-student],[data-newfor],[data-togglesub],[data-delsub]");
+  var t = ev.target.closest("[data-act],[data-open],[data-day],[data-skill],[data-skilldel],[data-addtype],[data-bup],[data-bdown],[data-bdel],[data-qty],[data-addskillname],[data-addlesson],[data-student],[data-newfor],[data-togglesub],[data-delsub],[data-subj]");
   if(!t) return;
   var r = findReport(), i;
 
-  if(t.dataset.open){ state.id=t.dataset.open; state.screen="edit"; state.addOpen=false; render(); window.scrollTo(0,0); return; }
+  if(t.dataset.open){
+    state.id=t.dataset.open; state.screen="edit"; state.addOpen=false; render(); window.scrollTo(0,0);
+    var ro = findReport();
+    refreshReport(ro).then(function(){ if(state.screen==="edit" && state.id===(ro&&ro.id)) render(); });
+    return;
+  }
 
   if(t.dataset.student){ state.sid=t.dataset.student; state.screen="student"; render(); window.scrollTo(0,0); return; }
   if(t.dataset.newfor){
     var st = pick(students, t.dataset.newfor);
-    if(st) createReportFor(st);
+    if(st) openOrCreate(st);
+    return;
+  }
+  if(t.dataset.subj){
+    var sj = pick(students, t.dataset.subj);
+    if(sj) openOrCreate(sj, t.dataset.sname);
     return;
   }
   if(t.dataset.delsub){
@@ -1346,7 +1470,7 @@ document.addEventListener("click", function(ev){
     if(ai>=0){ academy.subjects.splice(ai,1); markA(); }
     students.forEach(function(x){
       var xi = (x.subjects||[]).indexOf(dn);
-      if(xi>=0){ x.subjects.splice(xi,1); markS(x.id); }
+      if(xi>=0){ x.subjects.splice(xi,1); markS(x.id); syncSubjects(x); }
     });
     saveLocal(); render();
     return;
@@ -1357,7 +1481,7 @@ document.addEventListener("click", function(ev){
       s2.subjects = s2.subjects || [];
       var k = s2.subjects.indexOf(t.dataset.togglesub);
       if(k>=0) s2.subjects.splice(k,1); else s2.subjects.push(t.dataset.togglesub);
-      delete s2.sample; saveLocal(); markS(s2.id); render();
+      delete s2.sample; saveLocal(); markS(s2.id); syncSubjects(s2); render();
     }
     return;
   }
@@ -1370,23 +1494,24 @@ document.addEventListener("click", function(ev){
     }
     if(t.dataset.skill){
       var sk = pick(r.skills, t.dataset.skill);
-      if(sk){ sk.level = +t.dataset.lv; touch(); render(); }
+      if(sk){ sk.level = +t.dataset.lv; stamp(sk); touch(); render(); }
       return;
     }
     if(t.dataset.addskillname){
-      r.skills.push({id:uid(), name:t.dataset.addskillname, level:3});
+      r.skills.push(stamp({id:uid(), name:t.dataset.addskillname, level:3}));
       touch(); return render();
     }
     if(t.dataset.addlesson){
-      r.blocks.push({id:uid(), type:"lesson", title:t.dataset.addlesson, text:""});
+      r.blocks.push(stamp({id:uid(), type:"lesson", title:t.dataset.addlesson, text:""}));
       touch(); return render();
     }
     if(t.dataset.skilldel){
+      (r._del = r._del || []).push(t.dataset.skilldel);
       r.skills = r.skills.filter(function(x){ return x.id!==t.dataset.skilldel; });
       touch(); return render();
     }
     if(t.dataset.addtype){
-      r.blocks.push({id:uid(), type:t.dataset.addtype, title:"", text:""});
+      r.blocks.push(stamp({id:uid(), type:t.dataset.addtype, title:"", text:""}));
       state.addOpen=false; touch(); return render();
     }
     if(t.dataset.bup){
@@ -1400,6 +1525,7 @@ document.addEventListener("click", function(ev){
       touch(); return render();
     }
     if(t.dataset.bdel){
+      (r._del = r._del || []).push(t.dataset.bdel);
       r.blocks = r.blocks.filter(function(x){ return x.id!==t.dataset.bdel; });
       touch(); return render();
     }
@@ -1414,7 +1540,7 @@ document.addEventListener("click", function(ev){
     case "officeatt": importOfficeAtt(null); break;
     case "officeatt1": if(r) importOfficeAtt(r); break;
     case "newstudent": {
-      var ns = {id:uid(), name:"", klass:"", subjects:(academy.subjects||[]).slice()};
+      var ns = {id:uid(), name:"", klass:"", subjects:[]};
       students.push(ns); saveLocal(); markS(ns.id);
       state.sid = ns.id; state.screen = "student";
       render(); window.scrollTo(0,0);
@@ -1429,7 +1555,7 @@ document.addEventListener("click", function(ev){
       s3.subjects = s3.subjects || [];
       if(s3.subjects.indexOf(name) < 0) s3.subjects.push(name);
       if((academy.subjects||[]).indexOf(name) < 0){ academy.subjects.push(name); markA(); }
-      delete s3.sample; saveLocal(); markS(s3.id); render();
+      delete s3.sample; saveLocal(); markS(s3.id); syncSubjects(s3); render();
       break;
     }
     case "delstudent": {
@@ -1442,12 +1568,33 @@ document.addEventListener("click", function(ev){
       }
       break;
     }
-    case "home": state.screen="home"; render(); window.scrollTo(0,0); break;
+    case "home":
+      state.screen="home"; render(); window.scrollTo(0,0);
+      // 저장할 게 남아 있지 않으면 다른 트레이너가 쓴 내용을 받아 옴
+      if(cloudOn && SB && !dirty.a && !Object.keys(dirty.s).length && !Object.keys(dirty.r).length)
+        pullAll().then(function(){ if(state.screen==="home"){ saveLocal(); render(); } });
+      break;
+    case "wipeall": {
+      var word = prompt("학생 "+students.length+"명과 리포트 "+reports.length+"건을 모두 지웁니다.\n"
+        + "이미 보낸 리포트 링크도 열리지 않게 됩니다. 되돌릴 수 없습니다.\n\n계속하려면 '삭제'라고 입력하세요.");
+      if(String(word||"").trim() !== "삭제") break;
+      reports.forEach(function(x){ cloudDelete("reports", x.id, true); cloudDelete("shares", shortId(x), true); });
+      students.forEach(function(x){ cloudDelete("students", x.id, true); });
+      reports = []; students = []; dirty.s = {}; dirty.r = {};
+      saveLocal(); render(); toast("학생 명단과 리포트를 모두 지웠습니다");
+      break;
+    }
     case "back": state.screen="edit"; render(); window.scrollTo(0,0); break;
-    case "preview": state.screen="preview"; render(); window.scrollTo(0,0); break;
+    case "preview":
+      if(r && !isDone(r)){
+        var left = lessonsOf(r).filter(function(b){ return !b.done; }).map(function(b){ return b.title||"과목"; });
+        if(!confirm(left.length ? "아직 작성 완료가 안 된 과목: "+left.join(", ")+"\n그래도 미리보기를 열까요?"
+                                : "수강 과목(레슨 코멘트)이 없는 리포트입니다. 그래도 미리보기를 열까요?")) break;
+      }
+      state.screen="preview"; render(); window.scrollTo(0,0); break;
     case "toggleadd": state.addOpen=!state.addOpen; render(); break;
-    case "addskill": if(r){ r.skills.push({id:uid(), name:"", level:3}); touch(); render(); } break;
-    case "bulk": if(r){ for(var n=0;n<state.qty;n++) r.blocks.push({id:uid(), type:"lesson", title:"", text:""}); touch(); render(); } break;
+    case "addskill": if(r){ r.skills.push(stamp({id:uid(), name:"", level:3})); touch(); render(); } break;
+    case "bulk": if(r){ for(var n=0;n<state.qty;n++) r.blocks.push(stamp({id:uid(), type:"lesson", title:"", text:""})); touch(); render(); } break;
     case "del": if(r && confirm((r.student.name||"이")+" 리포트를 삭제할까요?")){
         var gone = r.id, sid = shortId(r);
         reports = reports.filter(function(x){ return x.id!==gone; });
@@ -1506,16 +1653,26 @@ document.addEventListener("input", function(ev){
   }
   if(el.dataset.rt != null){ r.teacher=el.value; touch(); return; }
   if(el.dataset.greet != null){ r.greeting=el.value; touch(); return; }
-  if(el.dataset.skillname){ o=pick(r.skills, el.dataset.skillname); if(o){ o.name=el.value; touch(); } return; }
-  if(el.dataset.btitle){ o=pick(r.blocks, el.dataset.btitle); if(o){ o.title=el.value; touch(); } return; }
+  if(el.dataset.skillname){ o=pick(r.skills, el.dataset.skillname); if(o){ o.name=el.value; stamp(o); touch(); } return; }
+  if(el.dataset.btitle){ o=pick(r.blocks, el.dataset.btitle); if(o){ o.title=el.value; stamp(o); touch(); } return; }
   if(el.dataset.btext){
-    o=pick(r.blocks, el.dataset.btext); if(o){ o.text=el.value; touch(); }
+    o=pick(r.blocks, el.dataset.btext); if(o){ o.text=el.value; stamp(o); touch(); }
     if(el.tagName==="TEXTAREA"){ el.style.height="auto"; el.style.height=(el.scrollHeight+2)+"px"; }
     return;
   }
 });
 
 document.addEventListener("change", function(ev){
+  if(ev.target.dataset && ev.target.dataset.bdone){
+    var r = findReport(), b = r && pick(r.blocks, ev.target.dataset.bdone);
+    if(!b) return;
+    if(ev.target.checked && !String(b.text||"").trim()){
+      ev.target.checked = false; return toast((b.title||"이 과목")+" 내용을 먼저 적어 주세요");
+    }
+    b.done = ev.target.checked; b.by = b.done ? (sbName || "") : ""; stamp(b); touch(); render();
+    if(isDone(r)) toast("모든 과목 작성 완료 — 작성한 리포트로 옮겨졌습니다");
+    return;
+  }
   if(ev.target.dataset && ev.target.dataset.per) render();
 });
 
