@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 26. 오후 5:29:46 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 26. 오후 5:38:24 저장)
    ============================================================ */
 
 const SITE = {
@@ -328,7 +328,9 @@ const INSTRUCTORS = [
     "title": "보컬 · 오디션 팀장",
     "photo": "assets/inst/hwang-yebin.jpg",
     "q": "",
-    "career": [],
+    "career": [
+      "솔로 데뷔 - ORLY<br>ORLY - Crush On You 발매<br>ORLY - Need You Now 발매<br>뮤직뱅크, 쇼!음악중심, 인기가요 등 다수 음악방송 출연<br>A20, JYP, YG, 쏘스뮤직 등 대형 엔터 다수 합격자 배출<br>모드하우스, 3Y 등 다수 기획사 최종합격생 지도 배출"
+    ],
     "focus": "보컬 · 오디션",
     "portfolio": []
   },
@@ -359,12 +361,14 @@ const INSTRUCTORS = [
   {
     "cat": "vocal",
     "en": "NEW TRAINER",
-    "kr": "우시은",
+    "kr": "지수연",
     "role": "TRAINER",
     "title": "",
-    "photo": "assets/inst/kakaotalk_20261022_183512338.jpg",
+    "photo": "assets/inst/_t.jpg",
     "q": "",
-    "career": [],
+    "career": [
+      "걸그룹 '위키미키' 메인보컬<br>뮤직뱅크, 쇼!음악중심, 인기가요 등 <br>다수의 음악 방송 및 방송 출연<br>지수연 - 숲으로 떠난 물고기 발매 (2025) <br>드라마 함부로 대해줘 OST - 그대를 보내요 발매 (2024) <br>백석예술대학교 실용음악과 졸업"
+    ],
     "focus": "—보컬",
     "portfolio": []
   },
