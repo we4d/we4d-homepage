@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 26. 오후 5:26:36 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 26. 오후 5:29:46 저장)
    ============================================================ */
 
 const SITE = {
@@ -369,6 +369,18 @@ const INSTRUCTORS = [
     "portfolio": []
   },
   {
+    "cat": "vocal",
+    "en": "NEW TRAINER",
+    "kr": "지수연",
+    "role": "TRAINER",
+    "title": "",
+    "photo": "assets/inst/_t.jpg",
+    "q": "",
+    "career": [],
+    "focus": "",
+    "portfolio": []
+  },
+  {
     "cat": "dance",
     "en": "LEE HAE-A",
     "kr": "이해아",
@@ -377,7 +389,7 @@ const INSTRUCTORS = [
     "photo": "assets/inst/lee-haea.jpg",
     "q": "",
     "career": [
-      "대형기획사 K-POP 안무 제작팀 활동 <br>켄타 X 상균 'Love countdawn' 안무 작업 서브 디렉터<br>아일릿 '2024 MAMA'시안 댄서 참여 <br>세븐틴 ' 음악의 신' 퍼포먼스 비디오 댄서 참여<br>트레저 'Las night' 시안 댄서 참여<br>P1Harmony 'DUH!' 시안 댄서 참여<br>우아 'Pom Pom Pom 뮤직비디오 댄서 참여<br>ㅇ<br>p<br>트<br>ㅇㅇ<br>아이<br><br>켄"
+      "대형기획사 대형기획사K-POP 안무 제작팀 활동 <br>켄타 X 상균 'Love countdawn' 안무 작업 서브 디렉터<br>아일릿 '2024 MAMA'시안 댄서 참여 <br>세븐틴 ' 음악의 신' 퍼포먼스 비디오 댄서 참여<br>트레저 'Las night' 시안 댄서 참여<br>P1Harmony 'DUH!' 시안 댄서 참여<br>우아 'Pom Pom Pom 뮤직비디오 댄서 참여"
     ],
     "focus": "댄스",
     "portfolio": []
