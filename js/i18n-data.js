@@ -461,5 +461,6 @@ const I18N = {
   "서울특별시 강동구 양재대로 1602, 3층": ["3F, 1602 Yangjae-daero, Gangdong-gu, Seoul","首尔特别市江东区良才大路1602号 3层","ソウル特別市江東区良才大路1602 3階"],
   "서울특별시 강동구 양재대로 1602": ["1602 Yangjae-daero, Gangdong-gu, Seoul","首尔特别市江东区良才大路1602号","ソウル特別市江東区良才大路1602"],
   "'굽은다리사거리' 정류장 하차": ["Get off at Gubeundari Intersection bus stop","在弯桥十字路口站下车","クブンダリ交差点バス停下車"],
-  "월 5~6회 기획사 방문 오디션 · 월말 평가 · 기획사 추천": ["5-6 agency on-site auditions a month · Monthly evaluation · Agency referral", "每月5~6次企划社到校试镜 · 月末评价 · 企划社推荐", "月5~6回の事務所来校オーディション · 月末評価 · 事務所推薦"]
+  "월 5~6회 기획사 방문 오디션 · 월말 평가 · 기획사 추천": ["5-6 agency on-site auditions a month · Monthly evaluation · Agency referral", "每月5~6次企划社到校试镜 · 月末评价 · 企划社推荐", "月5~6回の事務所来校オーディション · 月末評価 · 事務所推薦"],
+  "월 5~6회 기획사 방문 오디션, 월말 평가, 기획사 추천으로 이어지는 포지션입니다. <br>보컬 + 댄스 병행이 기본입니다.": ["A position leading to 5-6 agency on-site auditions a month, monthly evaluations and agency referrals. <br>Vocal and dance together is the default.", "每月5~6次企划社到校试镜、月末评价、企划社推荐的方向。<br>声乐与舞蹈并行为基本。", "月5~6回の事務所来校オーディション、月末評価、事務所推薦につながるポジションです。<br>ボーカルとダンスの並行が基本です。"]
 };
