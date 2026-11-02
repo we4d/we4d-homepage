@@ -794,3 +794,5 @@ html.soon body{overflow:hidden}
 .hero-inner .hero-sub{font-family:var(--body);font-size:clamp(14px,1.5vw,18px);font-weight:500;letter-spacing:.01em;text-transform:none;margin-top:18px}
 .foot-sns a.bg span{color:#03C75A}
 .foot-sns a.bg:hover{border-color:#03C75A}
+.foot-sns a.pl span{color:#03C75A}
+.foot-sns a.pl:hover{border-color:#03C75A}
