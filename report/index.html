@@ -1095,10 +1095,11 @@ function renderPreview(){
   +     '<div class="linkbox" id="linkbox">링크를 만드는 중…</div>'
   +     '<div style="display:flex;gap:8px;margin-top:10px">'
   +       '<button type="button" class="btn btn-primary" style="flex:1" data-act="copy">링크 복사</button>'
+  +       '<button type="button" class="btn" data-act="sms">문자로 보내기</button>'
   +       '<button type="button" class="btn" data-act="share">공유</button></div>'
   +     '<ol class="steps">'
-  +       '<li>링크를 복사합니다.</li>'
-  +       '<li>학부모님과의 카카오톡 대화방에 붙여넣고 보냅니다.</li>'
+  +       '<li>링크를 복사합니다. 카톡이 안 되는 학부모님은 <b>문자로 보내기</b>를 누르세요.</li>'
+  +       '<li>카카오톡 대화방이나 문자에 붙여넣고 보냅니다.</li>'
   +       '<li>학부모님은 가입·설치 없이 링크를 눌러 아래 화면 그대로 보게 됩니다.</li></ol>'
   +   '</div>'
   +   '<div class="section-head"><h2>학부모님이 보게 될 화면</h2></div>'
@@ -1227,7 +1228,7 @@ function toast(msg){
 }
 function copyLink(){
   if(!currentLink) return toast("링크를 만드는 중입니다");
-  function done(){ toast("링크를 복사했습니다. 카톡에 붙여넣으세요"); }
+  function done(){ toast("링크를 복사했습니다. 카톡이나 문자에 붙여넣으세요"); }
   function fallback(){
     var ta = document.createElement("textarea");
     ta.value = currentLink; ta.style.position="fixed"; ta.style.opacity="0";
@@ -1702,6 +1703,19 @@ document.addEventListener("click", function(ev){
         navigator.share({title:((findReport()||{student:{}}).student.name||"학생")+" 학습 리포트", url:currentLink}).catch(function(){});
       } else copyLink();
       break;
+    case "sms": {
+      // 카톡이 안 되는 학부모님용: 휴대폰은 문자 앱을 내용이 채워진 채로 열고(받는 사람만 고르면 됨), PC는 내용을 복사
+      if(!currentLink) { toast("링크를 만드는 중입니다"); break; }
+      var rs = findReport() || {student:{}};
+      var msg = "["+(academy.name||"위포드")+"] "+(rs.student.name ? rs.student.name+" 학생 " : "")+(rs.m ? rs.m+"월 " : "")+"학습 리포트가 도착했습니다.\n"+currentLink;
+      if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) location.href = "sms:?&body=" + encodeURIComponent(msg);
+      else {
+        var ok = function(){ toast("문자 내용을 복사했습니다. 휴대폰 문자에 붙여넣으세요"); };
+        if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(msg).then(ok, function(){ prompt("아래 내용을 복사하세요 (Ctrl+C)", msg); });
+        else prompt("아래 내용을 복사하세요 (Ctrl+C)", msg);
+      }
+      break;
+    }
     case "print": window.print(); break;
   }
 });
