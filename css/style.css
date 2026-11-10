@@ -219,11 +219,11 @@ ul{margin:0;padding:0;list-style:none}
 
 /* [홈] 3트랙 카드 */
 .pillar{min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
-.pillar .bg{position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,var(--card2),var(--card));background-size:cover;background-position:center;transition:transform .8s var(--ease)}
+.pillar .bg{position:absolute;inset:0;z-index:-1;background:linear-gradient(165deg,#241C33 0%,#0B0910 100%);background-size:cover;background-position:center;transition:transform .8s var(--ease)}
 .pillar:hover .bg{transform:scale(1.06)}
-.pillar .bg::after{content:"";position:absolute;inset:auto -40% -50% auto;width:80%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(216,180,254,.7),transparent 65%);filter:blur(30px)}
+.pillar .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.25) 45%,transparent 75%)}
 .pillar .d{font-size:calc(clamp(52px,6.2vw,84px) * var(--sc-pillar,1));margin-bottom:12px;line-height:1;white-space:nowrap;display:block}
-.pillar-txt{min-height:118px;display:flex;flex-direction:column}   /* 세 카드의 큰 글씨 높이를 맞추기 위한 고정 높이 */
+.pillar-txt{display:flex;flex-direction:column}
 .pillar h3{font-size:calc(16px * var(--sc-card,1));font-weight:700}
 .pillar p{font-size:13.5px;margin-top:6px}
 .pillar .card-link{font-size:13px;margin-top:auto;padding-top:14px}
@@ -796,3 +796,16 @@ html.soon body{overflow:hidden}
 .foot-sns a.bg:hover{border-color:#03C75A}
 .foot-sns a.pl span{color:#03C75A}
 .foot-sns a.pl:hover{border-color:#03C75A}
+/* 포지션 카드 — 짙은 바탕 · 흰 글씨 고대비 (사진을 넣으면 사진이 그대로 바탕이 됨) */
+.pillar{border:1px solid rgba(255,255,255,.1);min-height:380px}
+.pillar .d{color:#fff}
+.pillar h3{color:#fff;font-size:calc(17px * var(--sc-card,1));letter-spacing:-.01em}
+.pillar p{color:rgba(255,255,255,.62)}
+.pillar .card-link{color:var(--lilac);font-weight:700}
+.pillar .badge-ink{background:rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(6px)}
+.pillar:hover{border-color:var(--lilac);transform:translateY(-6px)}
+.pillar:hover .card-link{color:#fff}
+html[data-c-pillarTitle] .pillar .d{color:var(--c-pillarTitle)}
+/* 포지션 카드는 바탕이 어두우므로 제목을 흰색으로 (밝은 섹션 규칙보다 우선) */
+.sec.light .card.pillar .d,.sec.tint .card.pillar .d{color:#fff}
+html[data-c-pillarTitle] .sec.light .card.pillar .d,html[data-c-pillarTitle] .sec.tint .card.pillar .d{color:var(--c-pillarTitle)}

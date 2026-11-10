@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560">
+  <defs>
+    <linearGradient id="b" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#2A2040"/><stop offset="1" stop-color="#09070D"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D8B4FE" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#D8B4FE" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="pool" cx="50%" cy="100%" r="60%">
+      <stop offset="0" stop-color="#D8B4FE" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#D8B4FE" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="s"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="800" height="560" fill="url(#b)"/>
+  <g filter="url(#s)" opacity=".9">
+    <polygon points="250,-40 330,-40 470,560 150,560" fill="url(#beam)"/>
+    <polygon points="470,-40 530,-40 700,560 430,560" fill="url(#beam)" opacity=".6"/>
+    <polygon points="60,-40 110,-40 180,560 -40,560" fill="url(#beam)" opacity=".4"/>
+  </g>
+  <ellipse cx="400" cy="560" rx="340" ry="150" fill="url(#pool)"/>
+</svg>
