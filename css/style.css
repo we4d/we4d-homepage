@@ -20,7 +20,7 @@
   --line-l:rgba(10,10,10,.12);
 
   --display:"Archivo","Impact","Arial Black",sans-serif;   /* 영문 대문자 타이틀 */
-  --body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;   /* 본문 */
+  --body:"Pretendard Variable",Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;   /* 본문 */
   --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;   /* 날짜·라벨 */
 
   --r-lg:24px; --r-md:16px; --r-sm:10px;
