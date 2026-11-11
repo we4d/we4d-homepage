@@ -857,10 +857,10 @@ html[data-c-pillarTitle] .sec.light .card.pillar .d,html[data-c-pillarTitle] .se
 @media (max-width:620px){.lesson-photo .logo-wall{grid-template-columns:repeat(4,1fr);padding:12px 4%;gap:7px 9px}.lesson-photo .logo-wall img{max-width:58px;max-height:18px}}
 
 /* [첫 화면] 큰 글씨를 배경 영상과 섞어 '투명한 글씨'처럼 보이게 */
-.hero-inner{z-index:auto}                                  /* 섞임(blend)이 배경까지 닿도록 쌓임 맥락 해제 */
+.hero-inner{z-index:auto}   /* 섞임(blend)이 배경 영상까지 닿도록 */
 .hero .d-xl{mix-blend-mode:difference;color:#B9B9BE;-webkit-text-stroke:0;text-shadow:none}
 html[data-c-hero] .hero .d-xl{color:var(--c-hero)}   /* 관리 페이지의 첫 화면 제목 색 */
-.hero .d-xl b{display:block;font-weight:inherit;font-size:min(1.3em,8.6vw);letter-spacing:-.015em;white-space:nowrap}   /* 둘째 줄(KPOP-TRAINING)을 더 크게 */
+.hero .d-xl b{display:block;width:max-content;position:relative;left:50%;translate:-50% 0;font-weight:inherit;font-size:min(1.3em,8.6vw);letter-spacing:-.015em;white-space:nowrap}   /* 둘째 줄(KPOP-TRAINING)을 더 크게 */
 
 /* [홈] 포지션 네 칸 — 화면 꽉 찬 무대, 뒤에 큰 로고, 스크롤하면 가운데로 모인다 */
 .pillar-stage{position:relative;view-timeline:--stage block;width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(28px,4vw,56px);overflow:clip;padding:clamp(24px,4vw,64px) 0}
@@ -869,7 +869,7 @@ html[data-c-hero] .hero .d-xl{color:var(--c-hero)}   /* 관리 페이지의 첫 
 
 @supports (animation-timeline:view()){
   @media (prefers-reduced-motion:no-preference){
-    .pillars .pillar{animation:gather linear both;animation-timeline:--stage;animation-range:entry 18% cover 56%}
+    .pillars .pillar{animation:gather linear both;animation-timeline:--stage;animation-range:cover 0% cover 26%}
     .pillars .pillar:nth-child(odd){--gx:-26vw}
     .pillars .pillar:nth-child(even){--gx:26vw}
     .pillars .pillar:nth-child(-n+2){--gy:-9vh}
