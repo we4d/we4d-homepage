@@ -1095,6 +1095,36 @@ const AGENCIES = [
     "n": "Hi-Hat",
     "img": "assets/logos/hihat.png",
     "h": 34
+  },
+  {
+    "n": "KAKAO ENT",
+    "img": "assets/logos/kakaoent.svg",
+    "h": 26
+  },
+  {
+    "n": "BIGPLANETMADE",
+    "img": "assets/logos/bigplanetmade.svg",
+    "h": 32
+  },
+  {
+    "n": "HIGH UP",
+    "img": "assets/logos/highup.png",
+    "h": 32
+  },
+  {
+    "n": "MYSTIC STORY",
+    "img": "assets/logos/mysticstory.png",
+    "h": 22
+  },
+  {
+    "n": "INKODE",
+    "img": "assets/logos/inkode.png",
+    "h": 20
+  },
+  {
+    "n": "MORE VISION",
+    "img": "assets/logos/morevision.svg",
+    "h": 28
   }
 ];
 
