@@ -815,3 +815,14 @@ html[data-c-pillarTitle] .sec.light .card.pillar .d,html[data-c-pillarTitle] .se
 .logo-wall{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);align-content:center;justify-items:center;gap:30px 18px;padding:40px 30px 150px;opacity:.5}
 .logo-wall img{max-width:86px;max-height:30px;width:auto;height:auto;object-fit:contain;filter:brightness(0) invert(1)}
 @media (max-width:620px){.pillar{min-height:400px}.logo-wall{gap:22px 14px;padding:30px 22px 130px}.logo-wall img{max-width:70px;max-height:24px}}
+
+/* ------------------------------------------------------------------
+   [홈] 포지션 카드 — 화면 꽉 채우기
+------------------------------------------------------------------ */
+.pillars{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);gap:4px}
+.pillars .pillar{min-height:min(66vh,700px);border-radius:0;border-left:0;border-right:0;padding:40px}
+.pillars .pillar .d{font-size:calc(clamp(64px,8.5vw,140px) * var(--sc-pillar,1))}
+.pillars .pillar .badge{top:34px;left:40px}
+.pillars .logo-wall{padding:60px 14% 200px;gap:40px 24px}
+.pillars .logo-wall img{max-width:120px;max-height:42px}
+@media (max-width:860px){.pillars{grid-template-columns:1fr}.pillars .pillar{min-height:56vh;padding:30px}.pillars .pillar .badge{top:26px;left:30px}.pillars .logo-wall{padding:40px 18% 150px;gap:28px 18px}.pillars .logo-wall img{max-width:92px;max-height:32px}}
