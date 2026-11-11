@@ -168,7 +168,7 @@
 <section class="page" id="page-home">
 
   <!-- 히어로: 풀스크린 배경 영상 (content.js → SITE.hero) -->
-  <div class="hero" id="hero" role="link" tabindex="0" aria-label="상담하기 페이지로 이동">
+  <div class="hero" id="hero" data-rail="Intro" role="link" tabindex="0" aria-label="상담하기 페이지로 이동">
     <div class="hero-media">
       <canvas id="heroCanvas" aria-hidden="true"></canvas>
       <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
@@ -199,7 +199,7 @@
   </div>
 
   <!-- 3포지션 소개 카드 -->
-  <section class="sec light">
+  <section class="sec light" data-rail="Position">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -219,8 +219,16 @@
     </div>
   </section>
 
+  <!-- 슬로건 한 화면 (content.js → SITE.slogan) -->
+  <section class="sec slogan" id="slogan" data-rail="Vision">
+    <div class="wrap">
+      <h2 class="d" data-site="slogan.en"></h2>
+      <p data-site="slogan.kr"></p>
+    </div>
+  </section>
+
   <!-- 다가오는 오디션 (EVENTS 에서 자동) -->
-  <section class="sec light">
+  <section class="sec light" data-rail="Audition">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -235,7 +243,7 @@
   </section>
 
   <!-- CTA 밴드 -->
-  <section class="sec dark" style="padding:clamp(56px,7vw,100px) 0">
+  <section class="sec dark" data-rail="Contact" style="padding:clamp(56px,7vw,100px) 0">
     <div class="wrap">
       <div class="cta-band">
         <h2 class="d d-lg">Not sure where<br>to <em>start?</em></h2>
@@ -246,6 +254,9 @@
       </div>
     </div>
   </section>
+
+  <!-- 스크롤 위치 표시 레일 (홈 전용) -->
+  <div class="rail" id="rail" aria-hidden="true"></div>
 </section>
 
 <!-- ================================================== [WE4D] -->

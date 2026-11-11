@@ -519,3 +519,36 @@ if (/[?&]edit=1/.test(location.search)) {
   const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'css/edit.css?v=' + Date.now(); document.head.appendChild(l);
   const s = document.createElement('script'); s.src = 'js/edit.js?v=' + Date.now(); document.body.appendChild(s);
 }
+
+/* ------------------------------------------------------------------
+   [홈] 스크롤 위치 표시 레일 — 아래쪽에 01 INTRO … 처럼 현재 위치 표시
+------------------------------------------------------------------ */
+(function () {
+  const rail = document.getElementById('rail');
+  if (!rail) return;
+  const secs = Array.from(document.querySelectorAll('#page-home [data-rail]'));
+  if (!secs.length) return;
+  rail.style.setProperty('--rail-n', secs.length);
+  rail.innerHTML = secs.map((s, i) =>
+    `<b data-i="${i}"><i>${String(i + 1).padStart(2, '0')} ${s.dataset.rail}</i><s></s></b>`).join('');
+  const marks = Array.from(rail.children);
+  rail.addEventListener('click', e => {
+    const b = e.target.closest('b'); if (!b) return;
+    secs[+b.dataset.i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  function sync() {
+    const home = document.getElementById('page-home').classList.contains('active');
+    rail.classList.toggle('on', home);
+    if (!home) return;
+    const line = window.innerHeight * 0.75;      // 화면 아래쪽 기준선
+    let cur = 0;
+    secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= line) cur = i; });
+    marks.forEach((b, i) => b.classList.toggle('now', i === cur));
+    const c = secs[cur].className || '';
+    // 포지션 섹션은 겉은 밝지만 화면 아래쪽이 어두운 카드로 덮이므로 밝은 색 글씨를 쓴다
+    rail.classList.toggle('light', /\b(light|tint|slogan)\b/.test(c) && !secs[cur].querySelector('.pillars'));
+  }
+  addEventListener('scroll', sync, { passive: true });
+  addEventListener('hashchange', () => setTimeout(sync, 60));
+  sync();
+})();

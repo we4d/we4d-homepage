@@ -44,6 +44,10 @@ const SITE = {
       }
     ]
   },
+  "slogan": {
+    "en": "Dream, Made Real",
+    "kr": "꿈을 현실로 만드는 4D 트레이닝"
+  },
   "parents": {
     "en": "To Parents",
     "title": "학부모님께 드리는 네 가지 약속",

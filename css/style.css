@@ -826,3 +826,36 @@ html[data-c-pillarTitle] .sec.light .card.pillar .d,html[data-c-pillarTitle] .se
 .pillars .logo-wall{padding:60px 14% 200px;gap:40px 24px}
 .pillars .logo-wall img{max-width:120px;max-height:42px}
 @media (max-width:860px){.pillars{grid-template-columns:1fr}.pillars .pillar{min-height:56vh;padding:30px}.pillars .pillar .badge{top:26px;left:30px}.pillars .logo-wall{padding:40px 18% 150px;gap:28px 18px}.pillars .logo-wall img{max-width:92px;max-height:32px}}
+
+/* ------------------------------------------------------------------
+   [홈] 슬로건 한 화면 (밝은 반전 섹션)
+------------------------------------------------------------------ */
+.sec.slogan{background:#F2EFEA;color:#121016;min-height:86vh;display:grid;place-items:center;text-align:center}
+.sec.slogan .wrap{display:grid;gap:22px;justify-items:center}
+.sec.slogan .d{font-size:clamp(44px,9vw,132px);line-height:.95;color:#121016;max-width:14em}
+.sec.slogan p{font-size:clamp(15px,1.5vw,20px);color:#4A4458;max-width:30em;margin:0}
+@media (max-width:620px){.sec.slogan{min-height:68vh}}
+
+/* ------------------------------------------------------------------
+   [홈] 스크롤 위치 표시 레일
+------------------------------------------------------------------ */
+.rail{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:0 210px 16px 28px;pointer-events:none;
+      display:grid;grid-template-columns:repeat(var(--rail-n,5),1fr);align-items:end;gap:0;
+      opacity:0;transition:opacity .4s var(--ease)}
+.rail.on{opacity:1}
+.rail b{pointer-events:auto;cursor:pointer;display:grid;gap:8px;justify-items:start;font-weight:400}
+.rail i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+        color:rgba(255,255,255,.4);transition:color .3s;white-space:nowrap}
+.rail s{text-decoration:none;display:block;height:1px;width:100%;background:rgba(255,255,255,.22);position:relative}
+.rail s::before{content:"";position:absolute;left:0;top:-2px;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.35);transition:background .3s,transform .3s}
+.rail b.now i{color:#fff}
+.rail b.now s{background:rgba(255,255,255,.5)}
+.rail b.now s::before{background:#fff;transform:scale(1.6)}
+/* 밝은 섹션 위에서는 어두운 색으로 */
+.rail.light i{color:rgba(18,16,22,.4)}
+.rail.light s{background:rgba(18,16,22,.18)}
+.rail.light s::before{background:rgba(18,16,22,.3)}
+.rail.light b.now i{color:#121016}
+.rail.light b.now s{background:rgba(18,16,22,.45)}
+.rail.light b.now s::before{background:#121016}
+@media (max-width:620px){.rail{display:none}}
