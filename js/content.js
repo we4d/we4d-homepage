@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 10. 26. 오후 5:42:10 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 11. 오후 5:04:37 저장)
    ============================================================ */
 
 const SITE = {
@@ -338,24 +338,22 @@ const INSTRUCTORS = [
   {
     "cat": "vocal",
     "en": "NEW TRAINER",
-    "kr": "지수연",
+    "kr": "우시은",
     "role": "TRAINER",
-    "title": "",
-    "photo": "assets/inst/_t.jpg",
+    "title": "보컬",
+    "photo": "assets/inst/_t_.jpg",
     "q": "",
-    "career": [
-      "걸그룹 '위키미키' 메인보컬<br>뮤직뱅크, 쇼!음악중심, 인기가요 등 <br>다수의 음악 방송 및 방송 출연<br>지수연 - 숲으로 떠난 물고기 발매 (2025) <br>드라마 함부로 대해줘 OST - 그대를 보내요 발매 (2024) <br>백석예술대학교 실용음악과 졸업"
-    ],
-    "focus": "—보컬",
+    "career": [],
+    "focus": "",
     "portfolio": []
   },
   {
     "cat": "vocal",
     "en": "NEW TRAINER",
-    "kr": "지수연",
+    "kr": "이",
     "role": "TRAINER",
     "title": "",
-    "photo": "assets/inst/_t.jpg",
+    "photo": "assets/inst/_t_.jpg",
     "q": "",
     "career": [],
     "focus": "",
@@ -421,7 +419,7 @@ const INSTRUCTORS = [
 
 const LESSONS = {
   "audition": {
-    "photo": "assets/track-audition.svg",
+    "photo": "",
     "classes": [
       {
         "name": "베이직 클래스",
@@ -472,7 +470,7 @@ const LESSONS = {
     ]
   },
   "entrance": {
-    "photo": "assets/track-entrance.jpg",
+    "photo": "",
     "classes": [
       {
         "name": "베이직 클래스",
@@ -533,7 +531,7 @@ const LESSONS = {
     ]
   },
   "producing": {
-    "photo": "assets/track-producing.jpg",
+    "photo": "",
     "classes": [
       {
         "name": "베이직 클래스",
@@ -573,7 +571,7 @@ const LESSONS = {
     "perks": []
   },
   "hobby": {
-    "photo": "assets/track-hobby.jpg",
+    "photo": "",
     "classes": [
       {
         "name": "베이직 클래스",
