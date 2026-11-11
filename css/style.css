@@ -869,7 +869,7 @@ html[data-c-hero] .hero .d-xl{color:var(--c-hero)}   /* 관리 페이지의 첫 
 
 @supports (animation-timeline:view()){
   @media (prefers-reduced-motion:no-preference){
-    .pillars .pillar{animation:gather linear both;animation-timeline:--stage;animation-range:cover 0% cover 26%}
+    .pillars .pillar{animation:gather linear both;animation-timeline:--stage;animation-range:cover 0% cover 33%}
     .pillars .pillar:nth-child(odd){--gx:-26vw}
     .pillars .pillar:nth-child(even){--gx:26vw}
     .pillars .pillar:nth-child(-n+2){--gy:-9vh}
