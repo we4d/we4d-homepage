@@ -421,7 +421,7 @@ const INSTRUCTORS = [
 
 const LESSONS = {
   "audition": {
-    "photo": "",
+    "photo": "assets/track-audition.svg",
     "classes": [
       {
         "name": "베이직 클래스",
@@ -472,7 +472,7 @@ const LESSONS = {
     ]
   },
   "entrance": {
-    "photo": "",
+    "photo": "assets/track-entrance.jpg",
     "classes": [
       {
         "name": "베이직 클래스",
@@ -533,7 +533,7 @@ const LESSONS = {
     ]
   },
   "producing": {
-    "photo": "",
+    "photo": "assets/track-producing.jpg",
     "classes": [
       {
         "name": "베이직 클래스",
@@ -573,7 +573,7 @@ const LESSONS = {
     "perks": []
   },
   "hobby": {
-    "photo": "",
+    "photo": "assets/track-hobby.jpg",
     "classes": [
       {
         "name": "베이직 클래스",

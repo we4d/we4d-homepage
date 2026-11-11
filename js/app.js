@@ -228,6 +228,12 @@ $('#lessonPanes').innerHTML = Object.entries(LESSONS).map(([k, d], idx) => {
     ${subKeys ? `<div class="chips" data-chips>${subKeys.map((s, i) => `<button class="${i ? '' : 'on'}" data-sub="${s}">${s}</button>`).join('')}</div><div data-subpane>${lessonCards(d.sub[subKeys[0]], ['LESSONS', k, 'sub', subKeys[0]])}</div>` : lessonCards(d, ['LESSONS', k])}
   </div>`;
 }).join('');
+/* 오디션 레슨 배너에도 첫 화면 카드와 같은 기획사 로고를 깔아 준다 */
+(function () {
+  const wall = $('.pillar .logo-wall'), box = $('.tabpane[data-pane="audition"] .lesson-photo');
+  if (wall && box) { box.style.position = 'relative'; box.appendChild(wall.cloneNode(true)); }
+})();
+
 function setLessonTab(k) { $$('#lessonTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === k)); $$('.tabpane').forEach(p => p.classList.toggle('on', p.dataset.pane === k)); }
 $('#lessonTabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setLessonTab(b.dataset.tab); });
 document.addEventListener('click', e => {
