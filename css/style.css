@@ -851,5 +851,6 @@ html[data-c-pillarTitle] .sec.light .card.pillar .d,html[data-c-pillarTitle] .se
 @media (max-width:620px){.rail{display:none}}
 
 /* 오디션 레슨 배너 안의 기획사 로고 (21:8 가로 배너에 맞춘 여백) */
-.lesson-photo .logo-wall{padding:30px 9%;gap:16px 20px;opacity:.45}
-@media (max-width:620px){.lesson-photo .logo-wall{padding:18px 6%;gap:10px 12px}.lesson-photo .logo-wall img{max-width:58px;max-height:20px}}
+.lesson-photo .logo-wall{grid-template-columns:repeat(4,1fr);padding:34px 6%;gap:22px 26px;opacity:.6}
+.lesson-photo .logo-wall img{max-width:150px;max-height:52px}
+@media (max-width:620px){.lesson-photo .logo-wall{grid-template-columns:repeat(3,1fr);padding:16px 5%;gap:10px 12px}.lesson-photo .logo-wall img{max-width:72px;max-height:24px}}
