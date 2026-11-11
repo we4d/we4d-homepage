@@ -10,17 +10,17 @@ const SITE = {
   "hero": {
     "video": "assets/hero.mp4",
     "poster": "assets/hero-poster.jpg",
-    "tint": "rgba(214, 186, 255, 0.28)",
+    "tint": "rgba(18, 18, 20, 0.22)",
     "brightness": 108,
-    "gray": 0,
-    "sat": 110,
+    "gray": 100,
+    "sat": 100,
     "shade": 55,
     "accent": "- MUSIC · DANCE · K-POP TRAINING · AUDITION -",
     "eyebrow": "아이돌의 꿈을 현실로 · 소수 정예 수업",
-    "bigText": "Real KPOP Training",
+    "bigText": "Real<b>KPOP-TRAINING</b>",
     "cta": "상담하기 / 맞춤 수업 추천받기",
-    "ctaColor": "#6D28D9",
-    "ctaText": "#FFFFFF",
+    "ctaColor": "#FFFFFF",
+    "ctaText": "#121212",
     "stats": [
       {
         "n": "468+",
