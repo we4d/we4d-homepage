@@ -228,10 +228,15 @@ $('#lessonPanes').innerHTML = Object.entries(LESSONS).map(([k, d], idx) => {
     ${subKeys ? `<div class="chips" data-chips>${subKeys.map((s, i) => `<button class="${i ? '' : 'on'}" data-sub="${s}">${s}</button>`).join('')}</div><div data-subpane>${lessonCards(d.sub[subKeys[0]], ['LESSONS', k, 'sub', subKeys[0]])}</div>` : lessonCards(d, ['LESSONS', k])}
   </div>`;
 }).join('');
-/* 오디션 레슨 배너에도 첫 화면 카드와 같은 기획사 로고를 깔아 준다 */
+/* 오디션 레슨 배너를 협력 기획사 로고(AGENCIES 전체)로 가득 채운다 */
 (function () {
-  const wall = $('.pillar .logo-wall'), box = $('.tabpane[data-pane="audition"] .lesson-photo');
-  if (wall && box) { box.style.position = 'relative'; box.appendChild(wall.cloneNode(true)); }
+  const box = $('.tabpane[data-pane="audition"] .lesson-photo');
+  if (!box || typeof AGENCIES === 'undefined' || !AGENCIES.length) return;
+  box.style.position = 'relative';
+  const wall = document.createElement('div');
+  wall.className = 'logo-wall';
+  wall.innerHTML = AGENCIES.map(a => `<img src="${a.img}" alt="${a.n || ''}" loading="lazy">`).join('');
+  box.appendChild(wall);
 })();
 
 function setLessonTab(k) { $$('#lessonTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === k)); $$('.tabpane').forEach(p => p.classList.toggle('on', p.dataset.pane === k)); }
