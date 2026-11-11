@@ -817,15 +817,14 @@ html[data-c-pillarTitle] .sec.light .card.pillar .d,html[data-c-pillarTitle] .se
 @media (max-width:620px){.pillar{min-height:400px}.logo-wall{gap:22px 14px;padding:30px 22px 130px}.logo-wall img{max-width:70px;max-height:24px}}
 
 /* ------------------------------------------------------------------
-   [홈] 포지션 카드 — 화면 꽉 채우기
+   [홈] 포지션 카드 — 본문 폭 안에서, 기본보다 조금 더 큼
 ------------------------------------------------------------------ */
-.pillars{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);gap:4px}
-.pillars .pillar{min-height:min(36vh,370px);border-radius:0;border-left:0;border-right:0;padding:24px}
-.pillars .pillar .d{font-size:calc(clamp(36px,4.4vw,72px) * var(--sc-pillar,1))}
-.pillars .pillar .badge{top:18px;left:24px}
-.pillars .logo-wall{padding:24px 17% 96px;gap:14px 14px}
-.pillars .logo-wall img{max-width:72px;max-height:26px}
-@media (max-width:860px){.pillars{grid-template-columns:1fr}.pillars .pillar{min-height:34vh;padding:20px}.pillars .pillar .badge{top:20px;left:24px}.pillars .logo-wall{padding:28px 18% 110px;gap:18px 14px}.pillars .logo-wall img{max-width:76px;max-height:26px}}
+.pillars .pillar{min-height:540px;padding:34px}
+.pillars .pillar .d{font-size:calc(clamp(64px,7.6vw,108px) * var(--sc-pillar,1))}
+.pillars .pillar .badge{top:28px;left:34px}
+.pillars .logo-wall{padding:46px 34px 170px;gap:32px 20px}
+.pillars .logo-wall img{max-width:96px;max-height:34px}
+@media (max-width:860px){.pillars .pillar{min-height:430px;padding:28px}.pillars .pillar .badge{top:24px;left:28px}.pillars .logo-wall{padding:34px 26px 140px;gap:24px 16px}.pillars .logo-wall img{max-width:80px;max-height:28px}}
 
 /* ------------------------------------------------------------------
    [홈] 스크롤 위치 표시 레일
