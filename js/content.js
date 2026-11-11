@@ -44,10 +44,6 @@ const SITE = {
       }
     ]
   },
-  "slogan": {
-    "en": "Dream, Made Real",
-    "kr": "꿈을 현실로 만드는 4D 트레이닝"
-  },
   "tel": "02-473-9086",
   "telLink": "024739086",
   "telHref": "tel:024739086",
