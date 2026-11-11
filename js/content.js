@@ -48,29 +48,6 @@ const SITE = {
     "en": "Dream, Made Real",
     "kr": "꿈을 현실로 만드는 4D 트레이닝"
   },
-  "parents": {
-    "en": "To Parents",
-    "title": "학부모님께 드리는 네 가지 약속",
-    "lead": "아이돌 학원을 고를 때 가장 걱정되는 것들, WE4D는 이렇게 생각합니다.",
-    "items": [
-      [
-        "아무 곳에나 보내지 않습니다",
-        "합격 숫자를 세지 않습니다. 많은 회사에 보내는 것보다 제대로 된 회사에 보내는 것이 중요하다고 믿습니다. 검증된 기획사에만 추천합니다."
-      ],
-      [
-        "아이의 편에서 생각합니다",
-        "아이돌 연습생을 위한 연구를 하는 박사과정 연구자가 함께합니다. 연습 시간 · 계약 · 건강처럼 아이를 지키는 문제를 학생과 학부모님과 함께 고민합니다."
-      ],
-      [
-        "아이의 진로를 함께 설계합니다",
-        "오디션 · 입시 · 실용음악 · 실용무용 예고 · 예대 진학까지, 아이의 포지션에 맞는 진로를 끝까지 함께 찾습니다."
-      ],
-      [
-        "이름을 아는 학원입니다",
-        "인원을 늘리지 않습니다. 원장이 모든 학생의 이름과 목표를 알고 있습니다. 수업만 하고 끝나는 곳이 되지 않으려고 정한 원칙입니다."
-      ]
-    ]
-  },
   "tel": "02-473-9086",
   "telLink": "024739086",
   "telHref": "tel:024739086",
@@ -224,7 +201,6 @@ const SITE = {
   "demoToday": "",
   "sizes": {
     "#page-home > section:nth-of-type(1) > div > div:nth-of-type(1) > div > h2": 80,
-    "#parents > div > div:nth-of-type(1) > div > h2": 80,
     "#page-home > section:nth-of-type(3) > div > div:nth-of-type(1) > div > h2": 80,
     "#page-about > section:nth-of-type(1) > div > h1": 70,
     "#fourd > div > div:nth-of-type(1) > div > h2": 130,
@@ -245,8 +221,8 @@ const SITE = {
 };
 
 const DIRECTOR = {
-  "photo": "assets/director.jpg",
-  "scenePhoto": "assets/director-scene.jpg",
+  "photo": "",
+  "scenePhoto": "",
   "nameKr": "이로사",
   "nameEn": "Lee Ro-sa",
   "role": "이로사 · WE4D 대표원장",

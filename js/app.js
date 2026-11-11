@@ -18,7 +18,7 @@ const isPreview = /preview=draft/.test(location.search);
   Object.keys(G).forEach(k => { if (draft[k] !== undefined) replace(G[k], draft[k]); });
   window.__draft = draft;
   const bar = document.createElement('div');
-  bar.style.cssText = 'position:fixed;left:50%;top:80px;transform:translateX(-50%);z-index:999;background:#7C3AED;color:#fff;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)';
+  bar.style.cssText = 'position:fixed;left:50%;top:80px;transform:translateX(-50%);z-index:999;background:#121212;color:#fff;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)';
   bar.textContent = '미리보기 — 아직 저장되지 않은 초안입니다';
   document.body.appendChild(bar);
 })();
@@ -89,7 +89,7 @@ $$('[data-dir]').forEach(el => { const v = get(DIRECTOR, el.dataset.dir); if (v 
 /* 히어로 배경 캔버스 (영상이 없거나 로딩 전 · 블러 퍼플) */
 (function () {
   const c = $('#heroCanvas'), ctx = c.getContext('2d'); let w, h, t = 0;
-  const blobs = [{ x: .3, y: .4, r: .45, c: '124,58,237' }, { x: .75, y: .6, r: .4, c: '216,180,254' }, { x: .55, y: .2, r: .35, c: '59,130,246' }];
+  const blobs = [{ x: .3, y: .4, r: .45, c: '90,90,96' }, { x: .75, y: .6, r: .4, c: '235,232,226' }, { x: .55, y: .2, r: .35, c: '120,120,128' }];
   function size() { w = c.width = innerWidth * .5; h = c.height = innerHeight * .5; }
   function draw() {
     t += .004; ctx.fillStyle = '#0A0A0A'; ctx.fillRect(0, 0, w, h);
@@ -151,7 +151,6 @@ renderUpList();
   const careerEl = $('#dirCareer');
   if (DIRECTOR.career && DIRECTOR.career.length) careerEl.innerHTML = DIRECTOR.career.map((c, i) => `<li data-item='["DIRECTOR","career",${i}]'><span data-p='["DIRECTOR","career",${i},0]'>${c[0]}</span><span class="t" data-p='["DIRECTOR","career",${i},1]'>${c[1]}</span></li>`).join('');
   else careerEl.remove();
-  if ($('#parentsGrid') && SITE.parents) $('#parentsGrid').innerHTML = SITE.parents.items.map((p, i) => `<div class="pr" data-item='["SITE","parents","items",${i}]'><span class="pr-n">0${i + 1}</span><h3 data-p='["SITE","parents","items",${i},0]'>${p[0]}</h3><p data-p='["SITE","parents","items",${i},1]'>${p[1]}</p></div>`).join('');
   if ($('#fourdGrid') && SITE.fourd) $('#fourdGrid').innerHTML = SITE.fourd.items.map((d, i) => `<div class="fd" data-item='["SITE","fourd","items",${i}]'><span class="fd-n">0${i + 1}</span><div class="fd-en d" data-p='["SITE","fourd","items",${i},0]'>${d[0]}</div><div class="fd-kr" data-p='["SITE","fourd","items",${i},1]'>${d[1]}</div><p data-p='["SITE","fourd","items",${i},2]'>${d[2]}</p></div>`).join('');
   if ($('#steps')) $('#steps').innerHTML = STEPS.map((s, i) => `<li data-item='["STEPS",${i}]'><span class="n">0${i + 1}</span><div><h3 data-p='["STEPS",${i},"t"]'>${s.t}</h3><p data-p='["STEPS",${i},"d"]'>${s.d}</p></div><span class="tag" data-p='["STEPS",${i},"tag"]'>${s.tag}</span></li>`).join('');
 })();
@@ -160,7 +159,7 @@ renderUpList();
    4. 강사진 — 섹션별 캐러셀 + 프로필 모달
    ============================================================ */
 const isLead = i => i.role && i.role !== 'TRAINER';   // TRAINER 외의 직책은 강조 색으로
-function profPic(i, cls) { const j = INSTRUCTORS.indexOf(i); return `<div class="${cls}" style="--c1:${i.c1 || '#2B2338'};--c2:${i.c2 || '#0F0D14'}">${i.photo ? `<img src="${i.photo}" alt="${i.kr}" data-p='["INSTRUCTORS",${j},"photo"]'>` : `<span data-p='["INSTRUCTORS",${j},"photo"]'>${FIG}</span>`}`; }
+function profPic(i, cls) { const j = INSTRUCTORS.indexOf(i); return `<div class="${cls}" style="--c1:${i.c1 || '#1C1C1E'};--c2:${i.c2 || '#0E0E0F'}">${i.photo ? `<img src="${i.photo}" alt="${i.kr}" data-p='["INSTRUCTORS",${j},"photo"]'>` : `<span data-p='["INSTRUCTORS",${j},"photo"]'>${FIG}</span>`}`; }
 function profCard(i) {
   const idx = INSTRUCTORS.indexOf(i);
   return `<button class="prof" data-inst="${idx}" data-item='["INSTRUCTORS",${idx}]'>${profPic(i, 'pic')}<span class="badge ${isLead(i) ? 'badge-lilac' : 'badge-line'} role" data-p='["INSTRUCTORS",${idx},"role"]'>${i.role}</span></div><div class="meta"><span class="d" data-p='["INSTRUCTORS",${idx},"en"]'>${i.en}</span><b data-p='["INSTRUCTORS",${idx},"kr"]'>${i.kr}</b><span class="${isLead(i) ? 'dir' : ''}" data-p='["INSTRUCTORS",${idx},"title"]'>${i.title || i.role}</span></div></button>`;
@@ -538,7 +537,9 @@ if (/[?&]edit=1/.test(location.search)) {
   });
   function sync() {
     const home = document.getElementById('page-home').classList.contains('active');
-    rail.classList.toggle('on', home);
+    const foot = document.querySelector('footer');                       // 푸터 글씨와 겹치지 않게
+    const atFoot = foot && foot.getBoundingClientRect().top < window.innerHeight - 40;
+    rail.classList.toggle('on', home && !atFoot);
     if (!home) return;
     const line = window.innerHeight * 0.75;      // 화면 아래쪽 기준선
     let cur = 0;
