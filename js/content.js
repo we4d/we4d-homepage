@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:18:28 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:21:28 저장)
    ============================================================ */
 
 const SITE = {
@@ -210,7 +210,12 @@ const SITE = {
     "#lessonPanes > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > p": 911
   },
   "fonts": {},
-  "moves": {},
+  "moves": {
+    "#inst-dance > div:nth-of-type(2) > div > button:nth-of-type(2) > div:nth-of-type(1) > img": [
+      4,
+      0
+    ]
+  },
   "blog": "https://blog.naver.com/we4d_academy_",
   "blogName": "blog.naver.com/we4d_academy_",
   "place": "https://naver.me/xl0DWFwD"
@@ -353,7 +358,7 @@ const INSTRUCTORS = [
     "kr": "새 선생님",
     "role": "TRAINER",
     "title": "",
-    "photo": "assets/inst/_t.jpg",
+    "photo": "assets/inst/_t_.jpg",
     "q": "",
     "career": [],
     "focus": "",
@@ -376,10 +381,10 @@ const INSTRUCTORS = [
   {
     "cat": "dance",
     "en": "KIM JEONGWON",
-    "kr": "김정원",
+    "kr": "장윤정",
     "role": "TRAINER",
     "title": "DANCE TRAINER",
-    "photo": "assets/inst/_t.jpg",
+    "photo": "assets/inst/_t_.jpg",
     "q": "",
     "career": [],
     "focus": "댄스",
