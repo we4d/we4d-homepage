@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:14:30 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:15:36 저장)
    ============================================================ */
 
 const SITE = {
@@ -364,7 +364,7 @@ const INSTRUCTORS = [
     "en": "LEE HAE-A",
     "kr": "이해아",
     "role": "TRAINER",
-    "title": "댄스",
+    "title": "DANCE TRAINER",
     "photo": "assets/inst/lee-haea.jpg",
     "q": "",
     "career": [
@@ -378,7 +378,7 @@ const INSTRUCTORS = [
     "en": "KIM JEONGWON",
     "kr": "김정원",
     "role": "TRAINER",
-    "title": "댄스",
+    "title": "DANCE TRAINER",
     "photo": "assets/inst/_t.jpeg",
     "q": "",
     "career": [],
@@ -387,10 +387,10 @@ const INSTRUCTORS = [
   },
   {
     "cat": "dance",
-    "en": "NEW TRAINER",
-    "kr": "새 선생님",
+    "en": "KIM JEONG-WON",
+    "kr": "김정원",
     "role": "TRAINER",
-    "title": "",
+    "title": "DANCE TRAINER",
     "photo": "assets/inst/_t.jpeg",
     "q": "",
     "career": [],
