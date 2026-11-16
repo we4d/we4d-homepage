@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:17:14 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:18:28 저장)
    ============================================================ */
 
 const SITE = {
@@ -338,10 +338,10 @@ const INSTRUCTORS = [
   {
     "cat": "vocal",
     "en": "NEW TRAINER",
-    "kr": "우시은",
+    "kr": "이은지",
     "role": "TRAINER",
     "title": "보컬",
-    "photo": "assets/inst/_t_.jpg",
+    "photo": "assets/inst/_t.jpg",
     "q": "",
     "career": [],
     "focus": "",
@@ -350,9 +350,9 @@ const INSTRUCTORS = [
   {
     "cat": "vocal",
     "en": "NEW TRAINER",
-    "kr": "이은지",
+    "kr": "새 선생님",
     "role": "TRAINER",
-    "title": "VOCAL TRAINER",
+    "title": "",
     "photo": "assets/inst/_t.jpg",
     "q": "",
     "career": [],
