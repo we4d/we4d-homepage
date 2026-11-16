@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:08:41 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:14:30 저장)
    ============================================================ */
 
 const SITE = {
@@ -375,14 +375,26 @@ const INSTRUCTORS = [
   },
   {
     "cat": "dance",
-    "en": "JANG YUN-JUNG",
-    "kr": "장윤정",
+    "en": "KIM JEONGWON",
+    "kr": "김정원",
     "role": "TRAINER",
     "title": "댄스",
-    "photo": "assets/inst/jang-yunjung.jpg",
+    "photo": "assets/inst/_t.jpeg",
     "q": "",
     "career": [],
     "focus": "댄스",
+    "portfolio": []
+  },
+  {
+    "cat": "dance",
+    "en": "NEW TRAINER",
+    "kr": "새 선생님",
+    "role": "TRAINER",
+    "title": "",
+    "photo": "assets/inst/_t.jpeg",
+    "q": "",
+    "career": [],
+    "focus": "",
     "portfolio": []
   },
   {
