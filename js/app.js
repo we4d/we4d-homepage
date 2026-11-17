@@ -174,10 +174,12 @@ $('#instSections').innerHTML = INST_CATS.map((c, ci) => {
 }).join('');
 $$('.carousel').forEach(c => {
   const g = $('.igrid', c), prev = $('.prev', c), next = $('.next', c);
-  const step = () => g.firstElementChild.getBoundingClientRect().width + 22;
+  const step = () => (g.firstElementChild ? g.firstElementChild.getBoundingClientRect().width : 240) + 22;
   const upd = () => { prev.disabled = g.scrollLeft <= 2; next.disabled = g.scrollLeft + g.clientWidth >= g.scrollWidth - 2; };
   prev.onclick = () => g.scrollBy({ left: -step(), behavior: 'smooth' }); next.onclick = () => g.scrollBy({ left: step(), behavior: 'smooth' });
   g.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+  // 강사진 페이지는 처음에 숨어 있어 폭이 0 → 화살표가 꺼진 채로 남는다. 보이거나 선생님이 늘면 다시 계산.
+  new ResizeObserver(upd).observe(g); new MutationObserver(upd).observe(g, { childList: true });
 });
 function setInstTab(cat) {
   if (!INST_CATS.some(c => c.k === cat)) cat = INST_CATS[0].k;

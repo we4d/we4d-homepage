@@ -412,6 +412,7 @@
       const oldPre = JSON.stringify(JSON.parse(n.dataset.item));
       const nw = listPath.concat(i);
       n.dataset.item = JSON.stringify(nw);
+      if ('inst' in n.dataset) n.dataset.inst = String(i);   // 강사 카드: 상세창이 엉뚱한 사람을 열지 않도록 번호도 같이
       const num = n.querySelector('.pr-n,.fd-n'); if (num) num.textContent = String(i + 1).padStart(2, '0');
       n.querySelectorAll('[data-p]').forEach(c => {
         const p = JSON.parse(c.dataset.p);
@@ -644,10 +645,12 @@
     const put = (sel, v) => { const e = clone.querySelector(sel); if (e) e.textContent = v; };
     put('.meta .d', n.en); put('.meta b', n.kr); put('.meta span:last-child', n.role || '');
     last.after(clone);
+    const cnt = grid.closest('.iset').querySelector('.cnt');   // "5 TRAINERS" 숫자도 같이
+    if (cnt) cnt.textContent = cnt.textContent.replace(/^\d+/, grid.children.length);
     reindexList(['INSTRUCTORS']);
     dirty = true; updateBar();
     toast('선생님을 추가했습니다 — 이름 · 사진을 눌러 고쳐 주세요');
-    clone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    clone.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });   // 가로 목록이라 inline 까지 — 새 카드가 화면 밖에 숨지 않게
   }
   /* ---------- 일정 추가 폼 (행사 안내 달력 아래) ---------- */
   function eventForm() {
