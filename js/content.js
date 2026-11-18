@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 16. 오후 4:57:19 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 18. 오후 3:22:31 저장)
    ============================================================ */
 
 const SITE = {
@@ -214,6 +214,10 @@ const SITE = {
     "#inst-dance > div:nth-of-type(2) > div > button:nth-of-type(2) > div:nth-of-type(1) > img": [
       4,
       0
+    ],
+    "#inst-dance > div:nth-of-type(2) > div > button:nth-of-type(3) > div:nth-of-type(1) > img": [
+      -14,
+      -13
     ]
   },
   "blog": "https://blog.naver.com/we4d_academy_",
