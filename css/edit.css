@@ -82,3 +82,8 @@ body.ed-on [data-ed-img]{cursor:move}
 body.ed-on .prof{position:relative}
 .ed-detail{position:absolute;right:10px;bottom:10px;z-index:5;background:#7C3AED;color:#fff;border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px -4px rgba(124,58,237,.7);font-family:"Noto Sans KR","Malgun Gothic",sans-serif;letter-spacing:0}
 .ed-detail:hover{background:#6D28D9}
+
+/* 강사 카드 순서 바꾸기 ◀ ▶ */
+.ed-ord{position:absolute;left:10px;bottom:10px;z-index:5;display:flex;gap:4px}
+.ed-ord b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#7C3AED;color:#fff;font-size:11px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px -4px rgba(124,58,237,.7)}
+.ed-ord b:hover{background:#6D28D9}

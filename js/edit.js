@@ -73,7 +73,7 @@
   }
 
   /* ---------- 편집 가능한 요소 표시 ---------- */
-  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast,.ed-add,.ed-evform,.ed-detail';
+  const SKIP = 'script,style,svg,canvas,video,select,input,textarea,.ed-bar,.ed-tool,.ed-menu,.ed-gate,.wm,.lang-sel,.ed-toast,.ed-add,.ed-evform,.ed-detail,.ed-ord';
   function markEditable() {
     document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,span,b,small,time,summary,div,a,button').forEach(n => {
       if (n.closest(SKIP) || n.dataset.ed) return;
@@ -420,6 +420,18 @@
       });
     });
   }
+  // 항목 하나를 앞/뒤로 한 칸 — 같은 묶음(같은 분류) 안에서만 움직인다
+  function moveItem(item, dir) {
+    const path = JSON.parse(item.dataset.item), idx = path[path.length - 1], listPath = path.slice(0, -1);
+    const arr = getAt(listPath); if (!Array.isArray(arr)) return false;
+    const sib = dir < 0 ? item.previousElementSibling : item.nextElementSibling;
+    if (!sib || !sib.dataset.item) return false;            // 옆자리가 없으면(분류의 끝) 움직이지 않음
+    if (idx + dir < 0 || idx + dir > arr.length - 1) return false;
+    arr.splice(idx + dir, 0, arr.splice(idx, 1)[0]);
+    if (dir < 0) sib.before(item); else sib.after(item);
+    reindexList(listPath); dirty = true; updateBar();
+    return true;
+  }
   function openMenu(x, y, item) {
     closeMenu();
     const path = JSON.parse(item.dataset.item), idx = path[path.length - 1], listPath = path.slice(0, -1);
@@ -447,8 +459,7 @@
         if (!confirm('이 항목을 삭제할까요?')) { closeMenu(); return; }
         arr.splice(idx, 1); item.remove();
       }
-      if (a === 'up' && idx > 0) { arr.splice(idx - 1, 0, arr.splice(idx, 1)[0]); if (prev) prev.before(item); }
-      if (a === 'down' && idx < arr.length - 1) { arr.splice(idx + 1, 0, arr.splice(idx, 1)[0]); if (next) next.after(item); }
+      if (a === 'up' || a === 'down') { if (!moveItem(item, a === 'up' ? -1 : 1)) toast('더 옮길 수 없습니다', true); closeMenu(); return; }
       reindexList(listPath);
       closeMenu(); dirty = true; updateBar();
     });
@@ -468,6 +479,7 @@
 
   document.addEventListener('click', e => {
     if (e.target.closest('.ed-bar,.ed-tool,.ed-menu,.ed-gate')) return;
+    if (e.target.closest('.ed-ord')) { closeTool(); return; }
     if (e.target.closest('.ed-detail')) { closeTool(); return; }
     if (dragged) { e.preventDefault(); e.stopPropagation(); return; }   // 방금 끌어서 옮긴 것이면 교체창을 열지 않음
     closeMenu();
@@ -685,6 +697,14 @@
       if (card.querySelector('.ed-detail')) return;
       const d = el('span', 'ed-detail', '약력 ▸'); d.title = '상세창 열기 (경력 · 소개 · Focus 수정)';
       card.appendChild(d);
+      const mv = el('span', 'ed-ord');
+      mv.innerHTML = '<b data-d="-1" title="앞으로 옮기기">◀</b><b data-d="1" title="뒤로 옮기기">▶</b>';
+      mv.addEventListener('click', ev => {
+        const t = ev.target.closest('b'); if (!t) return;
+        ev.preventDefault(); ev.stopPropagation();
+        if (moveItem(card, +t.dataset.d)) toast('순서를 바꿨습니다'); else toast('이 분류의 끝입니다', true);
+      });
+      card.appendChild(mv);
     });
     document.querySelectorAll('.iset .igrid').forEach(grid => {
       if (grid.parentElement.querySelector('.ed-add')) return;
