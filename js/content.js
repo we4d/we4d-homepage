@@ -1,5 +1,5 @@
 /* ============================================================
-   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 18. 오후 3:30:36 저장)
+   WE4D 홈페이지 — 콘텐츠 설정 파일  (현장 편집에서 2026. 11. 18. 오후 6:11:32 저장)
    ============================================================ */
 
 const SITE = {
@@ -384,18 +384,6 @@ const INSTRUCTORS = [
   },
   {
     "cat": "dance",
-    "en": "",
-    "kr": "장윤정",
-    "role": "TRAINER",
-    "title": "DANCE TRAINER",
-    "photo": "assets/inst/_t_.jpg",
-    "q": "",
-    "career": [],
-    "focus": "댄스",
-    "portfolio": []
-  },
-  {
-    "cat": "dance",
     "en": "KIM JEONG-WON",
     "kr": "김정원",
     "role": "TRAINER",
@@ -403,6 +391,20 @@ const INSTRUCTORS = [
     "photo": "assets/inst/_t.jpeg",
     "q": "",
     "career": [],
+    "focus": "",
+    "portfolio": []
+  },
+  {
+    "cat": "dance",
+    "en": "NEW TRAINER",
+    "kr": "이현주",
+    "role": "TRAINER",
+    "title": "",
+    "photo": "assets/inst/_t.jpg",
+    "q": "",
+    "career": [
+      "Mnet 스트릿댄스걸스파이터2 출연<br>한림연예예술고등학교 실용무용과 졸업<br>NCT Dream - Boogie Woogie M/V 출연<br>아일릿 2026 MMA, MAMA 백업 댄서"
+    ],
     "focus": "",
     "portfolio": []
   },
