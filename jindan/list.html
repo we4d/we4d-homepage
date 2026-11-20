@@ -1,0 +1,74 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>가능성진단 신청 목록 · 위포드</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#F7F3FF;color:#1B1530;font-family:"Noto Sans KR","Malgun Gothic",sans-serif}
+.w{max-width:900px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}.sub{color:#8A8499;font-size:13px;margin-bottom:20px}
+.box{background:#fff;border:1px solid #ECE6F7;border-radius:16px;padding:18px;margin-bottom:14px}
+input{width:100%;padding:12px;border:1.5px solid #E4DDF2;border-radius:10px;font-size:15px;margin-bottom:10px;font-family:inherit}
+button{background:#7C3AED;color:#fff;border:0;border-radius:10px;padding:12px 16px;font-weight:900;font-size:14px;cursor:pointer;font-family:inherit}
+button.ghost{background:#fff;color:#7C3AED;border:1.5px solid #D9CBF7}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.counts div{background:#fff;border:1px solid #ECE6F7;border-radius:14px;padding:14px;text-align:center}
+.counts b{display:block;font-size:24px;color:#6D28D9}.counts small{color:#8A8499;font-size:12px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.bar button.on{background:#7C3AED;color:#fff}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px}
+th,td{padding:10px 8px;border-bottom:1px solid #F0EBF8;text-align:left;vertical-align:top}th{background:#F3EDFF;font-size:12.5px;color:#6D28D9}
+td a{color:#6D28D9;font-weight:700;text-decoration:none}
+.err{color:#DC2626;font-size:13px}
+@media(max-width:640px){th:nth-child(1),td:nth-child(1),th:nth-child(7),td:nth-child(7){display:none}}
+</style></head><body><div class="w">
+<h1>12월 초등 가능성진단 · 신청 목록</h1><div class="sub">리포트와 같은 선생님 계정으로 로그인합니다. 개인정보가 있으니 다른 사람에게 이 화면을 보여 주지 마세요.</div>
+
+<div class="box" id="login">
+  <input id="em" type="email" placeholder="이메일" autocomplete="username">
+  <input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password">
+  <button id="go">로그인</button> <span class="err" id="lerr"></span>
+</div>
+
+<div id="app" style="display:none">
+  <div class="counts"><div><b id="c1">0</b><small>1차 12/12(토) / 10</small></div><div><b id="c2">0</b><small>2차 12/19(토) / 10</small></div><div><b id="ct">0</b><small>전체 신청</small></div></div>
+  <div class="bar"><button class="ghost on" data-f="0">전체</button><button class="ghost" data-f="1">1차</button><button class="ghost" data-f="2">2차</button>
+    <span style="flex:1"></span><button class="ghost" id="csv">엑셀(CSV) 받기</button><button class="ghost" id="ref">새로고침</button><button class="ghost" id="out">로그아웃</button></div>
+  <table><thead><tr><th>신청 시각</th><th>회차</th><th>보호자</th><th>연락처</th><th>학생</th><th>학년</th><th>어디서</th><th>궁금한 점</th></tr></thead><tbody id="tb"></tbody></table>
+  <p class="sub" id="src" style="margin-top:14px"></p>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
+<script>
+const SB = supabase.createClient("https://zpcksmdjcxcptdlxslwz.supabase.co", "sb_publishable_P8tAXBwa3jNNbLduZ8LRhA_LrK4Gt8-", {auth:{persistSession:true,autoRefreshToken:true}});
+const $ = s => document.querySelector(s); let rows = [], filt = 0;
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const when = t => new Date(t).toLocaleString('ko-KR', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
+function render() {
+  const n1 = rows.filter(r => r.round === 1).length, n2 = rows.filter(r => r.round === 2).length;
+  $('#c1').textContent = n1; $('#c2').textContent = n2; $('#ct').textContent = rows.length;
+  $('#tb').innerHTML = rows.filter(r => !filt || r.round === filt).map(r => '<tr><td>' + when(r.created_at) + '</td><td>' + r.round + '차</td><td>' + esc(r.parent_name) +
+    '</td><td><a href="tel:' + esc(r.phone) + '">' + esc(r.phone) + '</a></td><td>' + esc(r.student_name) + '</td><td>' + esc(r.grade) + '</td><td>' + esc(r.source) + '</td><td>' + esc(r.question) + '</td></tr>').join('')
+    || '<tr><td colspan="8" style="text-align:center;color:#8A8499;padding:30px">아직 신청이 없습니다</td></tr>';
+  const by = {}; rows.forEach(r => by[r.source || '미입력'] = (by[r.source || '미입력'] || 0) + 1);
+  $('#src').textContent = '어디서 보고 왔나: ' + (Object.entries(by).map(([k, v]) => k + ' ' + v + '명').join(' · ') || '없음');
+}
+function load() {
+  return SB.from('diag_applications').select('*').order('created_at', {ascending: true}).then(({data, error}) => {
+    if (error) { $('#lerr').textContent = '목록을 불러오지 못했습니다 (' + error.message + ')'; return; }
+    rows = data || []; render();
+  });
+}
+function show(on) { $('#login').style.display = on ? 'none' : 'block'; $('#app').style.display = on ? 'block' : 'none'; if (on) load(); }
+SB.auth.getSession().then(({data}) => show(!!data.session));
+$('#go').onclick = () => SB.auth.signInWithPassword({email: $('#em').value.trim(), password: $('#pw').value}).then(({error}) => {
+  if (error) $('#lerr').textContent = '로그인 실패: 이메일·비밀번호를 확인하세요'; else show(true); });
+$('#out').onclick = () => SB.auth.signOut().then(() => show(false));
+$('#ref').onclick = load;
+document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { filt = Number(b.dataset.f); document.querySelectorAll('[data-f]').forEach(x => x.classList.toggle('on', x === b)); render(); });
+$('#csv').onclick = () => {
+  const head = ['신청시각', '회차', '보호자', '연락처', '학생', '학년', '어디서', '궁금한점'];
+  const lines = rows.map(r => [new Date(r.created_at).toLocaleString('ko-KR'), r.round + '차', r.parent_name, r.phone, r.student_name, r.grade, r.source || '', r.question || '']
+    .map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','));
+  const blob = new Blob(['﻿' + [head.join(','), ...lines].join('\n')], {type: 'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '가능성진단_신청목록.csv'; a.click();
+};
+</script></body></html>
